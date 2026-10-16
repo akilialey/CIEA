@@ -569,7 +569,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   background: linear-gradient(90deg, rgba(14,48,68,.88) 0%, rgba(14,48,68,.62) 38%, rgba(14,48,68,.12) 68%, rgba(14,48,68,0) 100%),
               linear-gradient(0deg, rgba(14,48,68,.45) 0%, rgba(14,48,68,0) 30%);
 }
-.hero-water .hero-grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); padding-block: clamp(3.5rem, 2rem + 6vw, 7.5rem) clamp(5rem, 3rem + 6vw, 8.5rem); }
+.hero-water .hero-grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); padding-block: clamp(3.5rem, 2rem + 6vw, 7.5rem); }
 .hero-water h1 { font-size: clamp(2.6rem, 1.2rem + 3.8vw, 4.9rem); max-width: none; line-height: .98; letter-spacing: -0.035em; }
 .badge {
   display: inline-flex; align-items: center; gap: .6rem; margin: 0;
@@ -597,12 +597,10 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 }
 @keyframes bob { from { translate: 0 0; } to { translate: 0 -16px; } }
 
-.ticker { position: relative; z-index: 3; margin-top: -2.6rem; overflow: hidden; padding-block: 1rem 2rem; }
+.ticker { position: relative; z-index: 3; overflow: hidden; }
 .ticker-band {
-  rotate: -1.6deg; width: 104%; margin-left: -2%;
   background: var(--paper); color: var(--deep); overflow: hidden; padding-block: 1rem;
   border-bottom: 5px solid var(--sun);
-  box-shadow: 0 16px 30px -18px rgba(10,35,50,.5);
 }
 .ticker-track { display: flex; align-items: center; width: max-content; }
 .ticker span { font-family: var(--display); font-weight: 750; font-size: clamp(1.1rem, .9rem + .8vw, 1.6rem); letter-spacing: -0.01em; white-space: nowrap; }
