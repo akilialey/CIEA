@@ -45,16 +45,16 @@ def stamp(inner, color="c-sun", label=None, cls=""):
         chip = f'<span class="chip"><i></i>{text}</span>'
     return f'<div class="frame-wrap {color} {cls}"><div class="frame">{inner}{chip}</div></div>'
 
-ISLAND = "M296 158 C322 156 342 188 358 228 C376 272 398 322 402 366 C406 408 384 436 348 442 C310 448 266 440 240 420 C218 402 214 378 222 348 C232 308 248 262 260 222 C270 188 276 160 296 158 Z"
+ISLAND = "M220.7 151.0 C213.0 153.2 200.2 169.7 195.5 178.8 C190.9 187.9 191.8 196.2 192.6 205.6 C193.4 215.1 198.4 225.5 200.4 235.4 C202.3 245.3 203.8 254.9 204.2 265.2 C204.7 275.5 202.2 287.1 203.3 297.0 C204.4 306.9 209.4 314.9 211.0 324.8 C212.6 334.7 210.2 346.3 213.0 356.6 C215.7 366.8 224.7 377.9 227.5 386.4 C230.2 394.8 225.4 403.1 229.4 407.2 C233.4 411.3 244.7 409.4 251.6 411.2 C258.6 413.0 263.7 416.0 271.0 418.1 C278.2 420.3 287.6 420.3 295.2 424.1 C302.7 427.9 310.0 440.1 316.4 441.0 C322.9 441.8 322.9 440.1 333.9 429.1 C344.8 418.0 369.8 391.8 382.2 374.4 C394.6 357.1 407.8 338.0 408.3 324.8 C408.8 311.5 399.9 305.3 385.1 295.0 C370.3 284.7 335.6 274.5 319.3 263.2 C303.1 252.0 297.1 239.6 287.4 227.5 C277.8 215.4 268.9 201.0 261.3 190.7 C253.7 180.5 248.7 172.5 242.0 165.9 C235.2 159.3 228.4 148.9 220.7 151.0 Z"
 CITIES = [("MONTREAL", 205, 34, "out"), ("TORONTO", 96, 82, "in"), ("NEW YORK", 52, 172, "out"), ("MIAMI", 44, 268, "in"),
           ("LONDON", 548, 62, "out"), ("ACCRA", 584, 214, "in"), ("LAGOS", 578, 300, "out")]
 
 def routes(legend=True):
     cx, cy, k = 336, 250, 0.72
-    bx, by = cx + k * (240 - 300), cy + k * (385 - 295)
+    bx, by = cx + k * (227.5 - 300), cy + k * (386.4 - 295)
     def iso(scale, cls):
         return f'<path class="{cls}" d="{ISLAND}" transform="translate({cx} {cy}) scale({scale}) translate(-300 -295)" vector-effect="non-scaling-stroke"/>'
-    contours = "".join(iso(k * f, "contour") for f in (1.4, 1.85, 2.4))
+    contours = "".join(iso(k * f, "contour") for f in (1.3, 1.65))
     arcs, cities = [], []
     for name, x, y, d in CITIES:
         mx, my = (bx + x) / 2, (by + y) / 2
@@ -66,8 +66,9 @@ def routes(legend=True):
         cities.append(f'<g class="city"><circle cx="{x}" cy="{y}" r="5"/><text x="{x}" y="{y - 14}" text-anchor="middle">{name}</text></g>')
     leg = '<span class="legend">Based in Barbados \u00b7 Serving the world</span>' if legend else ""
     return f'''<div class="routes">{leg}<svg viewBox="0 0 620 470" role="img" aria-label="Map of Barbados with direct flight routes from Bridgetown to London, Toronto, Montreal, New York, Miami, Lagos and Accra">
-<g>{contours}</g>{iso(k, "island")}{"".join(arcs)}{"".join(cities)}
+<g>{contours}</g>{"".join(arcs)}{iso(k, "island")}{iso(k, "coast")}{"".join(cities)}
 <circle class="home-ring" cx="{bx:.0f}" cy="{by:.0f}" r="8"/><circle class="home-dot" cx="{bx:.0f}" cy="{by:.0f}" r="7"/>
+<text class="sea-label" x="560" y="430" text-anchor="middle">Atlantic Ocean</text><text class="sea-label" x="110" y="430" text-anchor="middle">Caribbean Sea</text>
 <text class="home-label" x="{bx - 14:.0f}" y="{by + 30:.0f}" text-anchor="end">BRIDGETOWN</text>
 </svg></div>'''
 

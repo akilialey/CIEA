@@ -627,3 +627,5 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 @media (min-width: 861px) { .hero-water h1 span, .hero-water h1 em { white-space: nowrap; } }
 @media (max-width: 860px) { .seal { right: 4%; bottom: -6%; width: 30%; } }
 @media (max-width: 860px) { .frame-wrap::before { right: -3%; top: -4%; } .frame-wrap.disc-bl::before { left: -3%; } }
+.routes .coast { fill: none; stroke: #b9f0d3; stroke-width: 1.5; stroke-linejoin: round; }
+.routes .sea-label { font-family: var(--body); font-style: italic; font-size: 15px; fill: rgba(255,255,255,.5); letter-spacing: .5px; }
