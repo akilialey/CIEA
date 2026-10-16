@@ -46,8 +46,11 @@ PHOTOS = {
     "Children at a cricket, dance or swimming camp": ("kids-group", "A group of children smiling together"),
     "A university group on a heritage tour with a local guide": ("codrington-college", "Codrington College, Barbados"),
     "A friendly advisor on a video call": ("video-call", "An advisor on a video call"),
+    "Students volunteering at a beach clean-up or community project": ("beach-cleanup", "Volunteers in gloves collecting plastic from a beach"),
+    "Portrait of Patricia Atherley": ("patricia-atherley", "Patricia Atherley, Founder and Director of CIEA"),
+    "A Barbados beach under a blue umbrella": ("beach-umbrella", "A blue umbrella on a white sand Barbados beach"),
 }
-EAGER = {"students-laughing", "chattel-house", "turtle-carlisle-bay", "bridgetown-careenage", "bridgetown-parliament", "video-call"}
+EAGER = {"students-laughing", "chattel-house", "beach-umbrella", "bridgetown-careenage", "bridgetown-parliament", "video-call"}
 
 def ph(text, kind="Photo"):
     if text in PHOTOS:
@@ -289,8 +292,8 @@ home = f'''
 </div>
 <div class="float-stack">
 {stamp(ph("Students laughing together on a Barbados beach or campus"), "c-sun", cls="float f1")}
-{stamp(ph("Bridgetown street or a colourful chattel house"), "c-hib", cls="float f2")}
-{stamp(ph("Turquoise water at Carlisle Bay"), "c-palm", cls="float f3")}
+{stamp(ph("A Barbados beach under a blue umbrella"), "c-palm", cls="float f2 no-disc")}
+{stamp(ph("Bridgetown street or a colourful chattel house"), "c-hib", cls="float f3 no-disc")}
 </div>
 </div></section>
 <div class="ticker" aria-hidden="true"><div class="ticker-band"><div class="ticker-track">{ticker}{ticker}</div></div></div>
@@ -360,7 +363,7 @@ about = page_hero("Rooted in Barbados. Reaching the World.",
 <p>What makes CIEA different is simple: We are here, not a consultant in an overseas office advising on Barbados from afar. We live here, work here, and have deep relationships with the institutions, officials, academics, and communities that make Barbados and the wider Caribbean such extraordinary places to study and grow. We offer everything from a single activity booking to full end-to-end education migration and placement services.</p>
 </div>
 <aside>
-{stamp(ph("Portrait of Patricia Atherley"), "c-sun")}
+{stamp(ph("Portrait of Patricia Atherley"), "c-sun", cls="portrait")}
 <blockquote class="quote"><p>My goal is simple: to help students enrich their learning and achieve their goals through international education.</p>
 <footer><b>Patricia Atherley</b>Founder &amp; Director, CIEA</footer></blockquote>
 </aside>
