@@ -93,12 +93,8 @@ def routes(legend=True):
 <text class="home-label" x="{bx - 14:.0f}" y="{by + 30:.0f}" text-anchor="end">BRIDGETOWN</text>
 </svg></div>'''
 
-def seal(text="CO-CREATORS OF BARBADOS STUDY TOURS · "):
-    return f'''<div class="seal" aria-hidden="true"><svg viewBox="0 0 200 200">
-<defs><path id="sealp" d="M100 100 m-74 0 a74 74 0 1 1 148 0 a74 74 0 1 1 -148 0"/></defs>
-<text style="font-size:15.5px"><textPath href="#sealp" textLength="458" lengthAdjust="spacing">{text}</textPath></text>
-<text x="100" y="111" text-anchor="middle" style="font-size:34px;font-weight:800">CIEA</text>
-</svg></div>'''
+def seal(text="CO-CREATORS OF BARBADOS STUDY TOURS"):
+    return f'<p class="seal"><b>CIEA</b><span>{text}</span></p>'
 
 NAV = [("study-in-barbados.html", "Study in Barbados"), ("programs.html", "Programs"), ("services.html", "Services"),
        ("about.html#families", "For Parents"), ("about.html", "About")]
@@ -190,7 +186,7 @@ def page(fname, title, desc, active, body, cta=True, cta_kwargs=None, ld=None):
 <link rel="icon" href="assets/ciea-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Figtree:ital,wght@0,400..800;1,400..600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..650,0..100;1,9..144,400..650,0..100&family=Figtree:ital,wght@0,400..800;1,400..600&display=swap">
 <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body>
@@ -277,7 +273,7 @@ faq_html = "".join(
 services_tags = ["Accommodation sourcing and review", "On-island Transportation", "Boat Tours and Snorkeling", "Nature Hikes",
                  "Cultural Tours", "Activity Bookings", "Expert/Speaker Connections"]
 ticker_items = [t for _, t, _, _ in programs_cards]
-ticker = "".join(f'<span>{t}</span><i aria-hidden="true"></i>' for t in ticker_items)
+ticker = '<i aria-hidden="true"></i>'.join(f'<span>{t}</span>' for t in ticker_items)
 
 home = f'''
 <section class="hero hero-water"><canvas class="water" aria-hidden="true"></canvas><div class="wrap hero-grid">
@@ -293,7 +289,7 @@ home = f'''
 {stamp(ph("Turquoise water at Carlisle Bay"), "c-palm", cls="float f3")}
 </div>
 </div></section>
-<div class="ticker" aria-hidden="true"><div class="ticker-band"><div class="ticker-track">{ticker}{ticker}</div></div></div>
+<div class="ticker" aria-hidden="true"><div class="wrap ticker-track">{ticker}</div></div>
 
 <section class="section" aria-labelledby="who-h"><div class="wrap split">
 <div class="figure-stamp">{stamp(ph("An advisor meeting a student and parent, warm and natural"), "c-palm")}{seal()}</div>
