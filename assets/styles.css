@@ -46,7 +46,7 @@ body {
   font-size: var(--step-0);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 img { max-width: 100%; display: block; }
 a { color: var(--sea-ink); text-underline-offset: 0.2em; text-decoration-thickness: 1.5px; }
@@ -109,8 +109,7 @@ p { margin: 0; text-wrap: pretty; }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 60; background: var(--paper); }
 .site-header {
   position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50;
-  background: rgba(255,255,255,.94);
-  backdrop-filter: saturate(1.4) blur(10px);
+  background: var(--paper);
   border-bottom: 1px solid var(--line);
 }
 .header-inner { display: flex; align-items: center; gap: 1.5rem; min-height: 76px; }
@@ -633,3 +632,19 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 /* Real photos in frames */
 .ph.has-img { padding: 0; background: var(--deep); position: relative; overflow: hidden; outline: none; border: 0; }
 .ph.has-img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* Phones: one seamless white bar at the top, and a tighter hero so the photos arrive sooner */
+@media (max-width: 600px) {
+  .header-inner { min-height: 64px; }
+  .brand img { width: 44px; height: 44px; }
+  .nav { inset: calc(64px + env(safe-area-inset-top, 0px)) 0 auto 0; }
+  .hero-water .hero-grid { padding-block: 2.25rem 3.5rem; gap: 2rem; }
+  .hero-water h1 { font-size: clamp(2.2rem, 1.5rem + 3.6vw, 2.75rem); line-height: 1.02; }
+  .hero-copy > * + * { margin-top: 1rem; }
+  .hero-copy .btn-row { margin-top: 1.5rem; }
+  .hero .lede { font-size: 1.08rem; }
+  .hero-small { font-size: .94rem; line-height: 1.55; }
+  .hero .btn-row .btn { padding: .85em 1.25em; font-size: .95rem; }
+  .float-stack { max-width: 340px; margin-top: 0; }
+  .page-hero .hero-grid { padding-block: 2.25rem 3rem; }
+}
