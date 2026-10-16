@@ -18,10 +18,10 @@
       '  c+=1./length(vec2(p.x/(sin(i.x+tt)/inten),p.y/(cos(i.y+tt)/inten)));}',
       ' c/=5.;c=1.17-pow(c,1.4);float light=pow(abs(c),8.);',
       ' vec2 q=gl_FragCoord.xy/r;',
-      ' vec3 deep=vec3(.075,.27,.38);vec3 sea=vec3(.20,.56,.70);vec3 lagoon=vec3(.27,.72,.72);',
-      ' vec3 base=mix(deep,sea,smoothstep(0.,1.,q.x*.7+q.y*.5));',
-      ' base=mix(base,lagoon,smoothstep(.55,1.2,q.x+q.y*.3)*.55);',
-      ' vec3 col=base+light*vec3(.55,.95,.82)*.85;',
+      ' vec3 sand=vec3(.99,.96,.89);vec3 shallow=vec3(.80,.94,.93);vec3 lagoon=vec3(.56,.86,.88);',
+      ' vec3 base=mix(sand,shallow,smoothstep(.15,.85,q.x*.85+q.y*.35));',
+      ' base=mix(base,lagoon,smoothstep(.6,1.25,q.x+q.y*.3)*.7);',
+      ' vec3 col=base*(1.-light*.10)+light*vec3(1.,1.,.97)*.55;',
       ' gl_FragColor=vec4(col,1.);}'
     ].join('\n');
     function sh(type, src) { var o = gl.createShader(type); gl.shaderSource(o, src); gl.compileShader(o); return o; }

@@ -660,3 +660,20 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 /* Section links land below the sticky header */
 [id] { scroll-margin-top: calc(92px + env(safe-area-inset-top, 0px)); }
 @media (max-width: 600px) { [id] { scroll-margin-top: calc(80px + env(safe-area-inset-top, 0px)); } }
+
+/* ---------- Light and airy: shallow lagoon over white sand ---------- */
+.hero { color: var(--ink); background: linear-gradient(115deg, #fff8ea 0%, #e6f6f4 55%, #bfe9ea 100%); }
+.hero::after {
+  background: linear-gradient(90deg, rgba(255,250,240,.82) 0%, rgba(255,250,240,.55) 40%, rgba(255,250,240,0) 70%);
+}
+.hero h1 { color: var(--ink); }
+.hero h1 em { color: var(--palm-ink); }
+.hero .lede { color: var(--ink); }
+.hero-small { color: var(--ink-soft); }
+.hero .btn-ghost { border-color: var(--ink); color: var(--ink); }
+.hero .btn-ghost:hover { background: var(--ink); color: #fff; }
+.hero.page-hero { background: linear-gradient(115deg, #fff8ea 0%, #eaf7f5 60%, #d3f0ef 100%); }
+.ticker-band { border-top: 1px solid var(--line); }
+@media (max-width: 860px) {
+  .hero::after { background: linear-gradient(180deg, rgba(255,250,240,.8) 0%, rgba(255,250,240,.55) 55%, rgba(255,250,240,.2) 100%); }
+}
