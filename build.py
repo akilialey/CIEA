@@ -33,7 +33,28 @@ SPRITE = """<svg width="0" height="0" style="position:absolute" aria-hidden="tru
 def ic(name, cls="icon"):
     return f'<svg class="{cls}" aria-hidden="true"><use href="#i-{name}"/></svg>'
 
+PHOTOS = {
+    "Students laughing together on a Barbados beach or campus": ("students-laughing", "Students laughing together outdoors"),
+    "Bridgetown street or a colourful chattel house": ("chattel-house", "A colourful Barbadian chattel house"),
+    "Turquoise water at Carlisle Bay": ("turtle-carlisle-bay", "A sea turtle swimming in clear turquoise water"),
+    "An advisor meeting a student and parent, warm and natural": ("family-planning", "A family planning together at a laptop"),
+    "Wide shot of the Barbados west coast or Carlisle Bay": ("west-coast-boats", "Boats moored off the Barbados coast"),
+    "The CIEA team in Bridgetown": ("bridgetown-careenage", "The Careenage in Bridgetown"),
+    "Aerial view of Bridgetown and the Careenage": ("bridgetown-parliament", "Bridgetown and the Parliament Buildings"),
+    "Students snorkeling or on a glass-bottom boat": ("underwater-split", "Clear Caribbean water above and below the surface"),
+    "Young people hiking or exploring the Barbados east coast": ("palm-cliff-coast", "A palm tree on a cliff above the Barbados coast"),
+    "Children at a cricket, dance or swimming camp": ("kids-group", "A group of children smiling together"),
+    "A university group on a heritage tour with a local guide": ("codrington-college", "Codrington College, Barbados"),
+    "A friendly advisor on a video call": ("video-call", "An advisor on a video call"),
+}
+EAGER = {"students-laughing", "chattel-house", "turtle-carlisle-bay", "bridgetown-careenage", "bridgetown-parliament", "video-call"}
+
 def ph(text, kind="Photo"):
+    if text in PHOTOS:
+        f, alt = PHOTOS[text]
+        load = "eager" if f in EAGER else "lazy"
+        return (f'<div class="ph has-img"><img src="assets/photos/{f}.jpg" alt="{alt}" '
+                f'loading="{load}" decoding="async"></div>')
     return (f'<div class="ph" role="img" aria-label="{kind} placeholder: {text}">{ic("camera")}'
             f'<span class="ph-k">{kind} placeholder</span><span class="ph-t">{text}</span></div>')
 

@@ -629,3 +629,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 @media (max-width: 860px) { .frame-wrap::before { right: -3%; top: -4%; } .frame-wrap.disc-bl::before { left: -3%; } }
 .routes .coast { fill: none; stroke: #b9f0d3; stroke-width: 1.5; stroke-linejoin: round; }
 .routes .sea-label { font-family: var(--body); font-style: italic; font-size: 15px; fill: rgba(255,255,255,.5); letter-spacing: .5px; }
+
+/* Real photos in frames */
+.ph.has-img { padding: 0; background: var(--deep); position: relative; overflow: hidden; outline: none; border: 0; }
+.ph.has-img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
