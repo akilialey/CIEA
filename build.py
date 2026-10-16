@@ -45,12 +45,12 @@ PHOTOS = {
     "Young people hiking or exploring the Barbados east coast": ("palm-cliff-coast", "A palm tree on a cliff above the Barbados coast"),
     "Children at a cricket, dance or swimming camp": ("kids-group", "A group of children smiling together"),
     "A university group on a heritage tour with a local guide": ("codrington-college", "Codrington College, Barbados"),
-    "A friendly advisor on a video call": ("video-call", "An advisor on a video call"),
+    "A friendly advisor on a video call": ("student-laptop", "A student smiling at her laptop by a window"),
     "Students volunteering at a beach clean-up or community project": ("beach-cleanup", "Volunteers in gloves collecting plastic from a beach"),
     "Portrait of Patricia Atherley": ("patricia-atherley", "Patricia Atherley, Founder and Director of CIEA"),
     "A Barbados beach under a blue umbrella": ("beach-umbrella", "A blue umbrella on a white sand Barbados beach"),
 }
-EAGER = {"students-laughing", "chattel-house", "beach-umbrella", "bridgetown-careenage", "bridgetown-parliament", "video-call"}
+EAGER = {"students-laughing", "chattel-house", "beach-umbrella", "bridgetown-careenage", "bridgetown-parliament", "student-laptop"}
 
 def ph(text, kind="Photo"):
     if text in PHOTOS:
