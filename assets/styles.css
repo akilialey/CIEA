@@ -11,6 +11,7 @@
   --flame-hot: #f26422;
   --flame-ink: #2f1102;
   --sun: #ffc83d;         /* flag gold */
+  --sand: #fff7e3;        /* pale gold for big reading areas */
   --hibiscus: #e8507e;
   --ink: #14303f;
   --ink-soft: #46606d;
@@ -292,7 +293,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .head.center { margin-inline: auto; text-align: center; justify-items: center; }
 
 .bg-tissue { background: var(--tissue); }
-.bg-sun { background: var(--sun); }
+.bg-sand { background: var(--sand); border-block: 6px solid var(--sun); }
 .bg-mist { background: var(--palm-mist); }
 .bg-deep { background: var(--deep); color: #fff; }
 
@@ -343,7 +344,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   .reasons.three { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 600px) { .reasons, .reasons.three { grid-template-columns: 1fr; } }
-.bg-sun .reasons li { border-color: var(--ink); }
+.bg-sand .reasons li { border-color: var(--sea-ink); }
 .postcard .ph { aspect-ratio: 3 / 2; min-height: 0; }
 .postcard { margin-top: .5rem; }
 
@@ -599,7 +600,8 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .ticker { position: relative; z-index: 3; margin-top: -2.6rem; overflow: hidden; padding-block: 1rem 2rem; }
 .ticker-band {
   rotate: -1.6deg; width: 104%; margin-left: -2%;
-  background: var(--sun); color: var(--ink); overflow: hidden; padding-block: 1rem;
+  background: var(--paper); color: var(--deep); overflow: hidden; padding-block: 1rem;
+  border-bottom: 5px solid var(--sun);
   box-shadow: 0 16px 30px -18px rgba(10,35,50,.5);
 }
 .ticker-track { display: flex; align-items: center; width: max-content; }
@@ -612,8 +614,8 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 
 .label { display: inline-flex; align-items: center; gap: .55rem; margin: 0; font-weight: 750; font-size: .82rem; letter-spacing: .1em; text-transform: uppercase; color: var(--sea-ink); }
 .label i { width: .55rem; height: .55rem; border-radius: 50%; background: var(--palm); }
-.bg-sun .label { color: var(--ink); }
-.bg-sun .label i { background: var(--flame); }
+.bg-sand .label { color: var(--ink); }
+.bg-sand .label i { background: var(--flame); }
 .head .label { justify-self: start; }
 
 .prog h3 { padding-right: 2rem; }

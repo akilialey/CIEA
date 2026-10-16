@@ -313,7 +313,7 @@ home = f'''
 <div class="sheet">{sheet}</div>
 </div></section>
 
-<section class="section bg-sun" aria-labelledby="why-h"><div class="wrap reasons-layout">
+<section class="section bg-sand" aria-labelledby="why-h"><div class="wrap reasons-layout">
 <div class="reasons-aside">
 {label("Why Choose Barbados?")}
 <h2 id="why-h">A Caribbean Island Unlike Any Other</h2>
@@ -422,7 +422,7 @@ inst_html = "".join(f'''<article class="inst {c}" id="{i}">
 study = page_hero("The Caribbean's Premier Education Destination",
     "World-class universities. A safe and sophisticated island environment. English-speaking. Affordable. Barbados ticks every box.",
     "Aerial view of Bridgetown and the Careenage", "c-sun") + f'''
-<section class="section bg-sun" id="why" aria-labelledby="why9-h"><div class="wrap">
+<section class="section bg-sand" id="why" aria-labelledby="why9-h"><div class="wrap">
 <div class="head"><h2 id="why9-h" class="visually-hidden">Why Barbados</h2></div>
 {reasons(reasons9, "three")}
 </div></section>
@@ -467,7 +467,7 @@ programs = page_hero("Education Beyond the Classroom",
     "From a week-long cultural immersion to a full semester at The UWI, we facilitate education experiences in Barbados that change perspectives and open doors.",
     "Students snorkeling or on a glass-bottom boat", "c-flame") + f'''
 <section class="section"><div class="wrap">{prog_html}</div></section>
-<section class="section bg-sun" aria-labelledby="custom-h"><div class="wrap custom-band">
+<section class="section bg-sand" aria-labelledby="custom-h"><div class="wrap custom-band">
 <div><h2 id="custom-h">Don't See Exactly What You're Looking For?</h2>
 <p>We specialize in custom program design. Tell us your goals, interests, and timeline, and we'll create something tailored just for you.</p></div>
 <div><a class="btn btn-ink" href="contact.html">Request a Custom Program {ic("arrow")}</a></div>
