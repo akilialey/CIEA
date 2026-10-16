@@ -14,7 +14,7 @@ Every photo spot is a striped box marked **Photo placeholder** with a note descr
 <img src="assets/photos/your-photo.jpg" alt="Describe the photo">
 ```
 
-The image fills the stamp frame automatically.
+The image fills the rounded photo frame automatically.
 
 ## Before launch
 

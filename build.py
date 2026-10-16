@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Builds the CIEA static site from shared partials. Output: /mnt/project-files/ciea-website/*.html"""
+"""Builds the CIEA static site (island and routes direction) from shared partials. Output: /mnt/project-files/ciea-website/*.html"""
 import os, re
 
 OUT = os.path.dirname(os.path.abspath(__file__))
@@ -38,33 +38,44 @@ def ph(text, kind="Photo"):
             f'<span class="ph-k">{kind} placeholder</span><span class="ph-t">{text}</span></div>')
 
 def stamp(inner, color="c-sun", label=None, cls=""):
-    lab = ""
+    """Rounded photo window; the colour drives the sun disc behind it."""
+    chip = ""
     if label:
-        left, right = label
-        lab = f'<div class="stamp-label"><span>{left}</span><b>{right}</b></div>'
-    return f'<div class="stamp-wrap {cls}"><div class="stamp {color}">{inner}{lab}</div></div>'
+        text = label[0] if isinstance(label, tuple) else label
+        chip = f'<span class="chip"><i></i>{text}</span>'
+    return f'<div class="frame-wrap {color} {cls}"><div class="frame">{inner}{chip}</div></div>'
 
-_pm = [0]
-def postmark(cls="", city="LONDON", cycle=True, ring="BASED IN BARBADOS · SERVING THE WORLD · "):
-    _pm[0] += 1
-    pid = f"pm{_pm[0]}"
-    cyc = ' data-cycle' if cycle else ''
-    return f'''<div class="postmark {cls}" aria-hidden="true"><svg viewBox="0 0 440 220">
-<defs><path id="{pid}" d="M110 110 m-84 0 a84 84 0 1 1 168 0 a84 84 0 1 1 -168 0"/></defs>
-<circle cx="110" cy="110" r="104" stroke-width="3.5"/><circle cx="110" cy="110" r="66" stroke-width="2.5"/>
-<text class="pm-ring"><textPath href="#{pid}" startOffset="0" textLength="520" lengthAdjust="spacing">{ring}</textPath></text>
-<text class="pm-top" x="110" y="98" text-anchor="middle">BRIDGETOWN</text>
-<text class="pm-mid" x="110" y="116" text-anchor="middle">TO AND FROM</text>
-<text class="pm-city" x="110" y="142" text-anchor="middle"{cyc}>{city}</text>
-<g class="pm-lines"><path d="M222 62 q18 -12 36 0 t36 0 t36 0 t36 0 t36 0 t36 0"/><path d="M222 92 q18 -12 36 0 t36 0 t36 0 t36 0 t36 0 t36 0"/><path d="M222 122 q18 -12 36 0 t36 0 t36 0 t36 0 t36 0 t36 0"/><path d="M222 152 q18 -12 36 0 t36 0 t36 0 t36 0 t36 0 t36 0"/></g>
+ISLAND = "M296 158 C322 156 342 188 358 228 C376 272 398 322 402 366 C406 408 384 436 348 442 C310 448 266 440 240 420 C218 402 214 378 222 348 C232 308 248 262 260 222 C270 188 276 160 296 158 Z"
+CITIES = [("MONTREAL", 205, 34, "out"), ("TORONTO", 96, 82, "in"), ("NEW YORK", 52, 172, "out"), ("MIAMI", 44, 268, "in"),
+          ("LONDON", 548, 62, "out"), ("ACCRA", 584, 214, "in"), ("LAGOS", 578, 300, "out")]
+
+def routes(legend=True):
+    cx, cy, k = 336, 250, 0.72
+    bx, by = cx + k * (240 - 300), cy + k * (385 - 295)
+    def iso(scale, cls):
+        return f'<path class="{cls}" d="{ISLAND}" transform="translate({cx} {cy}) scale({scale}) translate(-300 -295)" vector-effect="non-scaling-stroke"/>'
+    contours = "".join(iso(k * f, "contour") for f in (1.4, 1.85, 2.4))
+    arcs, cities = [], []
+    for name, x, y, d in CITIES:
+        mx, my = (bx + x) / 2, (by + y) / 2
+        dx, dy = x - bx, y - by
+        qx, qy = mx - dy * 0.22, my + dx * 0.22
+        if qy > my: qx, qy = mx + dy * 0.22, my - dx * 0.22
+        path = f"M{bx:.0f} {by:.0f} Q{qx:.0f} {qy:.0f} {x} {y}"
+        arcs.append(f'<path class="arc" d="{path}"/><path class="flow {d}" d="{path}"/>')
+        cities.append(f'<g class="city"><circle cx="{x}" cy="{y}" r="5"/><text x="{x}" y="{y - 14}" text-anchor="middle">{name}</text></g>')
+    leg = '<span class="legend">Based in Barbados \u00b7 Serving the world</span>' if legend else ""
+    return f'''<div class="routes">{leg}<svg viewBox="0 0 620 470" role="img" aria-label="Map of Barbados with direct flight routes from Bridgetown to London, Toronto, Montreal, New York, Miami, Lagos and Accra">
+<g>{contours}</g>{iso(k, "island")}{"".join(arcs)}{"".join(cities)}
+<circle class="home-ring" cx="{bx:.0f}" cy="{by:.0f}" r="8"/><circle class="home-dot" cx="{bx:.0f}" cy="{by:.0f}" r="7"/>
+<text class="home-label" x="{bx - 14:.0f}" y="{by + 30:.0f}" text-anchor="end">BRIDGETOWN</text>
 </svg></div>'''
 
 def seal(text="CO-CREATORS OF BARBADOS STUDY TOURS · "):
     return f'''<div class="seal" aria-hidden="true"><svg viewBox="0 0 200 200">
 <defs><path id="sealp" d="M100 100 m-74 0 a74 74 0 1 1 148 0 a74 74 0 1 1 -148 0"/></defs>
 <text style="font-size:15.5px"><textPath href="#sealp" textLength="458" lengthAdjust="spacing">{text}</textPath></text>
-<text x="100" y="94" text-anchor="middle" style="font-size:30px;font-weight:800">CIEA</text>
-<text x="100" y="120" text-anchor="middle" style="font-size:12px;letter-spacing:2px">BARBADOS</text>
+<text x="100" y="111" text-anchor="middle" style="font-size:34px;font-weight:800">CIEA</text>
 </svg></div>'''
 
 NAV = [("study-in-barbados.html", "Study in Barbados"), ("programs.html", "Programs"), ("services.html", "Services"),
@@ -82,7 +93,7 @@ def header(active):
 <nav class="nav" id="site-nav" aria-label="Main">{links}<a class="btn btn-primary" href="contact.html">Book Free Consultation</a></nav>
 </div></header>'''
 
-def envelope(h="Ready to start your education journey?", p="Book a free consultation with our expert team today.", trust=False):
+def envelope(h="Ready to Start Your Education Journey?", p="Book a free consultation with our expert team today.", trust=False):
     t = ""
     if trust:
         t = f'''<ul class="trust"><li>{ic("check")}Free consultation, no obligation</li><li>{ic("check")}Response within 24 hours</li><li>{ic("check")}Family-centred approach</li></ul>'''
@@ -91,7 +102,7 @@ def envelope(h="Ready to start your education journey?", p="Book a free consulta
 <div class="body"><h2 id="env-h">{h}</h2><p>{p}</p>
 <div class="btn-row"><a class="btn btn-primary" href="contact.html">Book Free Consultation {ic("arrow")}</a>
 <a class="btn btn-line" href="{WA}" target="_blank" rel="noopener">{ic("chat")}WhatsApp Us</a></div>{t}</div>
-<div class="env-stamp">{stamp('<img src="assets/ciea-logo.png" alt="" width="180" height="180">', "c-paper")}{postmark("stamp-in", city="TORONTO", cycle=False)}</div>
+{routes(legend=False)}
 </div></div></section>'''
 
 FOOTER = f'''<footer class="site-footer"><div class="wrap">
@@ -105,15 +116,15 @@ FOOTER = f'''<footer class="site-footer"><div class="wrap">
 <li><a href="study-in-barbados.html#bcc">BCC</a></li><li><a href="index.html#faq">Visa Process</a></li></ul></div>
 <div class="foot-col"><h3>Programs</h3><ul>
 <li><a href="programs.html#summer-camps">Summer Programs</a></li><li><a href="programs.html#gap-year">Gap Year</a></li>
-<li><a href="programs.html#faculty-led">Study Tours and Immersions</a></li><li><a href="programs.html#volunteer">Volunteer and Service Learning</a></li></ul></div>
+<li><a href="programs.html#faculty-led">Study Tours/Immersions</a></li></ul></div>
 <div class="foot-col"><h3>Services</h3><ul>
-<li><a href="services.html#medical">Medical School Advising</a></li><li><a href="services.html#placement">University Placement</a></li>
-<li><a href="services.html#visa">Student Visa Assistance</a></li><li><a href="services.html#family">Parent and Family Support</a></li></ul></div>
+<li><a href="index.html#programs">Medical School Advising</a></li><li><a href="services.html#placement">University Placement</a></li>
+<li><a href="services.html#family">Parent/Family Support</a></li></ul></div>
 <div class="foot-col"><h3>Company</h3><ul>
 <li><a href="about.html">About Us</a></li><li><a href="about.html#families">For Parents</a></li>
 <li><a href="index.html#faq">FAQ</a></li><li><a href="contact.html">Contact</a></li></ul></div>
 </div>
-<div class="foot-base"><span>&copy; <span id="year">2026</span> Caribbean International Education Agency. All rights reserved.</span><span>Based in Barbados. Serving the world.</span></div>
+<div class="foot-base"><span>&copy; 2025 Caribbean International Education Agency. All rights reserved.</span></div>
 </div></footer>'''
 
 def page(fname, title, desc, active, body, cta=True, cta_kwargs=None):
@@ -149,161 +160,169 @@ def page(fname, title, desc, active, body, cta=True, cta_kwargs=None):
         f.write(html)
     print("wrote", fname, len(html))
 
-def page_hero(h1, sub, ph_text, color="c-sun", city="LONDON", extra=""):
-    return f'''<section class="hero page-hero"><div class="wrap hero-grid">
-<div class="hero-copy"><h1>{h1}</h1><p class="lede">{sub}</p>{extra}</div>
-<div class="collage mini">{stamp(ph(ph_text), color, cls="s1")}{postmark("stamp-in", city=city)}</div>
-</div><div class="airmail" aria-hidden="true"></div></section>'''
+def label(t):
+    return f'<p class="label"><i></i>{t}</p>'
+
+def page_hero(h1, sub, ph_text, color="c-sun"):
+    return f'''<section class="hero page-hero"><canvas class="water" aria-hidden="true"></canvas><div class="wrap hero-grid">
+<div class="hero-copy"><h1>{h1}</h1><p class="lede">{sub}</p></div>
+{stamp(ph(ph_text), color, cls="float")}
+</div></section>'''
 
 def checks(items, cls=""):
     return f'<ul class="checks {cls}">' + "".join(
         f'<li><span class="tick">{ic("check")}</span><span>{i}</span></li>' for i in items) + "</ul>"
 
-# ------------------------------------------------------------------ HOME
+def reasons(lst, cls=""):
+    return f'<ul class="reasons {cls}">' + "".join(f"<li><h3>{a}</h3><p>{b}</p></li>" for a, b in lst) + "</ul>"
+
+# ------------------------------------------------------------------ HOME (copy verbatim from the content doc; em dashes replaced)
 programs_cards = [
-    ("c-sun", "Weeks to a year", "Summer and Gap Year Programs",
-     "We design and organize gap year and summer programmes that meet students' unique interests and needs. Whether you want to explore the Caribbean, develop a skill, or prepare for university, we create an experience tailored to you.",
+    ("c-sun", "Summer &amp; Gap Year Programs",
+     "We can design and organize gap year and summer programmes that meet students' unique interests and needs. Whether you want to explore the Caribbean, develop a skill, or prepare for university, we create an experience tailored to you.",
      "programs.html#gap-year"),
-    ("c-sea", "Degree", "College and University Admission",
-     "Expert guidance for Barbadians pursuing degrees in Canada, the UK, Australia and Africa, and for international students who want to study in the Caribbean. From application to arrival day and beyond.",
+    ("c-sea", "College and University Admission",
+     "Expert guidance for Barbadians pursuing degrees in Canada, UK, Australia and Africa and for international students to study in the Caribbean, from application to arrival day and beyond.",
      "services.html#placement"),
-    ("c-hib", "MD", "Medical School Advising",
-     "Specialized pathway guidance for medical school in Barbados and the Caribbean.",
-     "services.html#medical"),
-    ("c-palm", "Groups", "Faculty-Led Immersion Programs",
+    ("c-hib", "Medical School Advising",
+     "Specialized pathway guidance for medical school in Barbados and the Caribbean",
+     "study-in-barbados.html#aub"),
+    ("c-palm", "Faculty-Led Immersion Programs",
      "Full-service logistics and in-country support for institutions organizing education abroad programs to Barbados and select other Caribbean countries.",
      "programs.html#faculty-led"),
-    ("c-flame", "Service", "Volunteer and Service Learning",
+    ("c-flame", "Volunteer &amp; Service Learning",
      "Connect with meaningful volunteer opportunities in Barbados aligned with your areas of interest and passion.",
      "programs.html#volunteer"),
-    ("c-sun", "Arrival", "Student Relocation and Support",
+    ("c-sun", "Student Relocation &amp; Support",
      "Airport pickup, accommodation assistance, banking assistance, SIM cards, and full settlement support for international students coming to Barbados.",
      "services.html#arrival"),
 ]
 sheet = "".join(
-    f'''<article class="prog">{stamp(f'<div class="prog-body"><div class="prog-top"><h3>{t}</h3><span class="denom">{d}</span></div><p>{p}</p><a class="more" href="{h}">Learn more {ic("arrow")}<span class="visually-hidden"> about {t}</span></a></div>', c)}</article>'''
-    for c, d, t, p, h in programs_cards)
+    f'''<article class="prog {c}"><h3>{t}</h3><p>{p}</p><a class="more" href="{h}">Learn more {ic("arrow")}<span class="visually-hidden"> about {t}</span></a></article>'''
+    for c, t, p, h in programs_cards)
 
 reasons6 = [
-    ("Fully English-speaking", "No language barrier. Barbados has a highly educated, English-speaking population with deep ties to the UK and the Americas."),
-    ("Safe and politically stable", "Ranked as one of the most stable democracies in the world and consistently among the safest countries in the Caribbean."),
-    ("Year-round sunshine", 'An average of <span class="fig">28&deg;C</span> all year. Stunning beaches, a vibrant social scene, and an outdoor lifestyle that supports student wellbeing.'),
-    ("Excellent healthcare", "The Queen Elizabeth Hospital provides public healthcare, and several private clinics ensure students have access to quality medical care."),
-    ("Affordable tuition", "Tuition and living costs are significantly lower than equivalent programs in North America or the UK, without sacrificing quality."),
-    ("World-class institutions", "Home to The University of the West Indies, Ross University School of Medicine, and the American University of Barbados School of Medicine, all internationally accredited."),
+    ("Fully English-Speaking", "No language barrier. Barbados has a highly educated, English-speaking population with deep ties to the UK and the Americas."),
+    ("Safe &amp; Politically Stable", "Ranked as one of the most stable democracies in the world and consistently among the safest countries in the Caribbean."),
+    ("Year-round Sunshine", 'Average <span class="fig">28&deg;C</span> year-round. Stunning beaches, a vibrant social scene, and an outdoor lifestyle that supports student wellbeing.'),
+    ("Excellent Healthcare", "The Queen Elizabeth Hospital provides public healthcare and several private clinics ensure students have access to quality medical care."),
+    ("Affordable Tuition", "Tuition and living costs are significantly lower than equivalent programs in North America or the UK, without sacrificing quality."),
+    ("World-Class Institutions", "Home to The University of the West Indies, Ross University School of Medicine, and the American University of Barbados School of Medicine, all internationally accredited."),
 ]
-def reasons(lst, cls=""):
-    return f'<ul class="reasons {cls}">' + "".join(f"<li><h3>{a}</h3><p>{b}</p></li>" for a, b in lst) + "</ul>"
 
 faqs = [
     ("Do international students need a visa to study in Barbados?", "Most international students require a Student Visa to study in Barbados. Citizens of several countries may enter visa-free initially. We advise on the full visa process."),
     ("Can CIEA help me get a scholarship?", "Yes. We offer dedicated scholarship search support and advice based on our institutional connections. Our team knows what opportunities exist and how to make your application competitive."),
-    ("How long does the university application process take?", "Application timelines vary by institution and program. Generally, plan for 3 to 6 months from initial consultation to receiving an offer letter. We recommend starting as early as possible, so contact us to map out your timeline."),
+    ("How long does the university application process take?", "Application timelines vary by institution and program. Generally, plan for 3 to 6 months from initial consultation to receiving an offer letter. We recommend starting as early as possible. Contact us to map out your timeline."),
     ("Is Barbados safe for international students?", "Barbados is consistently ranked as one of the safest destinations in the Caribbean. It has stable governance, low violent crime, excellent healthcare, and a culture that is welcoming toward international visitors and students."),
     ("What is included in the Barbados Study Tours support?", "We provide end-to-end support: program content aligned with learning outcomes, accommodation, airport pickup, on-ground transportation, cultural and heritage tours, glass-bottom boat tours, nature hikes, activity bookings, and facilitated meetings with local officials, academics, and practitioners."),
     ("Can students work while studying in Barbados?", "International students on a Student Visa in Barbados may apply for work authorization under specific conditions. We advise on legal work opportunities."),
     ("Can you help Barbadian students apply to universities in Canada or the UK?", "Yes, this is one of our core services. We guide Barbadian students through the full process: choosing the right school and program, preparing a strong application, understanding visa and study permit requirements, applying for scholarships, and preparing for departure."),
     ("Do you help with accommodation in Barbados?", "Absolutely. We arrange on-campus housing subject to availability and connect students with vetted off-campus options that are safe, affordable, and well-located."),
-    ("What makes CIEA different from other education consultants?", "We are based in Barbados. We know the island, its institutions, and its people intimately. Our advisors also have first-hand knowledge of study in Canada, the UK and Australia. We are co-creators of Barbados Study Tours, with a deep network across education and tourism. We offer genuine end-to-end support: not just advice, but on-the-ground logistics, in-country relationships, and ongoing student care."),
+    ("What makes CIEA different from other education consultants?", "We are based in Barbados. We know the island, its institutions, and its people intimately. Our advisors also have intimate, first-hand knowledge of study in Canada, the UK and Australia. We are co-creators with you of Barbados Study Tours, with a deep network across education and tourism. We offer genuine end-to-end support: not just advice, but on-the-ground logistics, in-country relationships, and ongoing student care."),
 ]
 faq_html = "".join(
     f'<details><summary>{q}<span class="pm">{ic("plus")}</span></summary><div class="answer"><p>{a}</p></div></details>' for q, a in faqs)
 
-services_tags = ["Accommodation sourcing and review", "On-island transportation", "Boat tours and snorkeling", "Nature hikes",
-                 "Cultural tours", "Activity bookings", "Expert and speaker connections"]
+services_tags = ["Accommodation sourcing and review", "On-island Transportation", "Boat Tours and Snorkeling", "Nature Hikes",
+                 "Cultural Tours", "Activity Bookings", "Expert/Speaker Connections"]
+ticker_items = [t for _, t, _, _ in programs_cards]
+ticker = "".join(f'<span>{t}</span><i aria-hidden="true"></i>' for t in ticker_items)
 
 home = f'''
-<section class="hero"><div class="wrap hero-grid">
+<section class="hero hero-water"><canvas class="water" aria-hidden="true"></canvas><div class="wrap hero-grid">
 <div class="hero-copy">
-<h1>Your Caribbean education journey <em>starts here</em></h1>
+<p class="badge"><i></i>Based in Barbados &middot; Serving the World</p>
+<h1><span>Your Caribbean</span> <span>Education Journey</span> <em>Starts Here</em></h1>
 <p class="lede">Caribbean International Education Agency is your one-stop shop for information and support to make your dream of studying in the Caribbean a reality.</p>
-<p class="hero-small">We connect students and institutions across the globe with educational opportunities in the Caribbean, with a focus on Barbados, and Barbadian students with opportunities abroad. From summer immersions and cultural experiences to full degree programs.</p>
+<p class="hero-small">We connect students and institutions across the globe with educational opportunities in the Caribbean, with a focus on Barbados; and Barbadian students with opportunities abroad, from summer immersions and cultural experiences to full degree programs.</p>
 <div class="btn-row"><a class="btn btn-primary" href="contact.html">Book Free Consultation {ic("arrow")}</a><a class="btn btn-ghost" href="programs.html">Explore Programs</a></div>
 </div>
-<div class="collage">
-{stamp(ph("Students laughing together on a Barbados campus or beach"), "c-sun", ("Barbados", "CIEA"), "s1")}
-{stamp(ph("Bridgetown street or a colourful chattel house"), "c-hib", cls="s2")}
-{postmark("stamp-in")}
+<div class="float-stack">
+{stamp(ph("Students laughing together on a Barbados beach or campus"), "c-sun", cls="float f1")}
+{stamp(ph("Bridgetown street or a colourful chattel house"), "c-hib", cls="float f2")}
+{stamp(ph("Turquoise water at Carlisle Bay"), "c-palm", cls="float f3")}
 </div>
-</div><div class="airmail" aria-hidden="true"></div></section>
+</div></section>
+<div class="ticker" aria-hidden="true"><div class="ticker-band"><div class="ticker-track">{ticker}{ticker}</div></div></div>
 
 <section class="section" aria-labelledby="who-h"><div class="wrap split">
 <div class="figure-stamp">{stamp(ph("An advisor meeting a student and parent, warm and natural"), "c-palm")}{seal()}</div>
 <div class="stack">
-<h2 id="who-h">A one-stop shop for Caribbean international education</h2>
+{label("About CIEA")}
+<h2 id="who-h">A One-Stop Shop for Caribbean International Education</h2>
 <p>We are based on the beautiful, safe, and sophisticated island of Barbados, where most of our programs and services are anchored. Our many years of combined experience in international education and tourism, and our extensive network of connections across the Caribbean, position us to offer truly multi-country experiences.</p>
 <p>Whether you're an international student coming to Barbados for a summer immersion or a full degree, a Barbadian family navigating the path to a Canadian, UK or Australian university, or an international institution looking to bring a group to the Caribbean, CIEA is your trusted partner.</p>
-<div class="mt-2">{checks(["Barbados-based and on the ground", "Institutional and individual clients", "Multi-country Caribbean coverage", "Years of experience facilitating international education"], "two")}</div>
+<div class="mt-2">{checks(["Barbados-based &amp; on-the-ground", "Institutional &amp; individual clients", "Multi-country Caribbean coverage", "Years of experience facilitating international education"], "two")}</div>
 </div></div></section>
 
 <section class="section bg-tissue" id="programs" aria-labelledby="prog-h"><div class="wrap">
-<div class="head"><h2 id="prog-h">Programs and services</h2><p>From one-week cultural immersions to full medical school placement. Expert guidance and on-the-ground support at every stage.</p></div>
+<div class="head">{label("What We Offer")}<h2 id="prog-h">Programs &amp; Services</h2><p>From one-week cultural immersions to full medical school placement. Expert guidance and on-the-ground support at every stage.</p></div>
 <div class="sheet">{sheet}</div>
 </div></section>
 
 <section class="section bg-sun" aria-labelledby="why-h"><div class="wrap reasons-layout">
 <div class="reasons-aside">
-<h2 id="why-h">Why Barbados? A Caribbean island unlike any other.</h2>
+{label("Why Choose Barbados?")}
+<h2 id="why-h">A Caribbean Island Unlike Any Other</h2>
 <p>Barbados offers world-class education in one of the most beautiful, safe, and sophisticated environments on the planet.</p>
 <div><a class="btn btn-ink" href="study-in-barbados.html#institutions">Explore Barbados Institutions {ic("arrow")}</a></div>
-<div class="postcard">{stamp(ph("Wide shot of the Barbados west coast or Carlisle Bay"), "c-paper")}</div>
+<div class="postcard">{stamp(ph("Wide shot of the Barbados west coast or Carlisle Bay"), "c-sea", cls="no-disc")}</div>
 </div>
 {reasons(reasons6)}
 </div></section>
 
-<section class="section" aria-labelledby="one-h"><div class="wrap one-service">
-<div class="stack"><h2 id="one-h">Perhaps you only need <em>one</em> service.</h2>
-<p class="lede">We offer individual services for institutions and individuals who need specific support without a full package commitment.</p>
-<p><a href="contact.html">Ask about a single service {ic("arrow")}</a></p></div>
-<ul class="tags">{"".join(f'<li class="tag">{t}</li>' for t in services_tags)}</ul>
+<section class="section" id="one-service" aria-labelledby="one-h"><div class="wrap one-service">
+<div class="stack">{label("Miscellaneous Stand-Alone Services")}<h2 id="one-h">Perhaps You Only Need <em>ONE</em> Service.</h2>
+<p class="lede">We offer individual services for institutions and individuals who need specific support without a full package commitment.</p></div>
+<ul class="tags">{"".join(f'<li class="tag {["c-sun","c-palm","c-flame","c-sea"][n % 4]}"><span class="dot">{ic("check")}</span>{t}</li>' for n, t in enumerate(services_tags))}</ul>
 </div></section>
 
 <section class="section bg-tissue" id="faq" aria-labelledby="faq-h"><div class="wrap faq-layout">
-<div class="head"><h2 id="faq-h">Frequently asked questions</h2><p>Still wondering about something? <a href="contact.html">Send us your question</a> and we will reply within 24 hours.</p></div>
+<div class="head">{label("Common Questions")}<h2 id="faq-h">Frequently Asked Questions</h2></div>
 <div class="faq">{faq_html}</div>
 </div></section>
 '''
 page("index.html", "Caribbean International Education Agency",
      "Barbados-based education agency connecting students and institutions with study, summer and degree opportunities in the Caribbean and abroad.",
      "index.html", home,
-     cta_kwargs=dict(h="Ready to make your move?", p="Whether you're exploring, planning, or ready to apply, a free consultation with our team is the best first step.", trust=True))
+     cta_kwargs=dict(h="Ready to Make Your Move?", p="Whether you're exploring, planning, or ready to apply, a free consultation with our team is the best first step.", trust=True))
 
 # ------------------------------------------------------------------ ABOUT
 values = [
-    ("c-flame", "Student-first", "Every decision we make is filtered through one question: what is genuinely best for this student?"),
+    ("c-flame", "Student-First", "Every decision we make is filtered through one question: what is genuinely best for this student?"),
     ("c-sea", "Integrity", "We give honest advice, even when it's not what a family wants to hear. Your trust is our most valuable asset."),
-    ("c-palm", "Global perspective", "We think internationally while acting locally. Our Barbados roots give us an advantage no overseas consultant can replicate."),
-    ("c-sun", "Family-centred", "Parents are partners in the process. We keep families informed, involved, and at ease throughout every stage."),
-    ("c-hib", "Education first", "We believe access to quality education is transformative for individuals, families, and communities."),
+    ("c-palm", "Global Perspective", "We think internationally while acting locally. Our Barbados roots give us an advantage no overseas consultant can replicate."),
+    ("c-sun", "Family-Centred", "Parents are partners in the process. We keep families informed, involved, and at ease throughout every stage."),
+    ("c-hib", "Education First", "We believe access to quality education is transformative, for individuals, families, and communities."),
     ("c-sea", "Excellence", "We hold ourselves to the highest professional standards in every consultation, application, and program we deliver."),
 ]
-about = page_hero("Rooted in Barbados. Reaching the world.",
+about = page_hero("Rooted in Barbados. Reaching the World.",
     "We are the Caribbean International Education Agency, a Barbados-based team passionate about connecting students and institutions to world-class education opportunities on both sides of the ocean.",
-    "The CIEA team in Bridgetown", "c-palm", "ACCRA") + f'''
+    "The CIEA team in Bridgetown", "c-palm") + f'''
 <section class="section" aria-labelledby="story-h"><div class="wrap story">
 <div class="prose">
-<h2 id="story-h">Why we started CIEA</h2>
+{label("Our Story")}
+<h2 id="story-h">Why We Started CIEA</h2>
 <p>Caribbean International Education Agency was founded by professionals with extensive experience in both higher education and Caribbean tourism, two worlds that, when combined, create something unique and powerful.</p>
-<p>Over many years working with students, families, and institutions, our founder knows the challenges. Talented students from across Africa, North America and Europe wanted to experience education in Barbados but didn't know where to begin. Barbadian families sought to send their children to university abroad with little guidance on the process. International universities wanted to bring students to the Caribbean for unique educational experiences but lacked the on-the-ground connections to make it work.</p>
+<p>Over many years working with students, families, and institutions, our founder knows the challenges: talented students from across Africa and North America and Europe who wanted to experience education in Barbados but didn't know where to begin. Barbadian families seeking to send their children to university abroad with little guidance on the process. International universities wanting to bring students to the Caribbean for unique educational experiences but lacking the on-the-ground connections to make it work.</p>
 <p>CIEA was established to close that gap. We are co-creators of Barbados Study Tours, a program that brings students from around the world to experience the Caribbean, and that experience forms the backbone of everything we do.</p>
-<p>What makes CIEA different is simple. We are here, not a consultant in an overseas office advising on Barbados from afar. We live here, work here, and have deep relationships with the institutions, officials, academics, and communities that make Barbados and the wider Caribbean such extraordinary places to study and grow. We offer everything from a single activity booking to full end-to-end education migration and placement services.</p>
+<p>What makes CIEA different is simple: We are here, not a consultant in an overseas office advising on Barbados from afar. We live here, work here, and have deep relationships with the institutions, officials, academics, and communities that make Barbados and the wider Caribbean such extraordinary places to study and grow. We offer everything from a single activity booking to full end-to-end education migration and placement services.</p>
 </div>
 <aside>
-{stamp(ph("Portrait of Patricia Atherley"), "c-sun", ("Founder", "CIEA"))}
+{stamp(ph("Portrait of Patricia Atherley"), "c-sun")}
 <blockquote class="quote"><p>My goal is simple: to help students enrich their learning and achieve their goals through international education.</p>
-<footer><b>Patricia Atherley</b>Founder and Director, CIEA</footer></blockquote>
+<footer><b>Patricia Atherley</b>Founder &amp; Director, CIEA</footer></blockquote>
 </aside>
 </div></section>
 
 <section class="section bg-mist" id="families" aria-labelledby="fam-h"><div class="wrap split">
-<div class="stack"><h2 id="fam-h">What families trust us with</h2>
-<p class="lede">For parents, sending a child abroad or welcoming them home with new plans is a big step. These are the things families hand to us.</p>
-<p><a class="btn btn-ink" href="services.html#family">Parent and family support {ic("arrow")}</a></p></div>
-{checks(["Guiding their children through the most important decision of their lives", "Managing every detail of a complex international education process", "Being available on the ground when it matters most", "Providing honest advice without hidden agendas or commission pressure", "Ensuring safe, supported transitions to a new country and culture"])}
+<div class="stack"><h2 id="fam-h">What Families Trust Us With</h2></div>
+{checks(["Guiding their children through the most important decision of their lives", "Managing every detail of a complex international education process", "Being available on-the-ground when it matters most", "Providing honest advice without hidden agendas or commission pressure", "Ensuring safe, supported transitions to a new country and culture"])}
 </div></section>
 
 <section class="section" aria-labelledby="val-h"><div class="wrap">
-<div class="head"><h2 id="val-h">Our values</h2><p>The principles that guide every consultation, every application, and every student journey we support.</p></div>
+<div class="head"><h2 id="val-h">Our Values</h2><p>The principles that guide every consultation, every application, and every student journey we support.</p></div>
 <ul class="values">{"".join(f'<li class="{c}"><h3>{t}</h3><p>{p}</p></li>' for c, t, p in values)}</ul>
 </div></section>
 '''
@@ -311,58 +330,57 @@ page("about.html", "About CIEA", "Meet the Barbados-based team behind the Caribb
 
 # ------------------------------------------------------------------ STUDY IN BARBADOS
 reasons9 = [
-    ("Fully English-speaking", "No language barrier. Barbados has a highly educated, English-speaking population and a culture deeply connected to the UK and the Americas."),
-    ("Safe and politically stable", "Barbados ranks as one of the most stable democracies in the world and consistently among the safest countries in the Caribbean. Parents feel comfortable. Students feel at home."),
-    ("Year-round sunshine", 'Average temperature of <span class="fig">28&deg;C</span> year-round. Stunning beaches, a vibrant social scene, and an outdoor lifestyle that supports student wellbeing.'),
-    ("Excellent healthcare", "The Queen Elizabeth Hospital provides public healthcare, and there are several private clinics. International students have access to quality medical care."),
-    ("More affordable than you think", "Tuition costs in Barbados are significantly lower than equivalent programs in North America or the United Kingdom, without sacrificing quality."),
-    ("Globally connected", "Direct flights to and from London, Miami, New York, Toronto, Montreal, Lagos, Accra, and across the Caribbean. Barbados is accessible from almost anywhere."),
-    ("Internationally accredited institutions", "The University of the West Indies, Ross University, and the American University of Barbados all carry international accreditation and globally recognized qualifications."),
-    ("Rich culture and heritage", "A vibrant arts scene, a UNESCO-listed capital city, annual festivals, and a warm, welcoming Bajan culture that makes students feel part of a community."),
-    ("Extraordinary lifestyle", "Glass-bottom boat tours, surfing and snorkeling, year-round nature hikes, cricket, rum distillery tours. Barbados offers an experience no campus in a cold climate can match."),
+    ("Fully English-Speaking", "No language barrier. Barbados has a highly educated, English-speaking population and a culture deeply connected to the UK and the Americas."),
+    ("Safe &amp; Politically Stable", "Barbados ranks as one of the most stable democracies in the world and consistently among the safest countries in the Caribbean. Parents feel comfortable. Students feel at home."),
+    ("Year-Round Sunshine", 'Average temperature of <span class="fig">28&deg;C</span> year-round. Stunning beaches, a vibrant social scene, and an outdoor lifestyle that supports student wellbeing.'),
+    ("Excellent Healthcare", "The Queen Elizabeth Hospital provides public healthcare, and there are several private clinics. International students have access to quality medical care."),
+    ("More Affordable Than You Think", "Tuition costs in Barbados are significantly lower than equivalent programs in North America or the United Kingdom, without sacrificing quality."),
+    ("Globally Connected", "Direct flights to and from London, Miami, New York, Toronto, Montreal, Lagos, Accra, and across the Caribbean. Barbados is geographically and logistically accessible from almost anywhere."),
+    ("Internationally Accredited Institutions", "The University of the West Indies, Ross University, and the American University of Barbados all carry international accreditation and globally recognized qualifications."),
+    ("Rich Culture &amp; Heritage", "A vibrant arts scene, UNESCO-listed capital city, annual festivals, and a warm, welcoming Bajan culture that makes students feel part of a community."),
+    ("Extraordinary Lifestyle", "Glass-bottom boat tours, surfing and snorkeling, year-round nature hikes, cricket, rum distillery tours. Barbados offers an experience no campus in a cold climate can match."),
 ]
 insts = [
     ("uwi", "c-sea", "Flagship University", "University of the West Indies, Cave Hill Campus", "UWI Cave Hill",
-     "International reputation across law, medicine, business, computer science, and the social sciences. Hundreds of undergraduate and graduate programs attracting students from across the globe, with exchange programs with universities worldwide.",
+     "International reputation across law, medicine, business, computer science, and the social sciences. Hundreds of undergraduate and graduate programs attracting students from across the globe. Exchange programs with universities worldwide.",
      ["Law", "Medicine", "Business Administration", "Computer Science", "International Relations", "Natural Sciences", "Cultural Studies"],
-     ["Study abroad programs", "Exchange programs", "Hundreds of degree programs"], "UWI Cave Hill campus"),
+     ["Study Abroad Programs", "Exchange Programs", "Hundreds of Degree Programs"], "UWI Cave Hill campus"),
     ("bcc", "c-palm", "Community College", "Barbados Community College", "BCC",
      "Offers degree, diploma, certificate, and transfer pathways across multiple disciplines. An excellent gateway for students looking to earn credentials in Barbados or transfer to a four-year university abroad.",
-     ["Hospitality and Tourism", "Technology and Computing", "Health Sciences", "Business Studies", "Fine Arts", "Liberal Arts"],
-     ["Transfer pathways", "Diploma programs", "Certificate courses"], "Barbados Community College campus"),
+     ["Hospitality &amp; Tourism", "Technology &amp; Computing", "Health Sciences", "Business Studies", "Fine Arts", "Liberal Arts"],
+     ["Transfer Pathways", "Diploma Programs", "Certificate Courses"], "Barbados Community College campus"),
     ("aub", "c-sun", "Medical University", "American University of Barbados", "AUB",
      "Attracts students from many countries with a recognized Doctor of Medicine program structured around the USMLE pathway for those seeking US residency. An internationally oriented medical education environment.",
      ["Doctor of Medicine (MD)", "Pre-Medical Sciences", "Allied Health"],
-     ["USMLE pathway", "International students", "American curriculum"], "Medical students in a lab or lecture"),
+     ["USMLE Pathway", "International Students", "American Curriculum"], "Medical students in a lab or lecture"),
     ("ross", "c-hib", "Medical School", "Ross University School of Medicine", "Ross University",
      "One of the largest Caribbean medical schools, with its main campus in Barbados. A major pathway for North American students seeking a Caribbean medical education with a focus on US licensing and residency matching.",
      ["Doctor of Medicine (MD)", "Basic Sciences", "Clinical Sciences"],
-     ["US residency pathway", "Caribbean medical school", "Barbados campus"], "Ross University Barbados campus"),
+     ["US Residency Pathway", "Caribbean Medical School", "Barbados Campus"], "Ross University Barbados campus"),
 ]
 inst_html = "".join(f'''<article class="inst {c}" id="{i}">
-{stamp(ph(phs), c)}
+{stamp(ph(phs), c, cls="no-disc")}
 <div class="inst-main"><div><span class="inst-type">{ty}</span></div>
 <h3>{n}<small>{sn}</small></h3><p class="desc">{d}</p>
 <div class="inst-meta"><h4>Programs</h4><ul class="inst-progs">{"".join(f"<li>{x}</li>" for x in pr)}</ul></div>
 <ul class="tags small" aria-label="Highlights">{"".join(f'<li class="tag">{x}</li>' for x in tg)}</ul>
 </div></article>''' for i, c, ty, n, sn, d, pr, tg, phs in insts)
 
-study = page_hero("The Caribbean's premier education destination",
+study = page_hero("The Caribbean's Premier Education Destination",
     "World-class universities. A safe and sophisticated island environment. English-speaking. Affordable. Barbados ticks every box.",
-    "Aerial view of Bridgetown and the Careenage", "c-sun", "NEW YORK") + f'''
+    "Aerial view of Bridgetown and the Careenage", "c-sun") + f'''
 <section class="section bg-sun" id="why" aria-labelledby="why9-h"><div class="wrap">
-<div class="head"><h2 id="why9-h">Nine reasons students choose Barbados</h2></div>
+<div class="head"><h2 id="why9-h" class="visually-hidden">Why Barbados</h2></div>
 {reasons(reasons9, "three")}
 </div></section>
 
 <section class="section bg-tissue" id="institutions" aria-labelledby="inst-h"><div class="wrap">
-<div class="head"><h2 id="inst-h">Featured institutions</h2><p>Barbados is home to a remarkable range of accredited higher education institutions, from a flagship regional university to internationally recognized medical schools.</p></div>
+<div class="head"><h2 id="inst-h">Featured Institutions</h2><p>Barbados is home to a remarkable range of accredited higher education institutions, from a flagship regional university to internationally recognized medical schools.</p></div>
 <div class="inst-list">{inst_html}</div>
-<div class="head mt-2" style="margin-top:clamp(3.5rem,6vw,5rem)"><h2 style="font-size:var(--step-2)">More places to study</h2></div>
-<ul class="more-inst">
-<li><b>UWI Open Campus (Global Campus)</b><span>Distance and blended learning across the Caribbean.</span></li>
-<li><b>Codrington Theological College</b><span>One of the oldest institutions in the Caribbean, offering theology and arts.</span></li>
-<li><b>Samuel Jackman Prescod Institute of Technology</b><span>Technical and vocational training.</span></li>
+<ul class="more-inst" style="margin-top:clamp(3.5rem,6vw,5rem)" aria-label="Additional institutions">
+<li><b>UWI Open Campus (Global Campus)</b><span>Distance and blended learning across the Caribbean</span></li>
+<li><b>Codrington Theological College</b><span>One of the oldest institutions in the Caribbean, offering theology and arts</span></li>
+<li><b>Samuel Jackman Prescod Institute of Technology</b><span>Technical and vocational training</span></li>
 </ul>
 </div></section>
 '''
@@ -370,9 +388,9 @@ page("study-in-barbados.html", "Study in Barbados with CIEA", "Why Barbados is t
 
 # ------------------------------------------------------------------ PROGRAMS
 progs = [
-    ("gap-year", "c-sun", "Gap Year and Summer or Winter Abroad",
+    ("gap-year", "c-sun", "Gap Year &amp; Summer/Winter Abroad",
      "We design and organize gap year and summer programmes that meet students' unique interests and needs. Whether you want to explore the Caribbean, develop a skill, volunteer, or prepare for university, we create an experience tailored to you.",
-     ["Fully customized itinerary based on your interests", "Dance, theatre, music, environment, sports and more", "Accommodation arrangements in Barbados", "Airport pickup and on-island transportation", "Cultural and heritage tours", "Multi-week or semester-length options"],
+     ["Fully customized itinerary based on your interests", "Dance, theatre, music, environment, sports &amp; more", "Accommodation arrangements in Barbados", "Airport pickup and on-island transportation", "Cultural and heritage tours", "Multi-week or semester-length options"],
      "Young people hiking or exploring the Barbados east coast"),
     ("summer-camps", "c-flame", "Summer Camps",
      "We facilitate enrolment in local summer camps in collaboration with partners, in areas that students are passionate about. From the performing arts to environmental conservation, our camps combine learning with an unforgettable Caribbean experience.",
@@ -380,25 +398,24 @@ progs = [
      "Children at a cricket, dance or swimming camp"),
     ("faculty-led", "c-sea", "Faculty-Led Education Abroad Programs",
      "We provide comprehensive information, program design and planning support, logistical services, and in-country support for international institutions seeking to organize study abroad programmes to Barbados.",
-     ["Program content design aligned with learning outcomes", "Accommodation arrangements for groups", "Airport pickup and on-ground transportation", "Cultural, heritage, and educational tours", "Meetings with local officials, academics and experts", "Glass-bottom boat tours, nature hikes and activities", "Ongoing in-country support during the program"],
+     ["Program content design aligned with learning outcomes", "Accommodation arrangements for groups", "Airport pickup and on-ground transportation", "Cultural, heritage, and educational tours", "Meetings with local officials, academics &amp; experts", "Glass-bottom boat tours, nature hikes &amp; activities", "Ongoing in-country support during the program"],
      "A university group on a heritage tour with a local guide"),
-    ("volunteer", "c-palm", "Volunteer and Service Learning",
+    ("volunteer", "c-palm", "Volunteer &amp; Service Learning",
      "We connect students with meaningful volunteer opportunities and service learning experiences in Barbados. Choose from education, environment, community development, healthcare, and more.",
      ["Volunteer placement matched to your interests", "Education, environment, community development", "Healthcare and social service opportunities", "Accommodation and logistics support", "Certificate of service completion", "Cultural immersion alongside your placement"],
      "Students volunteering at a beach clean-up or community project"),
 ]
 prog_html = "".join(f'''<article class="program" id="{i}">
 <div class="figure-stamp">{stamp(ph(phs), c)}</div>
-<div class="copy"><h2>{t}</h2><p>{d}</p><h3>What's included</h3>{checks(inc)}
-<div><a class="btn btn-ink" href="contact.html">Ask about this program {ic("arrow")}</a></div></div>
+<div class="copy"><h2>{t}</h2><p>{d}</p><h3>What's included</h3>{checks(inc)}</div>
 </article>''' for i, c, t, d, inc, phs in progs)
 
-programs = page_hero("Education beyond the classroom",
+programs = page_hero("Education Beyond the Classroom",
     "From a week-long cultural immersion to a full semester at The UWI, we facilitate education experiences in Barbados that change perspectives and open doors.",
-    "Students snorkeling or on a glass-bottom boat", "c-flame", "MIAMI") + f'''
+    "Students snorkeling or on a glass-bottom boat", "c-flame") + f'''
 <section class="section"><div class="wrap">{prog_html}</div></section>
 <section class="section bg-sun" aria-labelledby="custom-h"><div class="wrap custom-band">
-<div><h2 id="custom-h">Don't see exactly what you're looking for?</h2>
+<div><h2 id="custom-h">Don't See Exactly What You're Looking For?</h2>
 <p>We specialize in custom program design. Tell us your goals, interests, and timeline, and we'll create something tailored just for you.</p></div>
 <div><a class="btn btn-ink" href="contact.html">Request a Custom Program {ic("arrow")}</a></div>
 </div></section>
@@ -407,52 +424,41 @@ page("programs.html", "CIEA Programs", "Gap year, summer camps, faculty-led stud
 
 # ------------------------------------------------------------------ SERVICES
 core = [
-    ("placement", "c-sun", "cap", "University placement", "End-to-end guidance from school selection to offer acceptance. We know which programs fit your profile and how to make your application stand out."),
-    ("review", "c-palm", "file", "Application review", "Expert review of every component of your application, including personal statements, CVs, and reference letters, before submission."),
-    ("visa", "c-flame", "passport", "Student visa assistance", "Full documentation support and application management for student visas and study permits across major destinations."),
-    ("accommodation", "c-sea", "home", "Accommodation support", "We help identify, vet, and arrange safe, suitable student housing where needed."),
-    ("arrival", "c-hib", "plane", "Student arrival support", "Airport pickup and on-the-ground help during your first critical days."),
-    ("family", "c-sun", "users", "Parent and family support", "We remain a point of contact and support for parents and families."),
+    ("placement", "c-sun", "cap", "University Placement", "End-to-end guidance from school selection to offer acceptance. We know which programs fit your profile and how to make your application stand out."),
+    ("review", "c-palm", "file", "Application Review", "Expert review of every component of your application (personal statements, CVs, reference letters) before submission."),
+    ("visa", "c-flame", "passport", "Student Visa Assistance", "Full documentation support and application management for student visas and study permits across major destinations."),
+    ("accommodation", "c-sea", "home", "Accommodation Support", "We help identify, vet, and arrange safe, suitable student housing where needed."),
+    ("arrival", "c-hib", "plane", "Student Arrival Support", "Airport pickup and on-the-ground help during your first critical days."),
+    ("family", "c-sun", "users", "Parent/Family Support Service", "We remain a point of contact and support for parents and families"),
 ]
 def svc_badge(c, i):
     style = ' style="color:#fff"' if c in ("c-sea", "c-hib") else ""
     return f'<span class="badge {c}"{style}>{ic(i)}</span>'
 core_html = "".join(f'<li id="{a}">{svc_badge(c, i)}<div><h3>{t}</h3><p>{p}</p></div></li>' for a, c, i, t, p in core)
-also = [
-    ("medical", "c-hib", "Medical school advising", "MD", "Specialized pathway guidance for medical school in Barbados and the Caribbean, including the American University of Barbados and Ross University.", "study-in-barbados.html#aub", "See medical schools"),
-    ("scholarships", "c-palm", "Scholarship search support", "Funding", "Dedicated scholarship search support and advice based on our institutional connections. We know what opportunities exist and how to make your application competitive.", "contact.html", "Ask about scholarships"),
-    ("standalone", "c-sun", "Stand-alone services", "A la carte", "Accommodation sourcing, on-island transportation, boat tours, nature hikes, cultural tours, activity bookings and expert or speaker connections, one at a time.", "index.html#one-h", "See the full list"),
-]
-also_html = "".join(f'''<article class="prog" id="{i}">{stamp(f'<div class="prog-body"><div class="prog-top"><h3>{t}</h3><span class="denom">{d}</span></div><p>{p}</p><a class="more" href="{h}">{l} {ic("arrow")}</a></div>', c)}</article>''' for i, c, t, d, p, h, l in also)
 
-services = page_hero("Expert support at every stage",
+services = page_hero("Expert Support at Every Stage",
     "From a single application review to full end-to-end placement and relocation, choose the level of support that's right for you.",
-    "An advisor reviewing an application with a student", "c-sea", "LAGOS") + f'''
+    "An advisor reviewing an application with a student", "c-sea") + f'''
 <section class="section" aria-labelledby="core-h"><div class="wrap">
-<div class="head"><h2 id="core-h">Core services</h2><p>Pick one, or combine them into a complete plan.</p></div>
+<h2 id="core-h" class="visually-hidden">Core Services</h2>
 <ul class="services">{core_html}</ul>
-</div></section>
-<section class="section bg-tissue" aria-labelledby="also-h"><div class="wrap">
-<div class="head"><h2 id="also-h">Also on offer</h2></div>
-<div class="also">{also_html}</div>
 </div></section>
 '''
 page("services.html", "CIEA Services", "University placement, application review, visa, accommodation, arrival and family support.", "services.html", services)
 
 # ------------------------------------------------------------------ CONTACT
-interests = ["Study in Barbados: college or university placement", "Study abroad for Barbadian students (Canada, UK, Australia)",
-             "Medical school advising", "Summer or gap year program", "Faculty-led program support", "Parent and family support service", "General inquiry"]
-contact = page_hero("Let's talk about your future",
+interests = ["Study in Barbados: College or University Placement", "Study Abroad (Barbadian students) (Study in Canada / UK / Australia)",
+             "Medical School Advising", "Summer or Gap Year Program", "Faculty-Led Program Support", "Parent/Family Support Service", "General Inquiry"]
+contact = page_hero("Let's Talk About Your Future",
     "Book your free 30-minute consultation. No pressure, no obligation. Just expert advice tailored to your situation.",
-    "A friendly advisor on a video call", "c-palm", "MONTREAL") + f'''
+    "A friendly advisor on a video call", "c-palm") + f'''
 <section class="section"><div class="wrap contact-grid">
 <div class="label-card">
-<h2>Reach us directly</h2>
 <dl>
-<div><dt>{ic("chat")}</dt><dd><b>Phone and WhatsApp</b><span>{PHONE}</span></dd></div>
+<div><dt>{ic("chat")}</dt><dd><b>Phone / WhatsApp</b><span>{PHONE}</span></dd></div>
 <div><dt>{ic("mail")}</dt><dd><b>Email</b><span>{EMAIL}</span></dd></div>
 <div><dt>{ic("pin")}</dt><dd><b>Location</b><span>Bridgetown, Saint Michael, Barbados</span></dd></div>
-<div><dt>{ic("clock")}</dt><dd><b>Office hours</b><span>Monday to Friday, 9:00am to 5:00pm AST</span></dd></div>
+<div><dt>{ic("clock")}</dt><dd><b>Office Hours</b><span>Mon to Fri: 9:00am to 5:00pm AST</span></dd></div>
 </dl>
 <div><a class="btn btn-primary" href="{WA}" target="_blank" rel="noopener">{ic("chat")}WhatsApp Us</a></div>
 </div>
@@ -460,21 +466,21 @@ contact = page_hero("Let's talk about your future",
 <div>
 <form class="form" id="consult-form" novalidate>
 <div class="row">
-<div class="field"><label for="f-name">Full name <span class="req" aria-hidden="true">*</span></label><input id="f-name" name="name" autocomplete="name" required><span class="err">Please enter your name.</span></div>
-<div class="field"><label for="f-email">Email address <span class="req" aria-hidden="true">*</span></label><input id="f-email" name="email" type="email" autocomplete="email" required><span class="err">Please enter an email address like name@example.com.</span></div>
+<div class="field"><label for="f-name">Full Name <span class="req" aria-hidden="true">*</span></label><input id="f-name" name="name" autocomplete="name" required><span class="err">Please enter your name.</span></div>
+<div class="field"><label for="f-email">Email Address <span class="req" aria-hidden="true">*</span></label><input id="f-email" name="email" type="email" autocomplete="email" required><span class="err">Please enter an email address like name@example.com.</span></div>
 </div>
 <div class="row">
-<div class="field"><label for="f-phone">Phone or WhatsApp</label><input id="f-phone" name="phone" type="tel" autocomplete="tel" placeholder="+1 246 ..."></div>
-<div class="field"><label for="f-country">Country of residence <span class="req" aria-hidden="true">*</span></label><input id="f-country" name="country" autocomplete="country-name" required><span class="err">Please tell us where you live.</span></div>
+<div class="field"><label for="f-phone">Phone / WhatsApp</label><input id="f-phone" name="phone" type="tel" autocomplete="tel"></div>
+<div class="field"><label for="f-country">Country of Residence <span class="req" aria-hidden="true">*</span></label><input id="f-country" name="country" autocomplete="country-name" required><span class="err">Please tell us where you live.</span></div>
 </div>
-<div class="field"><label for="f-interest">I'm interested in <span class="req" aria-hidden="true">*</span></label>
+<div class="field"><label for="f-interest">I'm interested in... <span class="req" aria-hidden="true">*</span></label>
 <select id="f-interest" name="interest" required><option value="">Choose one</option>{"".join(f"<option>{o}</option>" for o in interests)}</select><span class="err">Please choose what you're interested in.</span></div>
-<div class="field"><label for="f-msg">Tell us about your situation <span class="req" aria-hidden="true">*</span></label><textarea id="f-msg" name="message" required placeholder="Where are you now, where would you like to go, and when?"></textarea><span class="err">A few lines help us prepare for your consultation.</span></div>
+<div class="field"><label for="f-msg">Tell us about your situation <span class="req" aria-hidden="true">*</span></label><textarea id="f-msg" name="message" required></textarea><span class="err">Please tell us a little about your situation.</span></div>
 <div class="form-foot"><button class="btn btn-primary" type="submit">Send My Inquiry</button><span class="note">Free consultation. No obligation. Response within 24 hours.</span></div>
 </form>
 <div class="success" id="form-success" hidden tabindex="-1">
-<h2>Message received!</h2>
-<p>Thank you. We'll be in touch within 24 hours. For a faster response, WhatsApp us directly.</p>
+<h2>Message Received!</h2>
+<p>Thank you. We'll be in touch within 24 hours. For faster response, WhatsApp us directly.</p>
 <a class="btn btn-primary" href="{WA}" target="_blank" rel="noopener">{ic("chat")}WhatsApp Us</a>
 </div>
 </div>
