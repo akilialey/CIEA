@@ -113,6 +113,11 @@
   function ready() { settleOnHash(); root.classList.add('smooth'); }
   if (location.hash.length > 1) {
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(settleOnHash);
+  } else {
+    /* A fresh visit starts at the top. Embedded previews can keep the outer page
+       scrolled down at the old footer, so a new page looked like nothing happened. */
+    var navEntry = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+    if (!navEntry || navEntry.type === 'navigate') root.scrollIntoView({ behavior: 'instant', block: 'start' });
   }
   if (document.readyState === 'complete') ready(); else window.addEventListener('load', ready);
 
