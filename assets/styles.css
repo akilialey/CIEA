@@ -37,7 +37,8 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: clip; }
+html { -webkit-text-size-adjust: 100%; overflow-x: clip; }
+@media (prefers-reduced-motion: no-preference) { html.smooth { scroll-behavior: smooth; } }
 body {
   margin: 0;
   background: var(--paper);
@@ -648,3 +649,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   .float-stack { max-width: 340px; margin-top: 0; }
   .page-hero .hero-grid { padding-block: 2.25rem 3rem; }
 }
+
+/* Section links land below the sticky header */
+[id] { scroll-margin-top: calc(92px + env(safe-area-inset-top, 0px)); }
+@media (max-width: 600px) { [id] { scroll-margin-top: calc(80px + env(safe-area-inset-top, 0px)); } }
