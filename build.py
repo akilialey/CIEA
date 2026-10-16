@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Builds the CIEA static site (island and routes direction) from shared partials. Output: /mnt/project-files/ciea-website/*.html"""
-import os, re
+import os, re, json
 
 OUT = os.path.dirname(os.path.abspath(__file__))
 PHONE = "+1 (246) 232-5864"
@@ -149,8 +149,24 @@ FOOTER = f'''<footer class="site-footer"><div class="wrap">
 <div class="foot-base"><span>&copy; 2025 Caribbean International Education Agency. All rights reserved.</span></div>
 </div></footer>'''
 
-def page(fname, title, desc, active, body, cta=True, cta_kwargs=None):
+SITE = "https://ciea-barbados.com"
+ORG_NAME = "Caribbean International Education Agency"
+OG_IMAGE = SITE + "/assets/og-image.jpg"
+ORG_LD = {
+    "@type": "EducationalOrganization", "@id": SITE + "/#org", "name": ORG_NAME, "alternateName": "CIEA",
+    "url": SITE + "/", "logo": SITE + "/assets/ciea-logo.png", "image": OG_IMAGE,
+    "email": EMAIL, "telephone": "+12462325864",
+    "address": {"@type": "PostalAddress", "addressLocality": "Bridgetown", "addressRegion": "Saint Michael", "addressCountry": "BB"},
+    "areaServed": ["Barbados", "Caribbean", "Canada", "United Kingdom", "United States", "Africa"],
+}
+SITEMAP = []
+
+def page(fname, title, desc, active, body, cta=True, cta_kwargs=None, ld=None):
     env = envelope(**(cta_kwargs or {})) if cta else ""
+    url = SITE + "/" + ("" if fname == "index.html" else fname)
+    SITEMAP.append(url)
+    graph = [ORG_LD] + (ld or [])
+    ld_json = json.dumps({"@context": "https://schema.org", "@graph": graph}, ensure_ascii=False).replace("</", "<\\/")
     html = f'''<!doctype html>
 <html lang="en">
 <head>
@@ -159,6 +175,18 @@ def page(fname, title, desc, active, body, cta=True, cta_kwargs=None):
 <title>{title}</title>
 <meta name="description" content="{desc}">
 <meta name="theme-color" content="#1c4f6c">
+<link rel="canonical" href="{url}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{ORG_NAME}">
+<meta property="og:title" content="{title}">
+<meta property="og:description" content="{desc}">
+<meta property="og:url" content="{url}">
+<meta property="og:image" content="{OG_IMAGE}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_GB">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{ld_json}</script>
 <link rel="icon" href="assets/ciea-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -304,9 +332,10 @@ home = f'''
 <div class="faq">{faq_html}</div>
 </div></section>
 '''
-page("index.html", "Caribbean International Education Agency",
+page("index.html", "Caribbean International Education Agency | Study in Barbados",
      "Barbados-based education agency connecting students and institutions with study, summer and degree opportunities in the Caribbean and abroad.",
      "index.html", home,
+     ld=[{"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faqs]}],
      cta_kwargs=dict(h="Ready to Make Your Move?", p="Whether you're exploring, planning, or ready to apply, a free consultation with our team is the best first step.", trust=True))
 
 # ------------------------------------------------------------------ ABOUT
@@ -347,7 +376,7 @@ about = page_hero("Rooted in Barbados. Reaching the World.",
 <ul class="values">{"".join(f'<li class="{c}"><h3>{t}</h3><p>{p}</p></li>' for c, t, p in values)}</ul>
 </div></section>
 '''
-page("about.html", "About CIEA", "Meet the Barbados-based team behind the Caribbean International Education Agency.", "about.html", about)
+page("about.html", "About CIEA | Barbados-Based Education Agency", "Meet the Barbados-based team behind the Caribbean International Education Agency.", "about.html", about)
 
 # ------------------------------------------------------------------ STUDY IN BARBADOS
 reasons9 = [
@@ -405,7 +434,7 @@ study = page_hero("The Caribbean's Premier Education Destination",
 </ul>
 </div></section>
 '''
-page("study-in-barbados.html", "Study in Barbados with CIEA", "Why Barbados is the Caribbean's premier education destination, and the institutions you can study at.", "study-in-barbados.html", study)
+page("study-in-barbados.html", "Study in Barbados: Universities and Medical Schools | CIEA", "Why Barbados is the Caribbean's premier education destination, and the institutions you can study at.", "study-in-barbados.html", study)
 
 # ------------------------------------------------------------------ PROGRAMS
 progs = [
@@ -441,7 +470,7 @@ programs = page_hero("Education Beyond the Classroom",
 <div><a class="btn btn-ink" href="contact.html">Request a Custom Program {ic("arrow")}</a></div>
 </div></section>
 '''
-page("programs.html", "CIEA Programs", "Gap year, summer camps, faculty-led study abroad and volunteer programs in Barbados.", "programs.html", programs)
+page("programs.html", "Gap Year, Summer Camps and Study Abroad in Barbados | CIEA", "Gap year, summer camps, faculty-led study abroad and volunteer programs in Barbados.", "programs.html", programs)
 
 # ------------------------------------------------------------------ SERVICES
 core = [
@@ -465,7 +494,7 @@ services = page_hero("Expert Support at Every Stage",
 <ul class="services">{core_html}</ul>
 </div></section>
 '''
-page("services.html", "CIEA Services", "University placement, application review, visa, accommodation, arrival and family support.", "services.html", services)
+page("services.html", "University Placement, Visa and Student Support | CIEA", "University placement, application review, visa, accommodation, arrival and family support.", "services.html", services)
 
 # ------------------------------------------------------------------ CONTACT
 interests = ["Study in Barbados: College or University Placement", "Study Abroad (Barbadian students) (Study in Canada / UK / Australia)",
@@ -507,4 +536,11 @@ contact = page_hero("Let's Talk About Your Future",
 </div>
 </div></section>
 '''
-page("contact.html", "Contact CIEA", "Book a free 30-minute consultation with the Caribbean International Education Agency.", "contact.html", contact, cta=False)
+page("contact.html", "Contact CIEA | Free Study Consultation in Barbados", "Book a free 30-minute consultation with the Caribbean International Education Agency.", "contact.html", contact, cta=False)
+
+with open(os.path.join(OUT, "sitemap.xml"), "w") as f:
+    f.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+            + "".join(f"  <url><loc>{u}</loc></url>\n" for u in SITEMAP) + "</urlset>\n")
+with open(os.path.join(OUT, "robots.txt"), "w") as f:
+    f.write(f"User-agent: *\nAllow: /\n\nSitemap: {SITE}/sitemap.xml\n")
+print("wrote sitemap.xml, robots.txt")
