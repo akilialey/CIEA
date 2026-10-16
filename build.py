@@ -221,9 +221,9 @@ def label(t):
     return f'<p class="label"><i></i>{t}</p>'
 
 def page_hero(h1, sub, ph_text, color="c-sun"):
-    return f'''<section class="hero page-hero"><canvas class="water" aria-hidden="true"></canvas><div class="wrap hero-grid">
+    return f'''<section class="hero page-hero"><div class="wrap hero-grid">
 <div class="hero-copy"><h1>{h1}</h1><p class="lede">{sub}</p></div>
-{stamp(ph(ph_text), color, cls="float")}
+{stamp(ph(ph_text), color, cls="no-disc")}
 </div></section>'''
 
 def checks(items, cls=""):
