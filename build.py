@@ -52,6 +52,7 @@ PHOTOS = {
     "Barbados Community College campus": ("bcc", "Barbados Community College building with palm trees"),
     "Ross University Barbados campus": ("ross-university", "Ross University School of Medicine building in Barbados"),
     "Medical students in a lab or lecture": ("aub", "Aerial view of the American University of Barbados campus"),
+    "An advisor reviewing an application with a student": ("advisor-meeting", "An advisor talking with a student at a table by a sunny window"),
     "A Barbados beach under a blue umbrella": ("beach-umbrella", "A blue umbrella on a white sand Barbados beach"),
 }
 EAGER = {"students-laughing", "chattel-house", "beach-umbrella", "bridgetown-careenage", "bridgetown-parliament", "student-laptop"}
@@ -157,6 +158,9 @@ FOOTER = f'''<footer class="site-footer"><div class="wrap">
 </div></footer>'''
 
 SITE = "https://studyinthecaribbean.com"
+# Fingerprint the stylesheet and script so visitors' browsers fetch the new files after each change
+import hashlib as _h
+ASSET_V = _h.md5((open("assets/styles.css","rb").read() + open("assets/site.js","rb").read())).hexdigest()[:8]
 ORG_NAME = "Caribbean International Education Agency"
 OG_IMAGE = SITE + "/assets/og-image.jpg"
 ORG_LD = {
@@ -198,7 +202,7 @@ def page(fname, title, desc, active, body, cta=True, cta_kwargs=None, ld=None):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Fraunces:opsz,wght@9..144,400..700&family=Figtree:ital,wght@0,400..800;1,400..600&display=swap">
-<link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="assets/styles.css?v={ASSET_V}">
 </head>
 <body>
 {SPRITE}
@@ -208,7 +212,7 @@ def page(fname, title, desc, active, body, cta=True, cta_kwargs=None, ld=None):
 {env}
 </main>
 {FOOTER}
-<script src="assets/site.js"></script>
+<script src="assets/site.js?v={ASSET_V}"></script>
 </body>
 </html>
 '''
