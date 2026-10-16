@@ -590,7 +590,10 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .float-stack .f3 { width: 36%; right: 3%; bottom: 0; rotate: 4deg; z-index: 3; }
 .float-stack .f3 .ph { aspect-ratio: 1 / 1; }
 .float-stack .ph-t { font-size: .82rem; }
-.page-hero .float { rotate: 3deg; }
+/* Inner pages: one calm band of sea blue; the live water belongs to the home page only */
+.hero.page-hero { background: var(--deep); }
+.hero.page-hero::after { content: none; }
+.page-hero .frame { border: 0; border-radius: 18px; box-shadow: 0 24px 48px -28px rgba(5,25,38,.7); }
 @media (prefers-reduced-motion: no-preference) {
   .float { animation: bob 6.5s ease-in-out infinite alternate; }
   .float-stack .f2 { animation-duration: 5.2s; animation-delay: -2s; }
