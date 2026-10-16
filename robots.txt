@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://ciea-barbados.com/sitemap.xml
+Sitemap: https://studyinthecaribbean.com/sitemap.xml
