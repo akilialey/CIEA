@@ -5,7 +5,7 @@ import os, re, json
 OUT = os.path.dirname(os.path.abspath(__file__))
 PHONE = "+1 (246) 232-5864"
 WA = "https://wa.me/12462325864"
-EMAIL = "info@ciea-barbados.com"
+EMAIL = "info@studyinthecaribbean.com"
 
 SPRITE = """<svg width="0" height="0" style="position:absolute" aria-hidden="true">
 <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7"/></symbol>
@@ -156,7 +156,7 @@ FOOTER = f'''<footer class="site-footer"><div class="wrap">
 <div class="foot-base"><span>&copy; 2025 Caribbean International Education Agency. All rights reserved.</span></div>
 </div></footer>'''
 
-SITE = "https://ciea-barbados.com"
+SITE = "https://studyinthecaribbean.com"
 ORG_NAME = "Caribbean International Education Agency"
 OG_IMAGE = SITE + "/assets/og-image.jpg"
 ORG_LD = {

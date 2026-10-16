@@ -18,7 +18,7 @@ The image fills the rounded photo frame automatically.
 
 ## Before launch
 
-- Replace the phone/WhatsApp number (`+1 (246) 232-5864`, `wa.me/12462325864`) and email (`info@ciea-barbados.com`), marked for update in the content doc.
+- Replace the phone/WhatsApp number (`+1 (246) 232-5864`, `wa.me/12462325864`) and email (`info@studyinthecaribbean.com`), marked for update in the content doc.
 - Replace `assets/ciea-logo.png` with the original logo file (the current one is cropped from a phone screenshot).
 - Connect the contact form to a form service (Formspree, Netlify Forms, etc.). The hook is marked in `assets/site.js`.
 - Review the founder story on the About page.
