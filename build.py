@@ -45,9 +45,12 @@ PHOTOS = {
     "Young people hiking or exploring the Barbados east coast": ("palm-cliff-coast", "A palm tree on a cliff above the Barbados coast"),
     "Children at a cricket, dance or swimming camp": ("kids-group", "A group of children smiling together"),
     "A university group on a heritage tour with a local guide": ("codrington-college", "Codrington College, Barbados"),
-    "A friendly advisor on a video call": ("video-call", "An advisor on a video call"),
+    "A friendly advisor on a video call": ("student-laptop", "A student smiling at her laptop by a window"),
+    "Students volunteering at a beach clean-up or community project": ("beach-cleanup", "Volunteers in gloves collecting plastic from a beach"),
+    "Portrait of Patricia Atherley": ("patricia-atherley", "Patricia Atherley, Founder and Director of CIEA"),
+    "A Barbados beach under a blue umbrella": ("beach-umbrella", "A blue umbrella on a white sand Barbados beach"),
 }
-EAGER = {"students-laughing", "chattel-house", "turtle-carlisle-bay", "bridgetown-careenage", "bridgetown-parliament", "video-call"}
+EAGER = {"students-laughing", "chattel-house", "beach-umbrella", "bridgetown-careenage", "bridgetown-parliament", "student-laptop"}
 
 def ph(text, kind="Photo"):
     if text in PHOTOS:
@@ -289,8 +292,8 @@ home = f'''
 </div>
 <div class="float-stack">
 {stamp(ph("Students laughing together on a Barbados beach or campus"), "c-sun", cls="float f1")}
-{stamp(ph("Bridgetown street or a colourful chattel house"), "c-hib", cls="float f2")}
-{stamp(ph("Turquoise water at Carlisle Bay"), "c-palm", cls="float f3")}
+{stamp(ph("A Barbados beach under a blue umbrella"), "c-palm", cls="float f2 no-disc")}
+{stamp(ph("Bridgetown street or a colourful chattel house"), "c-hib", cls="float f3 no-disc")}
 </div>
 </div></section>
 <div class="ticker" aria-hidden="true"><div class="ticker-band"><div class="ticker-track">{ticker}{ticker}</div></div></div>
@@ -310,7 +313,7 @@ home = f'''
 <div class="sheet">{sheet}</div>
 </div></section>
 
-<section class="section bg-sun" aria-labelledby="why-h"><div class="wrap reasons-layout">
+<section class="section bg-sand" aria-labelledby="why-h"><div class="wrap reasons-layout">
 <div class="reasons-aside">
 {label("Why Choose Barbados?")}
 <h2 id="why-h">A Caribbean Island Unlike Any Other</h2>
@@ -360,7 +363,7 @@ about = page_hero("Rooted in Barbados. Reaching the World.",
 <p>What makes CIEA different is simple: We are here, not a consultant in an overseas office advising on Barbados from afar. We live here, work here, and have deep relationships with the institutions, officials, academics, and communities that make Barbados and the wider Caribbean such extraordinary places to study and grow. We offer everything from a single activity booking to full end-to-end education migration and placement services.</p>
 </div>
 <aside>
-{stamp(ph("Portrait of Patricia Atherley"), "c-sun")}
+{stamp(ph("Portrait of Patricia Atherley"), "c-sun", cls="portrait")}
 <blockquote class="quote"><p>My goal is simple: to help students enrich their learning and achieve their goals through international education.</p>
 <footer><b>Patricia Atherley</b>Founder &amp; Director, CIEA</footer></blockquote>
 </aside>
@@ -419,7 +422,7 @@ inst_html = "".join(f'''<article class="inst {c}" id="{i}">
 study = page_hero("The Caribbean's Premier Education Destination",
     "World-class universities. A safe and sophisticated island environment. English-speaking. Affordable. Barbados ticks every box.",
     "Aerial view of Bridgetown and the Careenage", "c-sun") + f'''
-<section class="section bg-sun" id="why" aria-labelledby="why9-h"><div class="wrap">
+<section class="section bg-sand" id="why" aria-labelledby="why9-h"><div class="wrap">
 <div class="head"><h2 id="why9-h" class="visually-hidden">Why Barbados</h2></div>
 {reasons(reasons9, "three")}
 </div></section>
@@ -464,7 +467,7 @@ programs = page_hero("Education Beyond the Classroom",
     "From a week-long cultural immersion to a full semester at The UWI, we facilitate education experiences in Barbados that change perspectives and open doors.",
     "Students snorkeling or on a glass-bottom boat", "c-flame") + f'''
 <section class="section"><div class="wrap">{prog_html}</div></section>
-<section class="section bg-sun" aria-labelledby="custom-h"><div class="wrap custom-band">
+<section class="section bg-sand" aria-labelledby="custom-h"><div class="wrap custom-band">
 <div><h2 id="custom-h">Don't See Exactly What You're Looking For?</h2>
 <p>We specialize in custom program design. Tell us your goals, interests, and timeline, and we'll create something tailored just for you.</p></div>
 <div><a class="btn btn-ink" href="contact.html">Request a Custom Program {ic("arrow")}</a></div>
