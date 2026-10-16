@@ -100,4 +100,20 @@
     });
   }
 
+  /* Landing on a section link from another page: fonts and photos can shift the
+     layout after the browser's first jump, so settle on the target once they load. */
+  function settleOnHash() {
+    var id = decodeURIComponent(location.hash.slice(1));
+    var el = id && document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'instant', block: 'start' });
+  }
+  /* Smooth scrolling only switches on after load, so it never animates the
+     first jump past a target that is still moving. */
+  var root = document.documentElement;
+  function ready() { settleOnHash(); root.classList.add('smooth'); }
+  if (location.hash.length > 1) {
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(settleOnHash);
+  }
+  if (document.readyState === 'complete') ready(); else window.addEventListener('load', ready);
+
 })();
