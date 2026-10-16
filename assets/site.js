@@ -117,8 +117,24 @@
     /* A fresh visit starts at the top. Embedded previews can keep the outer page
        scrolled down at the old footer, so a new page looked like nothing happened. */
     var navEntry = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
-    if (!navEntry || navEntry.type === 'navigate') root.scrollIntoView({ behavior: 'instant', block: 'start' });
+    if (!navEntry || navEntry.type === 'navigate') toTop();
   }
   if (document.readyState === 'complete') ready(); else window.addEventListener('load', ready);
+
+  function toTop() {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    root.scrollIntoView({ behavior: 'instant', block: 'start' });
+  }
+  /* Going to another page jumps to the top the moment the link is clicked, so
+     the next page never opens down at the footer, whatever frame it is shown in. */
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    if (a.target && a.target !== '_self') return;
+    var url = new URL(a.href, location.href);
+    if (url.origin !== location.origin) return;
+    if (url.hash && url.pathname === location.pathname) return;
+    toTop();
+  });
 
 })();

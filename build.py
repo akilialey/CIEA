@@ -48,6 +48,10 @@ PHOTOS = {
     "A friendly advisor on a video call": ("student-laptop", "A student smiling at her laptop by a window"),
     "Students volunteering at a beach clean-up or community project": ("beach-cleanup", "Volunteers in gloves collecting plastic from a beach"),
     "Portrait of Patricia Atherley": ("patricia-atherley", "Patricia Atherley, Founder and Director of CIEA"),
+    "UWI Cave Hill campus": ("uwi-cave-hill", "Aerial view of the UWI Cave Hill campus above the west coast"),
+    "Barbados Community College campus": ("bcc", "Barbados Community College building with palm trees"),
+    "Ross University Barbados campus": ("ross-university", "Ross University School of Medicine building in Barbados"),
+    "Medical students in a lab or lecture": ("aub", "Aerial view of the American University of Barbados campus"),
     "A Barbados beach under a blue umbrella": ("beach-umbrella", "A blue umbrella on a white sand Barbados beach"),
 }
 EAGER = {"students-laughing", "chattel-house", "beach-umbrella", "bridgetown-careenage", "bridgetown-parliament", "student-laptop"}
@@ -193,7 +197,7 @@ def page(fname, title, desc, active, body, cta=True, cta_kwargs=None, ld=None):
 <link rel="icon" href="assets/ciea-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Figtree:ital,wght@0,400..800;1,400..600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Fraunces:opsz,wght@9..144,400..700&family=Figtree:ital,wght@0,400..800;1,400..600&display=swap">
 <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body>

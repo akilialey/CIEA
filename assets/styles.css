@@ -19,6 +19,7 @@
   --paper: #ffffff;
   --line: #cfe0e8;
 
+  --serif: "Fraunces", Georgia, "Times New Roman", serif;
   --display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
   --body: "Figtree", "Avenir Next", "Segoe UI", system-ui, sans-serif;
 
@@ -58,15 +59,15 @@ a:hover { color: var(--deep); }
 html { scrollbar-color: var(--sea) var(--tissue); }
 
 h1, h2, h3, h4 {
-  font-family: var(--display);
+  font-family: var(--serif);
   font-optical-sizing: auto;
-  line-height: 1.05;
-  letter-spacing: -0.02em;
+  line-height: 1.08;
+  letter-spacing: -0.015em;
   margin: 0;
   text-wrap: balance;
-  font-weight: 700;
+  font-weight: 600;
 }
-h1 { font-size: var(--step-4); font-weight: 750; letter-spacing: -0.03em; }
+h1 { font-size: var(--step-4); font-weight: 600; letter-spacing: -0.02em; }
 h2 { font-size: var(--step-3); }
 h3 { font-size: var(--step-1); letter-spacing: -0.01em; line-height: 1.2; }
 p { margin: 0; text-wrap: pretty; }
@@ -424,7 +425,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .story aside { position: sticky; top: 110px; display: grid; gap: 2rem; }
 .story .portrait { max-width: 320px; }
 .story .portrait .ph { aspect-ratio: 1 / 1; min-height: 0; }
-.quote { font-family: var(--display); font-weight: 600; font-size: var(--step-2); line-height: 1.2; letter-spacing: -0.015em; margin: 0; }
+.quote { font-family: var(--serif); font-weight: 600; font-size: var(--step-2); line-height: 1.2; letter-spacing: -0.015em; margin: 0; }
 .quote p::before { content: "\201C"; color: var(--flame); }
 .quote p::after { content: "\201D"; color: var(--flame); }
 .quote footer { font-family: var(--body); font-size: .95rem; font-weight: 600; letter-spacing: 0; margin-top: 1rem; color: var(--ink-soft); }
@@ -461,7 +462,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 @media (max-width: 760px) { .inst { grid-template-columns: 1fr; } .inst .frame-wrap { max-width: 320px; } }
 .more-inst { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem 2rem; }
 .more-inst li { border-top: 2px solid var(--ink); padding-top: 1rem; display: grid; gap: .4rem; }
-.more-inst b { font-family: var(--display); font-size: var(--step-1); line-height: 1.2; }
+.more-inst b { font-family: var(--serif); font-size: var(--step-1); line-height: 1.2; }
 .more-inst span { color: var(--ink-soft); font-size: .98rem; }
 @media (max-width: 860px) { .more-inst { grid-template-columns: 1fr; } }
 
@@ -570,7 +571,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
               linear-gradient(0deg, rgba(14,48,68,.45) 0%, rgba(14,48,68,0) 30%);
 }
 .hero-water .hero-grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); padding-block: clamp(3.5rem, 2rem + 6vw, 7.5rem); }
-.hero-water h1 { font-size: clamp(2.6rem, 1.2rem + 3.8vw, 4.9rem); max-width: none; line-height: .98; letter-spacing: -0.035em; }
+.hero-water h1 { font-size: clamp(2.6rem, 1.2rem + 3.8vw, 4.9rem); max-width: none; line-height: 1.02; letter-spacing: -0.02em; }
 .badge {
   display: inline-flex; align-items: center; gap: .6rem; margin: 0;
   font-weight: 700; font-size: .9rem; color: #fff; padding: .5rem 1rem .5rem .75rem; border-radius: 999px;
