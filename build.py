@@ -155,7 +155,7 @@ FOOTER = f'''<footer class="site-footer"><div class="wrap">
 <li><a href="about.html">About Us</a></li><li><a href="about.html#families">For Parents</a></li>
 <li><a href="index.html#faq">FAQ</a></li><li><a href="contact.html">Contact</a></li></ul></div>
 </div>
-<div class="foot-base"><span>&copy; 2025 Caribbean International Education Agency. All rights reserved.</span></div>
+<div class="foot-base"><span>&copy; 2026 Caribbean International Education Agency. All rights reserved.</span></div>
 </div></footer>'''
 
 SITE = "https://studyinthecaribbean.com"
