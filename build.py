@@ -305,6 +305,7 @@ home = f'''
 {stamp(ph("Bridgetown street or a colourful chattel house"), "c-hib", cls="float f3 no-disc")}
 </div>
 </div></section>
+<div class="wrap trust-wrap"><ul class="trust-strip" aria-label="Why families trust CIEA">{"".join(f'<li class="{c}"><span class="ts-ic">{ic(i)}</span>{txt}</li>' for i, c, txt in [("pin", "c-sea", "Barbados-based &amp; on-the-ground"), ("award", "c-flame", "Years of experience facilitating international education"), ("chat", "c-palm", "Free consultation, no obligation"), ("clock", "c-hib", "Response within 24 hours")])}</ul></div>
 <div class="ticker" aria-hidden="true"><div class="ticker-band"><div class="ticker-track">{ticker}{ticker}</div></div></div>
 
 <section class="section" aria-labelledby="who-h"><div class="wrap split">
