@@ -115,6 +115,7 @@ def header(active):
     links = "".join(
         f'<a href="{h}"{" aria-current=\"page\"" if h == active else ""}>{t}</a>' for h, t in NAV)
     return f'''<a class="skip" href="#main">Skip to content</a>
+<a class="promo" href="contact.html"><span class="promo-in"><span class="promo-tag">2027</span><span class="promo-text">Your Caribbean year starts now. Contact us to plan 2027!</span><span class="promo-go">Let's talk {ic("arrow")}</span></span></a>
 <header class="site-header"><div class="wrap header-inner">
 <a class="brand" href="index.html" aria-label="Caribbean International Education Agency, home">
 <img src="assets/ciea-logo.png" alt="" width="52" height="52">
