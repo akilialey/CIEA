@@ -709,15 +709,3 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 @media (prefers-reduced-motion: reduce) { .promo, .promo::after { animation: none; } }
 @media (max-width: 600px) { .promo { font-size: .84rem; } .promo-in { gap: .5rem; } .promo-go { display: none; } }
 
-/* ---------- Photo shapes: island arches, sea pebbles and portholes instead of plain rounded boxes ---------- */
-.frame { border-radius: 50% 50% 28px 28px / 34% 34% 28px 28px; }            /* arch, like Bajan coral-stone doorways */
-.float-stack .f1 .frame { border-radius: 50% 50% 30px 30px / 38% 38% 30px 30px; }
-.float-stack .f2 .frame { border-radius: 44% 56% 48% 52% / 56% 46% 54% 44%; }   /* sea pebble */
-.float-stack .f3 .frame { border-radius: 50%; }                                /* porthole */
-.page-hero .frame { border-radius: 50% 50% 22px 22px / 38% 38% 22px 22px; }
-.portrait .frame { border-radius: 50% 50% 24px 24px / 42% 42% 24px 24px; }
-.inst .frame { border-radius: 64px 14px 64px 14px; }                           /* leaf */
-.postcard .frame { border-radius: 90px 18px 90px 18px; }
-.photo-strip .frame-wrap:nth-child(2) .frame { border-radius: 44% 56% 48% 52% / 56% 46% 54% 44%; }
-.photo-strip .frame-wrap:nth-child(3) .frame { border-radius: 50%; }
-.prog .frame, .program .frame { border-radius: 50% 50% 20px 20px / 30% 30% 20px 20px; }
