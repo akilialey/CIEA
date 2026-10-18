@@ -142,7 +142,7 @@ FOOTER = f'''<footer class="site-footer"><div class="wrap">
 <p>Your one-stop shop for international education in the Caribbean. Co-creators of Barbados Study Tours.</p>
 <p><a href="{WA}" target="_blank" rel="noopener">{PHONE}</a><br><a href="mailto:{EMAIL}">{EMAIL}</a><br>Bridgetown, Saint Michael, Barbados</p></div>
 <div class="foot-col"><h3>Study in Barbados</h3><ul>
-<li><a href="study-in-barbados.html#why">Why Barbados?</a></li><li><a href="study-in-barbados.html#uwi">UWI Cave Hill</a></li>
+<li><a href="study-in-barbados.html#why">Why Barbados?</a></li><li><a href="study-in-barbados.html#uwi">UWI Cave Hill</a></li><li><a href="course-finder.html">UWI Course Finder</a></li>
 <li><a href="study-in-barbados.html#ross">Ross University</a></li><li><a href="study-in-barbados.html#aub">American Univ. of Barbados</a></li>
 <li><a href="study-in-barbados.html#bcc">BCC</a></li><li><a href="services.html#visa">Visa Process</a></li></ul></div>
 <div class="foot-col"><h3>Programs</h3><ul>
@@ -421,12 +421,13 @@ insts = [
      ["Doctor of Medicine (MD)", "Basic Sciences", "Clinical Sciences"],
      ["US Residency Pathway", "Caribbean Medical School", "Barbados Campus"], "Ross University Barbados campus"),
 ]
+INST_CTA = {"uwi": f'<div><a class="btn btn-ink" href="course-finder.html">Search UWI Cave Hill Programmes {ic("arrow")}</a></div>'}
 inst_html = "".join(f'''<article class="inst {c}" id="{i}">
 {stamp(ph(phs), c, cls="no-disc")}
 <div class="inst-main"><div><span class="inst-type">{ty}</span></div>
 <h3>{n}<small>{sn}</small></h3><p class="desc">{d}</p>
 <div class="inst-meta"><h4>Programs</h4><ul class="inst-progs">{"".join(f"<li>{x}</li>" for x in pr)}</ul></div>
-<ul class="tags small" aria-label="Highlights">{"".join(f'<li class="tag">{x}</li>' for x in tg)}</ul>
+<ul class="tags small" aria-label="Highlights">{"".join(f'<li class="tag">{x}</li>' for x in tg)}</ul>{INST_CTA.get(i, "")}
 </div></article>''' for i, c, ty, n, sn, d, pr, tg, phs in insts)
 
 study = page_hero("The Caribbean's Premier Education Destination",
@@ -484,6 +485,68 @@ programs = page_hero("Education Beyond the Classroom",
 </div></section>
 '''
 page("programs.html", "Gap Year, Summer Camps and Study Abroad in Barbados | CIEA", "Gap year, summer camps, faculty-led study abroad and volunteer programs in Barbados.", "programs.html", programs)
+
+# ------------------------------------------------------------------ COURSE FINDER
+# Programme list lives in data/uwi-cave-hill-courses.csv (open it in Excel or Google Sheets to edit, then rerun this script).
+import csv, html as _html
+UG_GUIDE = "https://www.cavehill.uwi.edu/wp-content/uploads/sites/98/Resources/Brochures/UWI-Cave-Hill_-Undergraduate-Programmes-Quick-Reference-Guide-December-2025.pdf"
+PG_GUIDE = "https://www.cavehill.uwi.edu/gradstudies/wp-content/uploads/sites/48/UWI-Cave-Hill-Postgraduate-Programmes-Quick-Guide_Revised-February-2026.pdf"
+COURSE_TYPES = [
+    ("bachelors", "Bachelor's degree", {"BA", "BFA", "BEd", "BSc", "BBA", "BHSc", "LLB", "MBBS"}),
+    ("minor", "Minor", {"Minor"}),
+    ("diploma", "Diploma or certificate", {"Diploma", "Licentiate", "PG Diploma", "PG Certificate"}),
+    ("masters", "Master's degree", {"MA", "MSc", "MEd", "MBA", "EMBA", "MEI", "MPH", "LLM/PG Diploma", "Double LLM", "LLM-EMBA"}),
+    ("research", "MPhil or PhD", {"MPhil", "PhD", "MPhil/PhD"}),
+    ("doctorate", "Professional doctorate", {"DM", "DBA"}),
+]
+def course_type(award):
+    for k, _, s in COURSE_TYPES:
+        if award in s: return k
+    raise ValueError("No course type for award " + award)
+with open(os.path.join(OUT, "data", "uwi-cave-hill-courses.csv"), newline="", encoding="utf-8") as f:
+    courses = [r for r in csv.DictReader(f) if r["programme"].strip()]
+LEVELS = ["Undergraduate", "Postgraduate"]
+faculties = sorted({r["faculty"] for r in courses})
+e = lambda s: _html.escape(s, quote=True)
+def course_card(r):
+    lvl = "ug" if r["level"] == "Undergraduate" else "pg"
+    words = " ".join([r["award"], r["programme"], r["faculty"], r["level"], r["keywords"]]).lower()
+    note = f'<p class="cf-note">{e(r["notes"])}</p>' if r["notes"] else ""
+    return (f'<li class="cf-card {lvl}" data-level="{lvl}" data-faculty="{e(r["faculty"])}" data-type="{course_type(r["award"])}" data-words="{e(words)}">'
+            f'<p class="cf-top"><span class="cf-award">{e(r["award"])}</span><span class="cf-level">{r["level"]}</span></p>'
+            f'<h3>{e(r["programme"])}</h3>'
+            f'<p class="cf-meta">{"" if r["faculty"].startswith("Institute") else "Faculty of "}{e(r["faculty"])}</p>{note}'
+            f'<a class="cf-link" href="{e(r["link"])}" target="_blank" rel="noopener">Faculty page at UWI<span class="visually-hidden"> (opens in a new tab)</span> {ic("arrow")}</a></li>')
+courses.sort(key=lambda r: (LEVELS.index(r["level"]), r["faculty"], [k for k, _, _ in COURSE_TYPES].index(course_type(r["award"])), r["award"], r["programme"]))
+fac_opts = "".join(f'<option value="{e(x)}">{e(x)}</option>' for x in faculties)
+type_opts = "".join(f'<option value="{k}">{t}</option>' for k, t, s in COURSE_TYPES if any(course_type(r["award"]) == k for r in courses))
+n_ug = sum(r["level"] == "Undergraduate" for r in courses)
+finder = page_hero("Find Your Course at UWI Cave Hill",
+    f"Search {len(courses)} undergraduate and postgraduate programmes at The University of the West Indies, Cave Hill Campus. Found one you like? We can help you apply.",
+    "UWI Cave Hill campus", "c-sea") + f'''
+<section class="section cf-section" aria-labelledby="cf-h"><div class="wrap">
+<h2 id="cf-h" class="visually-hidden">Programmes</h2>
+<form class="cf-bar" id="cf" role="search" aria-label="Filter programmes" onsubmit="return false">
+<div class="cf-field cf-search"><label for="cf-q">Search</label><input id="cf-q" name="q" type="search" placeholder="Try law, medicine, computer science" autocomplete="off"></div>
+<div class="cf-field cf-level"><span class="cf-lab" id="cf-level-l">Level</span><div class="cf-seg" role="radiogroup" aria-labelledby="cf-level-l">
+<label><input type="radio" name="level" value="" checked><span>All</span></label>
+<label><input type="radio" name="level" value="ug"><span>Undergraduate</span></label>
+<label><input type="radio" name="level" value="pg"><span>Postgraduate</span></label></div></div>
+<div class="cf-field"><label for="cf-faculty">Faculty</label><select id="cf-faculty" name="faculty"><option value="">All faculties</option>{fac_opts}</select></div>
+<div class="cf-field"><label for="cf-type">Qualification</label><select id="cf-type" name="type"><option value="">All qualifications</option>{type_opts}</select></div>
+</form>
+<div class="cf-status"><p id="cf-count" aria-live="polite">{len(courses)} programmes: {n_ug} undergraduate and {len(courses) - n_ug} postgraduate.</p><button class="cf-reset" type="button" id="cf-reset" hidden>Clear filters</button></div>
+<ul class="cf-list" id="cf-list">{"".join(course_card(r) for r in courses)}</ul>
+<div class="cf-empty" id="cf-empty" hidden><h3>No programmes match that search</h3><p>Try a shorter word, or clear the filters. If you can't find what you're looking for, ask us and we'll check with UWI for you.</p>
+<div class="btn-row"><button class="btn btn-line" type="button" data-cf-reset>Clear filters</button><a class="btn btn-primary" href="contact.html">Ask CIEA {ic("arrow")}</a></div></div>
+<div class="cf-more-row"><button class="btn btn-line" type="button" id="cf-more" hidden>Show more programmes</button></div>
+<p class="cf-source">Programme list taken from UWI Cave Hill's official <a href="{UG_GUIDE}" target="_blank" rel="noopener">undergraduate guide (December 2025)</a> and <a href="{PG_GUIDE}" target="_blank" rel="noopener">postgraduate guide (February 2026)</a>. Entry requirements, fees and start dates are set by UWI, so always confirm the details on the <a href="https://www.cavehill.uwi.edu/" target="_blank" rel="noopener">UWI Cave Hill website</a>.</p>
+</div></section>
+'''
+page("course-finder.html", "UWI Cave Hill Course Finder: Undergraduate and Postgraduate Programmes | CIEA",
+     "Search every undergraduate and postgraduate programme at UWI Cave Hill, Barbados, by faculty, level and qualification.",
+     "course-finder.html", finder,
+     cta_kwargs={"h": "Found a Course You Like?", "p": "Book a free consultation and we'll guide you through applying to UWI Cave Hill."})
 
 # ------------------------------------------------------------------ SERVICES
 core = [
