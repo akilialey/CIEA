@@ -70,6 +70,55 @@
     });
   }
 
+  // Course finder: filter the programme cards by search words, level, faculty and qualification
+  var cf = document.getElementById('cf');
+  if (cf) {
+    var cards = Array.prototype.slice.call(document.querySelectorAll('.cf-card'));
+    var q = document.getElementById('cf-q'), fac = document.getElementById('cf-faculty'), typ = document.getElementById('cf-type');
+    var count = document.getElementById('cf-count'), empty = document.getElementById('cf-empty');
+    var more = document.getElementById('cf-more'), reset = document.getElementById('cf-reset');
+    var PAGE = 36, shown = PAGE, total = cards.length, timer;
+    function level() { var r = cf.querySelector('input[name="level"]:checked'); return r ? r.value : ''; }
+    function norm(s) { return s.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9/ ]+/g, ' '); }
+    function apply(keepPage) {
+      if (!keepPage) shown = PAGE;
+      var words = norm(q.value).split(/\s+/).filter(Boolean), lv = level(), f = fac.value, t = typ.value, n = 0;
+      cards.forEach(function (c) {
+        var ok = (!lv || c.dataset.level === lv) && (!f || c.dataset.faculty === f) && (!t || c.dataset.type === t) &&
+          words.every(function (w) { return c.dataset.words.indexOf(w) !== -1; });
+        if (ok) n++;
+        c.hidden = !ok || n > shown;
+      });
+      var filtered = words.length || lv || f || t;
+      count.textContent = filtered ? (n === 1 ? '1 programme matches' : n + ' programmes match') : total + ' programmes';
+      empty.hidden = n !== 0;
+      reset.hidden = !filtered;
+      more.hidden = n <= shown;
+      if (n > shown) more.textContent = 'Show more programmes (' + (n - shown) + ' more)';
+      var p = new URLSearchParams();
+      if (q.value.trim()) p.set('q', q.value.trim());
+      if (lv) p.set('level', lv); if (f) p.set('faculty', f); if (t) p.set('type', t);
+      var s = p.toString();
+      history.replaceState(null, '', location.pathname + (s ? '?' + s : ''));
+    }
+    // Pick up filters from the address so a filtered list can be shared or bookmarked
+    var start = new URLSearchParams(location.search);
+    q.value = start.get('q') || '';
+    var lvIn = cf.querySelector('input[name="level"][value="' + (start.get('level') || '').replace(/[^a-z]/g, '') + '"]');
+    if (lvIn) lvIn.checked = true;
+    [[fac, 'faculty'], [typ, 'type']].forEach(function (x) {
+      var v = start.get(x[1]);
+      if (v && Array.prototype.some.call(x[0].options, function (o) { return o.value === v; })) x[0].value = v;
+    });
+    q.addEventListener('input', function () { clearTimeout(timer); timer = setTimeout(function () { apply(); }, 120); });
+    cf.addEventListener('change', function () { apply(); });
+    more.addEventListener('click', function () { shown += PAGE * 2; apply(true); });
+    function clearAll() { cf.reset(); apply(); q.focus(); }
+    reset.addEventListener('click', clearAll);
+    document.querySelectorAll('[data-cf-reset]').forEach(function (b) { b.addEventListener('click', clearAll); });
+    apply();
+  }
+
   // Contact form: client-side validation and success state
   var form = document.getElementById('consult-form');
   if (form) {
