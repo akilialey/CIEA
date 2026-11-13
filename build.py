@@ -9,7 +9,7 @@ EMAIL = "info@studyinthecaribbean.com"
 
 SPRITE = """<svg width="0" height="0" style="position:absolute" aria-hidden="true">
 <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7"/></symbol>
-<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></symbol><symbol id="i-arrow-l" viewBox="0 0 24 24"><path d="M20 12H5M11 6l-6 6 6 6"/></symbol><symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3.4 8.2-8 9-4.6-.8-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></symbol>
 <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
 <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2.2l1.6-2.2h5.4L16.3 7h2.2A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5z"/><circle cx="12" cy="12.8" r="3.4"/></symbol>
 <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></symbol>
@@ -27,6 +27,8 @@ SPRITE = """<svg width="0" height="0" style="position:absolute" aria-hidden="tru
 <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8.5" r="3.2"/><path d="M3 19.5c.5-3.3 2.9-5.5 6-5.5s5.5 2.2 6 5.5"/><circle cx="17" cy="9.5" r="2.5"/><path d="M16.5 14.2c2.4.2 4 2 4.5 4.6"/></symbol>
 <symbol id="i-steth" viewBox="0 0 24 24"><path d="M6 3.5v5a4 4 0 0 0 8 0v-5"/><path d="M10 12.5v2a5 5 0 0 0 10 0v-1.5"/><circle cx="20" cy="11" r="2"/></symbol>
 <symbol id="i-award" viewBox="0 0 24 24"><circle cx="12" cy="9" r="5.5"/><path d="M8.6 13.4L7 20.5l5-2.5 5 2.5-1.6-7.1"/></symbol>
+<symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.4 2.5 3.6 5.3 3.6 8.5s-1.2 6-3.6 8.5c-2.4-2.5-3.6-5.3-3.6-8.5s1.2-6 3.6-8.5z"/></symbol>
+<symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></symbol>
 <symbol id="i-tag" viewBox="0 0 24 24"><path d="M3.5 12.2V4.5a1 1 0 0 1 1-1h7.7l8.3 8.3a1 1 0 0 1 0 1.4l-7.3 7.3a1 1 0 0 1-1.4 0z"/><circle cx="8" cy="8" r="1.6"/></symbol>
 </svg>"""
 
@@ -51,6 +53,7 @@ PHOTOS = {
     "UWI Cave Hill campus": ("uwi-cave-hill", "Aerial view of the UWI Cave Hill campus above the west coast"),
     "Barbados Community College campus": ("bcc", "Barbados Community College building with palm trees"),
     "An advisor reviewing an application with a student": ("advisor-meeting", "An advisor talking with a student at a table by a sunny window"),
+    "Grantley Adams International Airport": ("airport", "Grantley Adams International Airport in Barbados"),
     "A Barbados beach under a blue umbrella": ("beach-umbrella", "A blue umbrella on a white sand Barbados beach"),
 }
 EAGER = {"students-laughing", "chattel-house", "beach-umbrella", "bridgetown-careenage", "bridgetown-parliament", "student-laptop"}
@@ -64,13 +67,9 @@ def ph(text, kind="Photo"):
     return (f'<div class="ph" role="img" aria-label="{kind} placeholder: {text}">{ic("camera")}'
             f'<span class="ph-k">{kind} placeholder</span><span class="ph-t">{text}</span></div>')
 
-def stamp(inner, color="c-sun", label=None, cls=""):
-    """Rounded photo window; the colour drives the sun disc behind it."""
-    chip = ""
-    if label:
-        text = label[0] if isinstance(label, tuple) else label
-        chip = f'<span class="chip"><i></i>{text}</span>'
-    return f'<div class="frame-wrap {color} {cls}"><div class="frame">{inner}{chip}</div></div>'
+def stamp(inner, color="", label=None, cls=""):
+    """Plain rounded photo."""
+    return f'<figure class="photo {cls}">{inner}</figure>'
 
 ISLAND = "M220.7 151.0 C213.0 153.2 200.2 169.7 195.5 178.8 C190.9 187.9 191.8 196.2 192.6 205.6 C193.4 215.1 198.4 225.5 200.4 235.4 C202.3 245.3 203.8 254.9 204.2 265.2 C204.7 275.5 202.2 287.1 203.3 297.0 C204.4 306.9 209.4 314.9 211.0 324.8 C212.6 334.7 210.2 346.3 213.0 356.6 C215.7 366.8 224.7 377.9 227.5 386.4 C230.2 394.8 225.4 403.1 229.4 407.2 C233.4 411.3 244.7 409.4 251.6 411.2 C258.6 413.0 263.7 416.0 271.0 418.1 C278.2 420.3 287.6 420.3 295.2 424.1 C302.7 427.9 310.0 440.1 316.4 441.0 C322.9 441.8 322.9 440.1 333.9 429.1 C344.8 418.0 369.8 391.8 382.2 374.4 C394.6 357.1 407.8 338.0 408.3 324.8 C408.8 311.5 399.9 305.3 385.1 295.0 C370.3 284.7 335.6 274.5 319.3 263.2 C303.1 252.0 297.1 239.6 287.4 227.5 C277.8 215.4 268.9 201.0 261.3 190.7 C253.7 180.5 248.7 172.5 242.0 165.9 C235.2 159.3 228.4 148.9 220.7 151.0 Z"
 CITIES = [("MONTREAL", 205, 34, "out"), ("TORONTO", 96, 82, "in"), ("NEW YORK", 52, 172, "out"), ("MIAMI", 44, 268, "in"),
@@ -99,13 +98,6 @@ def routes(legend=True):
 <text class="home-label" x="{bx - 14:.0f}" y="{by + 30:.0f}" text-anchor="end">BRIDGETOWN</text>
 </svg></div>'''
 
-def seal(text="CO-CREATORS OF BARBADOS STUDY TOURS · "):
-    return f'''<div class="seal" aria-hidden="true"><svg viewBox="0 0 200 200">
-<defs><path id="sealp" d="M100 100 m-74 0 a74 74 0 1 1 148 0 a74 74 0 1 1 -148 0"/></defs>
-<text style="font-size:15.5px"><textPath href="#sealp" textLength="458" lengthAdjust="spacing">{text}</textPath></text>
-<text x="100" y="111" text-anchor="middle" style="font-size:34px;font-weight:800">CIEA</text>
-</svg></div>'''
-
 NAV = [("study-in-barbados.html", "Study in Barbados"), ("programs.html", "Programs"), ("services.html", "Services"),
        ("about.html#families", "For Parents"), ("about.html", "About")]
 
@@ -130,7 +122,7 @@ def envelope(h="Ready to Start Your International Education Journey?", p="Book a
 <div class="envelope">
 <div class="body"><h2 id="env-h">{h}</h2><p>{p}</p>
 <div class="btn-row"><a class="btn btn-primary" href="contact.html">Book Free Consultation {ic("arrow")}</a>
-<a class="btn btn-line" href="{WA}" target="_blank" rel="noopener">{ic("chat")}WhatsApp Us</a></div>{t}</div>
+<a class="btn btn-line-light" href="{WA}" target="_blank" rel="noopener">{ic("chat")}WhatsApp Us</a></div>{t}</div>
 {routes(legend=False)}
 </div></div></section>'''
 
@@ -183,7 +175,7 @@ def page(fname, title, desc, active, body, cta=True, cta_kwargs=None, ld=None):
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{title}</title>
 <meta name="description" content="{desc}">
-<meta name="theme-color" content="#1c4f6c">
+<meta name="theme-color" content="#0b1220">
 <link rel="canonical" href="{url}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="{ORG_NAME}">
@@ -199,7 +191,7 @@ def page(fname, title, desc, active, body, cta=True, cta_kwargs=None, ld=None):
 <link rel="icon" href="assets/ciea-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Fraunces:opsz,wght@9..144,400..700&family=Figtree:ital,wght@0,400..800;1,400..600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300..800&family=Geist+Mono:wght@500&display=swap">
 <link rel="stylesheet" href="assets/styles.css?v={ASSET_V}">
 </head>
 <body>
@@ -219,13 +211,14 @@ def page(fname, title, desc, active, body, cta=True, cta_kwargs=None, ld=None):
         f.write(html)
     print("wrote", fname, len(html))
 
-def label(t):
-    return f'<p class="label"><i></i>{t}</p>'
+def label(t, cls=""):
+    return f'<p class="label {cls}">{t}</p>'
 
-def page_hero(h1, sub, ph_text, color="c-sun"):
-    return f'''<section class="hero page-hero"><div class="wrap hero-grid">
-<div class="hero-copy"><h1>{h1}</h1><p class="lede">{sub}</p></div>
-{stamp(ph(ph_text), color, cls="no-disc")}
+def page_hero(h1, sub, ph_text, color="", cta=True):
+    btn = f'<div class="btn-row"><a class="btn btn-primary" href="contact.html">Book Free Consultation {ic("arrow")}</a></div>' if cta else ""
+    return f'''<section class="page-hero"><div class="wrap page-hero-grid">
+<div class="page-hero-copy"><h1>{h1}</h1><p class="lede">{sub}</p>{btn}</div>
+{stamp(ph(ph_text))}
 </div></section>'''
 
 def checks(items, cls=""):
@@ -256,9 +249,11 @@ programs_cards = [
      "Airport pickup, accommodation assistance, banking assistance, SIM cards, and full settlement support for international students coming to Barbados, and their families.",
      "services.html#arrival"),
 ]
+card_photos = ["Young people hiking or exploring the Barbados east coast", "An advisor reviewing an application with a student", "UWI Cave Hill campus",
+               "A university group on a heritage tour with a local guide", "Students volunteering at a beach clean-up or community project", "Grantley Adams International Airport"]
 sheet = "".join(
-    f'''<article class="prog {c}"><h3>{t}</h3><p>{p}</p><a class="more" href="{h}">Learn more {ic("arrow")}<span class="visually-hidden"> about {t}</span></a></article>'''
-    for c, t, p, h in programs_cards)
+    f'''<article class="prog {c}">{ph(card_photos[n])}<div class="prog-body"><h3><a href="{h}">{t}</a></h3><p>{p}</p><span class="more" aria-hidden="true">Learn more {ic("arrow")}</span></div></article>'''
+    for n, (c, t, p, h) in enumerate(programs_cards))
 
 reasons6 = [
     ("Fully English-Speaking", "No language barrier. Barbados has a highly educated, English-speaking population with deep ties to the UK and North America."),
@@ -268,6 +263,9 @@ reasons6 = [
     ("Affordable Tuition", "Tuition costs are significantly lower than equivalent programs in North America or the UK, without sacrificing quality."),
     ("World-Class Institutions", "Home to The Cave Hill Campus of The University of the West Indies, an internationally accredited, highly ranked institution, offering undergraduate and postgraduate degrees across seven faculties. Also home to several accredited off-shore medical schools."),
 ]
+
+why_icons = ["globe", "shield", "sun", "steth", "tag", "cap"]
+why_cards = "".join(f'<li class="why-card"><span class="why-ic">{ic(i)}</span><span class="why-n">{n+1:02d}</span><h3>{a}</h3><p>{b}</p></li>' for n, ((a, b), i) in enumerate(zip(reasons6, why_icons)))
 
 faqs = [
     ("Do international students need a visa to study in Barbados?", "Most international students require a Student Visa to study in Barbados. Citizens of several countries may enter visa-free initially. We advise on the full visa process."),
@@ -284,60 +282,72 @@ faq_html = "".join(
 
 services_tags = ["Accommodation sourcing and inspection", "On-ground Transportation", "Boat Tours, Swimming With Turtles &amp; Snorkeling", "Nature Hikes",
                  "Cultural Tours", "Activity Bookings", "Expert/Speaker Bookings"]
-ticker_items = [t for _, t, _, _ in programs_cards]
-ticker = "".join(f'<span>{t}</span><i aria-hidden="true"></i>' for t in ticker_items)
+
+route_tiles = [("study-in-barbados.html", "cap", "c-sea", "Study in Barbados", "College or University Placement"),
+               ("services.html#placement", "globe", "c-sun", "Study Abroad", "Canada / UK / Australia"),
+               ("programs.html#study-tours", "users", "c-palm", "Barbados Study Tours", "For institutions"),
+               ("programs.html#gap-year", "sun", "c-flame", "Short-term Immersions", "Summer, Winter &amp; Gap Year")]
 
 home = f'''
-<section class="hero hero-water"><canvas class="water" aria-hidden="true"></canvas><div class="wrap hero-grid">
+<section class="hero"><div class="wrap hero-grid">
 <div class="hero-copy">
-<h1><span>Your Caribbean</span> <span>Education Experience</span> <em>Starts Here</em></h1>
+<p class="hero-badge">{ic("pin")}Based in Barbados &middot; Serving the World</p>
+<h1>Your Caribbean Education Experience <em>Starts Here</em></h1>
 <p class="lede">Caribbean International Education Agency (CIEA) is your one-stop shop for information and service to make your dream of studying in the Caribbean a reality.</p>
 <p class="hero-small">We connect students and institutions across the globe with educational opportunities in the Caribbean, with a focus on Barbados, and Barbadian students with opportunities abroad, from short-term immersions and cultural experiences to full degree programs.</p>
-<div class="btn-row"><a class="btn btn-primary" href="contact.html">Book Free Consultation {ic("arrow")}</a><a class="btn btn-ghost" href="programs.html">Explore Programs</a></div>
+<div class="btn-row"><a class="btn btn-primary btn-lg" href="contact.html">Book Free Consultation {ic("arrow")}</a><a class="btn btn-line btn-lg" href="programs.html">Explore Programs</a></div>
 </div>
-<div class="float-stack">
-{stamp(ph("Students laughing together on a Barbados beach or campus"), "c-sun", cls="float f1")}
-{stamp(ph("A Barbados beach under a blue umbrella"), "c-palm", cls="float f2 no-disc")}
-{stamp(ph("Bridgetown street or a colourful chattel house"), "c-hib", cls="float f3 no-disc")}
+<figure class="hero-photo">{ph("Students laughing together on a Barbados beach or campus")}<figcaption>{ic("award")}Co-creators of Barbados Study Tours</figcaption></figure>
 </div>
-</div></section>
-<div class="wrap trust-wrap"><ul class="trust-strip" aria-label="Why families trust CIEA">{"".join(f'<li class="{c}"><span class="ts-ic">{ic(i)}</span>{txt}</li>' for i, c, txt in [("pin", "c-sea", "Barbados-based &amp; on-the-ground"), ("award", "c-flame", "Years of experience in international education and tourism"), ("chat", "c-palm", "Free consultation, no obligation"), ("clock", "c-hib", "Response within 24 hours")])}</ul></div>
-<div class="ticker" aria-hidden="true"><div class="ticker-band"><div class="ticker-track">{ticker}{ticker}</div></div></div>
+<div class="wrap"><nav class="route-bar" aria-label="Find your path">{"".join(f'<a class="route {c}" href="{h}"><span class="route-ic">{ic(i)}</span><span class="route-t"><b>{t}</b><small>{sub}</small></span><span class="route-go">{ic("arrow")}</span></a>' for h, i, c, t, sub in route_tiles)}</nav></div>
+</section>
+
+<section class="trust-band" aria-label="Why families trust CIEA"><div class="wrap"><ul class="trust-strip">{"".join(f'<li><span class="ts-ic">{ic(i)}</span>{txt}</li>' for i, txt in [("pin", "Barbados-based &amp; on-the-ground"), ("award", "Years of experience in international education and tourism"), ("chat", "Free consultation, no obligation"), ("clock", "Response within 24 hours")])}</ul></div></section>
 
 <section class="section" aria-labelledby="who-h"><div class="wrap split">
-<div class="figure-stamp">{stamp(ph("An advisor meeting a student and parent, warm and natural"), "c-palm")}{seal()}</div>
+<div class="who-photos">{stamp(ph("An advisor meeting a student and parent, warm and natural"), cls="who-a")}{stamp(ph("Bridgetown street or a colourful chattel house"), cls="who-b")}</div>
 <div class="stack">
 {label("About CIEA")}
 <h2 id="who-h">A One-Stop Shop for International Education Services</h2>
 <p>We are based on the beautiful, safe, and sophisticated island of Barbados, where most of our programs and services are anchored. Our many years of combined experience in international education and tourism, and our extensive network of connections across the Caribbean, position us to offer multi-country experiences.</p>
 <p>Whether you're an international student coming to Barbados for a summer/winter immersion or a full degree, a Barbadian family navigating the path to a Canadian, UK or Australian university, or an international institution looking to organise a study tour to the Caribbean, CIEA is your trusted partner.</p>
-<div class="mt-2">{checks(["Barbados-based &amp; on-the-ground", "Institutional &amp; individual clients", "Multi-country Caribbean coverage", "Years of experience in international education and tourism"], "two")}</div>
+{checks(["Barbados-based &amp; on-the-ground", "Institutional &amp; individual clients", "Multi-country Caribbean coverage", "Years of experience in international education and tourism"], "two")}
 </div></div></section>
 
-<section class="section bg-tissue" id="programs" aria-labelledby="prog-h"><div class="wrap">
+<section class="section bg-mist" id="programs" aria-labelledby="prog-h"><div class="wrap">
 <div class="head">{label("What We Offer")}<h2 id="prog-h">Programs &amp; Services</h2><p>From short-term immersions to full medical school placement. Expert guidance and on-the-ground support at every stage.</p></div>
 <div class="sheet">{sheet}</div>
 </div></section>
 
-<section class="section bg-sand" aria-labelledby="why-h"><div class="wrap reasons-layout">
-<div class="reasons-aside">
-{label("Why Choose Barbados?")}
-<h2 id="why-h">A Caribbean Island Unlike Any Other</h2>
-<p>Barbados offers world-class education in one of the most beautiful, safe, and sophisticated environments in the world.</p>
-<div><a class="btn btn-ink" href="study-in-barbados.html#institutions">Explore Barbados Institutions {ic("arrow")}</a></div>
-<div class="postcard">{stamp(ph("Wide shot of the Barbados west coast or Carlisle Bay"), "c-sea", cls="no-disc")}</div>
+<section class="section band-deep why" aria-labelledby="why-h">
+<div class="wrap why-head">
+<div class="stack">{label("Why Choose Barbados?", "on-dark")}
+<h2 id="why-h">A Caribbean Island Unlike Any Other</h2></div>
+<div class="stack why-intro"><p>Barbados offers world-class education in one of the most beautiful, safe, and sophisticated environments in the world.</p>
+<div><a class="btn btn-sun" href="study-in-barbados.html#institutions">Explore Barbados Institutions {ic("arrow")}</a></div></div>
 </div>
-{reasons(reasons6)}
-</div></section>
+<div class="carousel" data-carousel>
+<ul class="why-track" tabindex="0" aria-label="Reasons to choose Barbados">
+<li class="why-photo">{stamp(ph("Wide shot of the Barbados west coast or Carlisle Bay"))}</li>
+{why_cards}
+</ul>
+<div class="wrap carousel-foot">
+<div class="carousel-bar" aria-hidden="true"><span></span></div>
+<div class="carousel-btns"><button class="carousel-btn" type="button" data-dir="-1" aria-label="Previous reasons">{ic("arrow-l")}</button><button class="carousel-btn" type="button" data-dir="1" aria-label="Next reasons">{ic("arrow")}</button></div>
+</div>
+</div>
+</section>
 
 <section class="section" id="one-service" aria-labelledby="one-h"><div class="wrap one-service">
 <div class="stack">{label("Miscellaneous Stand-Alone Services")}<h2 id="one-h">What Do You Need?</h2>
-<p class="lede">We offer individual services for institutions and individuals who need specific support without a full package commitment.</p></div>
-<ul class="tags">{"".join(f'<li class="tag {["c-sun","c-palm","c-flame","c-sea"][n % 4]}"><span class="dot">{ic("check")}</span>{t}</li>' for n, t in enumerate(services_tags))}</ul>
+<p class="lede">We offer individual services for institutions and individuals who need specific support without a full package commitment.</p>
+<div><a class="btn btn-primary" href="contact.html">Book Free Consultation {ic("arrow")}</a></div></div>
+<ul class="tags">{"".join(f'<li class="tag"><span class="dot">{ic("check")}</span>{t}</li>' for t in services_tags)}</ul>
 </div></section>
 
-<section class="section bg-tissue" id="faq" aria-labelledby="faq-h"><div class="wrap faq-layout">
-<div class="head">{label("Common Questions")}<h2 id="faq-h">Frequently Asked Questions</h2></div>
+<section class="section bg-mist" id="faq" aria-labelledby="faq-h"><div class="wrap faq-layout">
+<div class="head">{label("Common Questions")}<h2 id="faq-h">Frequently Asked Questions</h2>
+<div><a class="btn btn-line" href="{WA}" target="_blank" rel="noopener">{ic("chat")}WhatsApp Us</a></div></div>
 <div class="faq">{faq_html}</div>
 </div></section>
 '''
@@ -370,7 +380,7 @@ about = page_hero("Rooted in Barbados. Reaching the World.",
 <p>We offer everything from a single activity booking to full end-to-end education migration and placement services.</p>
 </div>
 <aside>
-{stamp(ph("Portrait of Patricia Atherley"), "c-sun", cls="portrait")}
+{stamp(ph("Portrait of Patricia Atherley"), cls="portrait")}
 <blockquote class="quote"><p>My goal is simple, to open the eyes of the world to Barbados as a world-class study location, and to work with partners and institutions to help students enrich their lives through international education experiences.</p>
 <footer><b>Patricia Atherley</b>Founder &amp; Director, CIEA</footer></blockquote>
 </aside>
@@ -414,7 +424,7 @@ insts = [
      [], [], "A university group on a heritage tour with a local guide"),
 ]
 inst_html = "".join(f'''<article class="inst {c}" id="{i}">
-{stamp(ph(phs), c, cls="no-disc")}
+{stamp(ph(phs), cls="inst-photo")}
 <div class="inst-main"><div><span class="inst-type">{ty}</span></div>
 <h3>{n}{f"<small>{sn}</small>" if sn else ""}</h3><p class="desc">{d}</p>
 {f'<div class="inst-meta"><h4>Programs</h4><ul class="inst-progs">{"".join(f"<li>{x}</li>" for x in pr)}</ul></div>' if pr else ""}
@@ -459,7 +469,7 @@ progs = [
      "Students volunteering at a beach clean-up or community project"),
 ]
 prog_html = "".join(f'''<article class="program" id="{i}">
-<div class="figure-stamp">{stamp(ph(phs), c)}</div>
+{stamp(ph(phs), cls="program-photo")}
 <div class="copy"><h2>{t}</h2><p>{d}</p><h3>What's included</h3>{checks(inc)}</div>
 </article>''' for i, c, t, d, inc, phs in progs)
 
@@ -504,7 +514,7 @@ interests = ["Study in Barbados: College or University Placement", "Study Abroad
              "Medical School Admission", "Short-term Immersion Program", "Barbados Study Tour Support", "Parent/Family Support Service", "General Inquiry"]
 contact = page_hero("Let's Talk",
     "Book your free 30-minute consultation. No pressure, no obligation. Just expert advice tailored to your situation.",
-    "A friendly advisor on a video call", "c-palm") + f'''
+    "A friendly advisor on a video call", "c-palm", cta=False) + f'''
 <section class="section"><div class="wrap contact-grid">
 <div class="label-card">
 <dl>
