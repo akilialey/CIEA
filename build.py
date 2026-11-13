@@ -444,6 +444,7 @@ study = page_hero("The Caribbean's Premier Education Destination",
 <ul class="more-inst" style="margin-top:clamp(3.5rem,6vw,5rem)" aria-label="Additional institutions">
 <li><b>Samuel Jackman Prescod Institute of Technology</b><span>Offering technical and vocational training</span></li>
 </ul>
+<div class="btn-row" style="margin-top:2rem"><a class="btn btn-ink" href="course-finder.html">Find a Program {ic("arrow")}</a></div>
 </div></section>
 '''
 page("study-in-barbados.html", "Study in Barbados: Universities and Medical Schools | CIEA", "Why Barbados is the Caribbean's premier education destination, and the institutions you can study at.", "study-in-barbados.html", study)
@@ -483,6 +484,7 @@ programs = page_hero("Education Beyond the Classroom",
 </div></section>
 '''
 page("programs.html", "Gap Year, Summer Camps and Study Abroad in Barbados | CIEA", "Gap year, summer camps, Barbados study tours and volunteer programs in Barbados.", "programs.html", programs)
+
 
 # ------------------------------------------------------------------ SERVICES
 core = [
@@ -549,6 +551,90 @@ contact = page_hero("Let's Talk",
 </div></section>
 '''
 page("contact.html", "Contact CIEA | Free Study Consultation in Barbados", "Book a free 30-minute consultation with the Caribbean International Education Agency.", "contact.html", contact, cta=False)
+
+# ------------------------------------------------------------------ PROGRAM FINDER
+# Program list lives in data/barbados-programmes.csv (open it in Excel or Google Sheets to edit, then rerun this script).
+import csv, html as _html
+SCHOOLS = [  # CSV institution value, full name, where the list came from
+    ("UWI Cave Hill", "The University of the West Indies, Cave Hill Campus", "https://www.cavehill.uwi.edu/"),
+    ("BCC", "Barbados Community College", "https://bcc.edu.bb/Academics/Programmes/"),
+    ("Codrington College", "Codrington College", "https://codringtoncollege.edu.bb/programmes/"),
+    ("SJPI", "Samuel Jackman Prescod Institute of Technology", "https://www.sjpi.edu.bb/prospective-students/full-time-programmes/"),
+]
+UWI_UG_GUIDE = "https://www.cavehill.uwi.edu/wp-content/uploads/sites/98/Resources/Brochures/UWI-Cave-Hill_-Undergraduate-Programmes-Quick-Reference-Guide-December-2025.pdf"
+UWI_PG_GUIDE = "https://www.cavehill.uwi.edu/gradstudies/wp-content/uploads/sites/48/UWI-Cave-Hill-Postgraduate-Programmes-Quick-Guide_Revised-February-2026.pdf"
+COURSE_TYPES = [
+    ("certificate", "Certificate", {"Certificate", "PG Certificate"}),
+    ("diploma", "Diploma", {"Diploma", "Licentiate", "LTh", "PG Diploma"}),
+    ("associate", "Associate degree", {"Associate Degree"}),
+    ("bachelors", "Bachelor's degree", {"BA", "BFA", "BEd", "BSc", "BBA", "BHSc", "LLB", "MBBS", "Bachelor's Degree"}),
+    ("minor", "Major or minor", {"Minor", "Major"}),
+    ("masters", "Master's degree", {"MA", "MSc", "MEd", "MBA", "EMBA", "MEI", "MPH", "LLM/PG Diploma", "Double LLM", "LLM-EMBA"}),
+    ("research", "MPhil or PhD", {"MPhil", "PhD", "MPhil/PhD"}),
+    ("doctorate", "Professional doctorate", {"DM", "DBA"}),
+]
+def course_type(award):
+    for k, _, s in COURSE_TYPES:
+        if award in s: return k
+    raise ValueError("No qualification type for award " + award)
+with open(os.path.join(OUT, "data", "barbados-programmes.csv"), newline="", encoding="utf-8") as f:
+    courses = [r for r in csv.DictReader(f) if r["programme"].strip()]
+school_order = [s for s, _, _ in SCHOOLS]
+school_slug = {s: re.sub(r"[^a-z]+", "-", s.lower()).strip("-") for s in school_order}
+LEVELS = ["Undergraduate", "Postgraduate"]
+e = lambda s: _html.escape(s, quote=True)
+def area_label(r):
+    a = r["faculty"]
+    if r["institution"] == "UWI Cave Hill" and not a.startswith("Institute"): return "Faculty of " + a
+    return a
+def link_label(r):
+    # Some programs only appear on a faculty's or school's list page, so say which kind of page the link opens
+    if re.search(r"/programmes/((under|post)graduate/)?$|/gradstudies/$|/Academics/$|full-time-programmes/", r["link"]):
+        return "Program list at " + ("UWI" if r["institution"] == "UWI Cave Hill" else r["institution"])
+    return "Program page at " + ("UWI" if r["institution"] == "UWI Cave Hill" else r["institution"])
+def course_card(r):
+    lvl = "ug" if r["level"] == "Undergraduate" else "pg"
+    sch = school_slug[r["institution"]]
+    words = " ".join([r["award"], r["programme"], r["faculty"], r["institution"], dict((s, n) for s, n, _ in SCHOOLS)[r["institution"]], r["level"], r["keywords"]]).lower()
+    note = f'<p class="cf-note">{e(r["notes"])}</p>' if r["notes"] else ""
+    return (f'<li class="cf-card {lvl}" data-school="{sch}" data-level="{lvl}" data-area="{e(r["faculty"])}" data-type="{course_type(r["award"])}" data-words="{e(words)}">'
+            f'<p class="cf-top"><span class="cf-award">{e(r["award"])}</span><span class="cf-school">{e(r["institution"])}</span></p>'
+            f'<h3>{e(r["programme"])}</h3>'
+            f'<p class="cf-meta">{e(area_label(r))} <span aria-hidden="true">&middot;</span> {r["level"]}</p>{note}'
+            f'<a class="cf-link" href="{e(r["link"])}" target="_blank" rel="noopener">{link_label(r)}<span class="visually-hidden"> (opens in a new tab)</span> {ic("arrow")}</a></li>')
+courses.sort(key=lambda r: (school_order.index(r["institution"]), LEVELS.index(r["level"]), r["faculty"], [k for k, _, _ in COURSE_TYPES].index(course_type(r["award"])), r["programme"], r["award"]))
+counts = {s: sum(r["institution"] == s for r in courses) for s in school_order}
+school_opts = "".join(f'<option value="{school_slug[s]}">{e(n)} ({counts[s]})</option>' for s, n, _ in SCHOOLS)
+area_opts = "".join(f'<optgroup label="{e(s)}" data-school="{school_slug[s]}">' + "".join(
+    f'<option value="{e(a)}">{e(a)}</option>' for a in sorted({r["faculty"] for r in courses if r["institution"] == s})) + "</optgroup>" for s in school_order)
+type_opts = "".join(f'<option value="{k}">{t}</option>' for k, t, s in COURSE_TYPES if any(course_type(r["award"]) == k for r in courses))
+finder = page_hero("Find Your Program in Barbados",
+    f"Search {len(courses)} programs at UWI Cave Hill, Barbados Community College, Codrington College and the Samuel Jackman Prescod Institute of Technology. Found one you like? We can help you apply.",
+    "UWI Cave Hill campus", cta=False) + f'''
+<section class="section cf-section" aria-labelledby="cf-h"><div class="wrap">
+<h2 id="cf-h" class="visually-hidden">Programs</h2>
+<form class="cf-bar" id="cf" role="search" aria-label="Filter programs" onsubmit="return false">
+<div class="cf-field cf-search"><label for="cf-q">Search</label><input id="cf-q" name="q" type="search" placeholder="Try nursing, law, computer science" autocomplete="off"></div>
+<div class="cf-field"><label for="cf-school">School</label><select id="cf-school" name="school"><option value="">All schools</option>{school_opts}</select></div>
+<div class="cf-field cf-level"><span class="cf-lab" id="cf-level-l">Level</span><div class="cf-seg" role="radiogroup" aria-labelledby="cf-level-l">
+<label><input type="radio" name="level" value="" checked><span>All</span></label>
+<label><input type="radio" name="level" value="ug"><span>Undergraduate</span></label>
+<label><input type="radio" name="level" value="pg"><span>Postgraduate</span></label></div></div>
+<div class="cf-field"><label for="cf-area">Faculty or department</label><select id="cf-area" name="area"><option value="">All faculties and departments</option>{area_opts}</select></div>
+<div class="cf-field"><label for="cf-type">Qualification</label><select id="cf-type" name="type"><option value="">All qualifications</option>{type_opts}</select></div>
+</form>
+<div class="cf-status"><p id="cf-count" aria-live="polite">{len(courses)} programs</p><button class="cf-reset" type="button" id="cf-reset" hidden>Clear filters</button></div>
+<ul class="cf-list" id="cf-list">{"".join(course_card(r) for r in courses)}</ul>
+<div class="cf-empty" id="cf-empty" hidden><h3>No programs match that search</h3><p>Try a shorter word, or clear the filters. If you can't find what you're looking for, ask us and we'll check with the schools for you.</p>
+<div class="btn-row"><button class="btn btn-line" type="button" data-cf-reset>Clear filters</button><a class="btn btn-primary" href="contact.html">Ask CIEA {ic("arrow")}</a></div></div>
+<div class="cf-more-row"><button class="btn btn-line" type="button" id="cf-more" hidden>Show more programs</button></div>
+<p class="cf-source">Program lists taken from each school's own website in November 2026: UWI Cave Hill's <a href="{UWI_UG_GUIDE}" target="_blank" rel="noopener">undergraduate guide</a> and <a href="{UWI_PG_GUIDE}" target="_blank" rel="noopener">postgraduate guide</a>, <a href="{SCHOOLS[1][2]}" target="_blank" rel="noopener">BCC</a>, <a href="{SCHOOLS[2][2]}" target="_blank" rel="noopener">Codrington College</a> and <a href="{SCHOOLS[3][2]}" target="_blank" rel="noopener">SJPI</a>. Entry requirements, fees and start dates are set by each school, so always confirm the details with them.</p>
+</div></section>
+'''
+page("course-finder.html", "Program Finder: Study Programs in Barbados | CIEA",
+     "Search undergraduate, postgraduate, technical and vocational programs at UWI Cave Hill, BCC, Codrington College and SJPI in Barbados.",
+     "course-finder.html", finder,
+     cta_kwargs={"h": "Found a Program You Like?", "p": "Book a free consultation and we'll guide you through applying."})
 
 with open(os.path.join(OUT, "sitemap.xml"), "w") as f:
     f.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'

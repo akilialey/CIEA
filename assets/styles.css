@@ -459,3 +459,44 @@ p { margin: 0; text-wrap: pretty; }
   .tag { font-size: .95rem; }
 }
 .page-hero .btn, .envelope .btn, .band-deep .btn { box-shadow: none; }
+
+/* Program finder */
+.cf-section { padding-top: clamp(2.5rem, 2rem + 2vw, 3.5rem); }
+.cf-bar { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 1rem 1.25rem; align-items: end; background: var(--mist); border-radius: var(--r-lg); padding: clamp(1rem, 2.5vw, 1.5rem); }
+.cf-search { grid-column: span 4; }
+.cf-bar > :nth-child(2) { grid-column: span 2; }
+.cf-bar > :nth-child(n+3) { grid-column: span 2; }
+.cf-field { display: grid; gap: .45rem; min-width: 0; }
+.cf-field > label, .cf-lab { font-weight: 500; font-size: .95rem; }
+.cf-field input[type="search"], .cf-field select { font: inherit; font-size: 1rem; color: var(--ink); background: #fff; width: 100%; height: 50px; border: 1.5px solid var(--line); border-radius: 12px; padding: 0 1rem; }
+.cf-field input[type="search"]:focus, .cf-field select:focus { outline: none; border-color: var(--lagoon); box-shadow: 0 0 0 4px rgba(0, 168, 176, .15); }
+.cf-seg { display: flex; background: #fff; border: 1.5px solid var(--line); border-radius: 12px; padding: 3px; height: 50px; }
+.cf-seg label { flex: 1; display: grid; }
+.cf-seg input { position: absolute; opacity: 0; pointer-events: none; }
+.cf-seg span { display: grid; place-items: center; padding: 0 .7rem; border-radius: 9px; font-weight: 500; font-size: .92rem; cursor: pointer; white-space: nowrap; color: var(--ink-2); }
+.cf-seg input:checked + span { background: var(--deep); color: #fff; }
+.cf-seg input:focus-visible + span { outline: 3px solid var(--lagoon); outline-offset: 1px; }
+.cf-status { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem 1rem; margin: 1.5rem 0 1.25rem; }
+.cf-status p { color: var(--ink-2); font-weight: 500; }
+.cf-reset { font: inherit; font-weight: 500; color: var(--sea-ink); background: none; border: 0; padding: .25rem 0; cursor: pointer; text-decoration: underline; text-underline-offset: .2em; }
+.cf-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr)); gap: 1rem; }
+.cf-card { display: flex; flex-direction: column; gap: .55rem; background: #fff; border: 1px solid var(--line); border-radius: var(--r); padding: 1.2rem 1.25rem 1.1rem; transition: border-color .25s var(--ease), box-shadow .35s var(--ease); }
+.cf-card:hover { border-color: var(--lagoon); box-shadow: var(--shadow-sm); }
+.cf-top { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
+.cf-award { padding: .22rem .65rem; border-radius: 999px; font-weight: 500; font-size: .8rem; background: var(--seafoam-soft); color: var(--sea-ink); }
+.cf-card.pg .cf-award { background: var(--sun-soft); color: #3d5a00; }
+.cf-school { font-size: .85rem; font-weight: 500; color: var(--ink-2); }
+.cf-card h3 { font-size: 1.15rem; }
+.cf-meta { font-size: .92rem; color: var(--ink-2); }
+.cf-note { font-size: .87rem; color: var(--ink-2); background: var(--mist); border-radius: var(--r-sm); padding: .4rem .65rem; }
+.cf-link { margin-top: auto; padding-top: .35rem; display: inline-flex; align-items: center; gap: .4rem; font-weight: 500; font-size: .92rem; color: var(--sea-ink); text-decoration: none; }
+.cf-link:hover { text-decoration: underline; }
+.cf-link .icon { width: 1rem; height: 1rem; }
+.cf-empty { display: grid; gap: .75rem; justify-items: start; background: var(--sun-soft); border-radius: var(--r-lg); padding: clamp(1.5rem, 3vw, 2.25rem); }
+.cf-empty p { color: var(--ink-2); max-width: 56ch; }
+.cf-empty .btn-row { margin-top: .5rem; }
+.cf-more-row { display: flex; justify-content: center; margin-top: 2rem; }
+.cf-source { margin-top: 2.5rem; font-size: .92rem; color: var(--ink-2); max-width: 78ch; }
+.cf-source a { color: var(--sea-ink); }
+@media (max-width: 960px) { .cf-search, .cf-bar > :nth-child(n+2) { grid-column: span 3; } .cf-search { grid-column: 1 / -1; } }
+@media (max-width: 620px) { .cf-bar > * { grid-column: 1 / -1 !important; } .cf-seg span { padding-inline: .45rem; } }

@@ -70,6 +70,64 @@
     });
   }
 
+  // Program finder: filter the program cards by search words, school, level, faculty or department and qualification
+  var cf = document.getElementById('cf');
+  if (cf) {
+    var cards = Array.prototype.slice.call(document.querySelectorAll('.cf-card'));
+    var q = document.getElementById('cf-q'), sch = document.getElementById('cf-school'), area = document.getElementById('cf-area'), typ = document.getElementById('cf-type');
+    var count = document.getElementById('cf-count'), empty = document.getElementById('cf-empty');
+    var more = document.getElementById('cf-more'), reset = document.getElementById('cf-reset');
+    var groups = Array.prototype.slice.call(area.querySelectorAll('optgroup'));
+    var PAGE = 36, shown = PAGE, total = cards.length, timer;
+    function level() { var r = cf.querySelector('input[name="level"]:checked'); return r ? r.value : ''; }
+    function norm(s) { return s.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9/' ]+/g, ' '); }
+    // Only offer the faculties and departments of the chosen school
+    function fillAreas() {
+      var keep = area.value;
+      groups.forEach(function (g) { if (g.parentNode) g.parentNode.removeChild(g); });
+      groups.forEach(function (g) { if (!sch.value || g.dataset.school === sch.value) area.appendChild(g); });
+      area.value = keep;
+      if (area.value !== keep) area.value = '';
+    }
+    function apply(keepPage) {
+      if (!keepPage) shown = PAGE;
+      var words = norm(q.value).split(/\s+/).filter(Boolean), s = sch.value, lv = level(), a = area.value, t = typ.value, n = 0;
+      var areaSchool = a && area.selectedOptions[0] ? area.selectedOptions[0].parentNode.dataset.school : '';
+      cards.forEach(function (c) {
+        var ok = (!s || c.dataset.school === s) && (!lv || c.dataset.level === lv) && (!a || (c.dataset.area === a && c.dataset.school === areaSchool)) &&
+          (!t || c.dataset.type === t) && words.every(function (w) { return c.dataset.words.indexOf(w) !== -1; });
+        if (ok) n++;
+        c.hidden = !ok || n > shown;
+      });
+      var filtered = words.length || s || lv || a || t;
+      count.textContent = filtered ? (n === 1 ? '1 program matches' : n + ' programs match') : total + ' programs';
+      empty.hidden = n !== 0;
+      reset.hidden = !filtered;
+      more.hidden = n <= shown;
+      if (n > shown) more.textContent = 'Show more programs (' + (n - shown) + ' more)';
+      var p = new URLSearchParams();
+      if (q.value.trim()) p.set('q', q.value.trim());
+      if (s) p.set('school', s); if (lv) p.set('level', lv); if (a) p.set('area', a); if (t) p.set('type', t);
+      var str = p.toString();
+      history.replaceState(null, '', location.pathname + (str ? '?' + str : ''));
+    }
+    // Pick up filters from the address so a filtered list can be shared or linked to, e.g. ?school=bcc
+    var start = new URLSearchParams(location.search);
+    q.value = start.get('q') || '';
+    var lvIn = cf.querySelector('input[name="level"][value="' + (start.get('level') || '').replace(/[^a-z]/g, '') + '"]');
+    if (lvIn) lvIn.checked = true;
+    function pick(sel, v) { if (v && Array.prototype.some.call(sel.options, function (o) { return o.value === v; })) sel.value = v; }
+    pick(sch, start.get('school')); fillAreas(); pick(area, start.get('area')); pick(typ, start.get('type'));
+    q.addEventListener('input', function () { clearTimeout(timer); timer = setTimeout(function () { apply(); }, 120); });
+    sch.addEventListener('change', fillAreas);
+    cf.addEventListener('change', function () { apply(); });
+    more.addEventListener('click', function () { shown += PAGE * 2; apply(true); });
+    function clearAll() { cf.reset(); sch.value = ''; fillAreas(); area.value = ''; apply(); q.focus(); }
+    reset.addEventListener('click', clearAll);
+    document.querySelectorAll('[data-cf-reset]').forEach(function (b) { b.addEventListener('click', clearAll); });
+    apply();
+  }
+
   // Contact form: client-side validation and success state
   var form = document.getElementById('consult-form');
   if (form) {
