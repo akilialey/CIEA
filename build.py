@@ -9,7 +9,7 @@ EMAIL = "info@studyinthecaribbean.com"
 
 SPRITE = """<svg width="0" height="0" style="position:absolute" aria-hidden="true">
 <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7"/></symbol>
-<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></symbol><symbol id="i-arrow-l" viewBox="0 0 24 24"><path d="M20 12H5M11 6l-6 6 6 6"/></symbol><symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3.4 8.2-8 9-4.6-.8-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></symbol>
 <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
 <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2.2l1.6-2.2h5.4L16.3 7h2.2A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5z"/><circle cx="12" cy="12.8" r="3.4"/></symbol>
 <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></symbol>
@@ -263,6 +263,9 @@ reasons6 = [
     ("World-Class Institutions", "Home to The Cave Hill Campus of The University of the West Indies, an internationally accredited, highly ranked institution, offering undergraduate and postgraduate degrees across seven faculties. Also home to several accredited off-shore medical schools."),
 ]
 
+why_icons = ["globe", "shield", "sun", "steth", "tag", "cap"]
+why_cards = "".join(f'<li class="why-card"><span class="why-ic">{ic(i)}</span><span class="why-n">{n+1:02d}</span><h3>{a}</h3><p>{b}</p></li>' for n, ((a, b), i) in enumerate(zip(reasons6, why_icons)))
+
 faqs = [
     ("Do international students need a visa to study in Barbados?", "Most international students require a Student Visa to study in Barbados. Citizens of several countries may enter visa-free initially. We advise on the full visa process."),
     ("Can CIEA help me get a scholarship?", "We offer dedicated scholarship search support and advice based on our institutional connections. Our team knows what opportunities exist and how to make your application competitive."),
@@ -315,16 +318,24 @@ home = f'''
 <div class="sheet">{sheet}</div>
 </div></section>
 
-<section class="section band-deep" aria-labelledby="why-h"><div class="wrap reasons-layout">
-<div class="reasons-aside">
-{label("Why Choose Barbados?", "on-dark")}
-<h2 id="why-h">A Caribbean Island Unlike Any Other</h2>
-<p>Barbados offers world-class education in one of the most beautiful, safe, and sophisticated environments in the world.</p>
-<div><a class="btn btn-sun" href="study-in-barbados.html#institutions">Explore Barbados Institutions {ic("arrow")}</a></div>
-{stamp(ph("Wide shot of the Barbados west coast or Carlisle Bay"), cls="reasons-photo")}
+<section class="section band-deep why" aria-labelledby="why-h">
+<div class="wrap why-head">
+<div class="stack">{label("Why Choose Barbados?", "on-dark")}
+<h2 id="why-h">A Caribbean Island Unlike Any Other</h2></div>
+<div class="stack why-intro"><p>Barbados offers world-class education in one of the most beautiful, safe, and sophisticated environments in the world.</p>
+<div><a class="btn btn-sun" href="study-in-barbados.html#institutions">Explore Barbados Institutions {ic("arrow")}</a></div></div>
 </div>
-{reasons(reasons6)}
-</div></section>
+<div class="carousel" data-carousel>
+<ul class="why-track" tabindex="0" aria-label="Reasons to choose Barbados">
+<li class="why-photo">{stamp(ph("Wide shot of the Barbados west coast or Carlisle Bay"))}</li>
+{why_cards}
+</ul>
+<div class="wrap carousel-foot">
+<div class="carousel-bar" aria-hidden="true"><span></span></div>
+<div class="carousel-btns"><button class="carousel-btn" type="button" data-dir="-1" aria-label="Previous reasons">{ic("arrow-l")}</button><button class="carousel-btn" type="button" data-dir="1" aria-label="Next reasons">{ic("arrow")}</button></div>
+</div>
+</div>
+</section>
 
 <section class="section" id="one-service" aria-labelledby="one-h"><div class="wrap one-service">
 <div class="stack">{label("Miscellaneous Stand-Alone Services")}<h2 id="one-h">What Do You Need?</h2>

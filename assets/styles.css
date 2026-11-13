@@ -207,6 +207,39 @@ p { margin: 0; text-wrap: pretty; }
 .band-deep .reasons li h3 { color: var(--sun); }
 .band-deep .reasons li p { color: rgba(255, 255, 255, .84); }
 .reasons.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+/* Why Barbados: swipeable carousel */
+.why-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .8fr); gap: 1.5rem clamp(2rem, 1rem + 4vw, 5rem); align-items: end; }
+.why-intro p { color: rgba(255, 255, 255, .82); font-size: 1.15rem; }
+.carousel { margin-top: clamp(2.5rem, 2rem + 2vw, 3.5rem); }
+.why-track { --edge: max(var(--gutter), calc((100vw - var(--wrap)) / 2 + var(--gutter))); list-style: none; margin: 0; padding: 0 var(--edge) .25rem; scroll-padding-inline: var(--edge); display: flex; gap: 1.25rem; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; }
+.why-track::-webkit-scrollbar { display: none; }
+.why-track:focus-visible { outline-offset: 6px; }
+.why-track > li { flex: 0 0 clamp(270px, 29%, 360px); scroll-snap-align: start; border-radius: var(--r-lg); }
+.why-track > .why-photo { flex-basis: clamp(290px, 44%, 540px); }
+.why-photo { position: relative; }
+.why-photo .photo { position: absolute; inset: 0; margin: 0; }
+.why-photo .photo .ph, .why-photo .photo img { height: 100%; width: 100%; object-fit: cover; }
+.why-photo .ph { min-height: 0; border-radius: var(--r-lg); }
+.why-card { display: flex; flex-direction: column; gap: .7rem; padding: 1.75rem; background: var(--deep-2); border: 1px solid rgba(255, 255, 255, .1); transition: border-color .3s var(--ease), background-color .3s var(--ease); }
+.why-card:hover { border-color: rgba(200, 242, 90, .45); background: #14203a; }
+.why-ic { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 14px; background: var(--sun); color: var(--ink); margin-bottom: 1.5rem; }
+.why-ic .icon { width: 24px; height: 24px; }
+.why-n { margin-top: auto; font-family: "Geist Mono", ui-monospace, monospace; font-size: .85rem; color: var(--lagoon); }
+.why-card h3 { color: #fff; font-size: 1.35rem; }
+.why-card p { color: rgba(255, 255, 255, .78); font-size: 1rem; }
+.why-card .fig { color: var(--sun); font-weight: 700; }
+.carousel-foot { display: flex; align-items: center; gap: 1.5rem; margin-top: 1.75rem; }
+.why-track > li:last-child { margin-right: 0; }
+.carousel-bar { flex: 1; height: 3px; border-radius: 3px; background: rgba(255, 255, 255, .14); overflow: hidden; }
+.carousel-bar span { display: block; height: 100%; width: 30%; background: var(--sun); border-radius: inherit; transform-origin: left; transition: width .2s linear, margin-left .2s linear; }
+.carousel-btns { display: flex; gap: .6rem; }
+.carousel-btn { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; border: 1.5px solid rgba(255, 255, 255, .35); background: transparent; color: #fff; cursor: pointer; transition: background-color .25s var(--ease), color .25s var(--ease), border-color .25s var(--ease), opacity .25s; }
+.carousel-btn:hover:not(:disabled) { background: var(--sun); border-color: var(--sun); color: var(--ink); }
+.carousel-btn:disabled { opacity: .35; cursor: default; }
+.carousel-btn .icon { width: 22px; height: 22px; }
+@media (max-width: 960px) { .why-head { grid-template-columns: 1fr; align-items: start; } }
+@media (max-width: 640px) { .why-track > li { flex-basis: 84%; } .why-track > .why-photo { flex-basis: 88%; } .carousel-btn { width: 46px; height: 46px; } }
+
 .fig { font-weight: 700; }
 
 /* Stand-alone services */
