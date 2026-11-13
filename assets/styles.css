@@ -305,7 +305,12 @@ p { margin: 0; text-wrap: pretty; }
 .foot-col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .6rem; }
 .foot-col a { text-decoration: none; }
 .foot-col a:hover, .foot-brand a:hover { color: var(--seafoam); text-decoration: underline; }
-.foot-base { margin-top: 3.5rem; padding-block: 1.5rem; border-top: 1px solid rgba(255, 255, 255, .12); font-size: .9rem; color: rgba(255, 255, 255, .6); }
+.foot-notice { margin-top: 3rem; display: flex; gap: 1rem; align-items: flex-start; padding: 1.25rem 1.4rem; border-radius: var(--r); border: 1px solid rgba(200, 242, 90, .35); background: rgba(200, 242, 90, .06); max-width: 860px; }
+.foot-notice > .icon { width: 26px; height: 26px; color: var(--sun); margin-top: .1rem; }
+.foot-notice h3 { color: #fff; font-size: 1.05rem; margin-bottom: .35rem; }
+.foot-notice p { color: rgba(255, 255, 255, .78); font-size: .95rem; }
+.foot-notice a { color: #fff; text-decoration: underline; }
+.foot-base { margin-top: 2.5rem; padding-block: 1.5rem; border-top: 1px solid rgba(255, 255, 255, .12); font-size: .9rem; color: rgba(255, 255, 255, .6); }
 
 /* Inner page hero: deep band */
 .page-hero { background: var(--deep); color: #fff; padding-block: clamp(3rem, 2rem + 4vw, 5.5rem); position: relative; overflow: hidden; }

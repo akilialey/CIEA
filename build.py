@@ -144,6 +144,7 @@ FOOTER = f'''<footer class="site-footer"><div class="wrap">
 <li><a href="about.html">About Us</a></li><li><a href="about.html#families">For Parents</a></li>
 <li><a href="index.html#faq">FAQ</a></li><li><a href="contact.html">Contact</a></li></ul></div>
 </div>
+<aside class="foot-notice" aria-labelledby="scam-h">{ic("shield")}<div><h3 id="scam-h">Beware of scams</h3><p>CIEA will only contact you from an @studyinthecaribbean.com email address. We will never ask you to send payment to a personal bank account or through WhatsApp. If you are unsure whether a message is from us, email <a href="mailto:info@studyinthecaribbean.com">info@studyinthecaribbean.com</a> before you reply or pay.</p></div></aside>
 <div class="foot-base"><span>&copy; 2026 Caribbean International Education Agency. All rights reserved.</span></div>
 </div></footer>'''
 
