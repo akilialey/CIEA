@@ -99,7 +99,7 @@ def routes(legend=True):
 </svg></div>'''
 
 NAV = [("study-in-barbados.html", "Study in Barbados"), ("programs.html", "Programs"), ("services.html", "Services"),
-       ("about.html#families", "For Parents"), ("about.html", "About"), ("team.html", "Team"), ("blog.html", "Blog")]
+       ("about.html#families", "For Parents"), ("about.html", "About"), ("team.html", "Team")]
 
 def header(active):
     links = "".join(
@@ -133,7 +133,6 @@ FOOTER = f'''<footer class="site-footer"><div class="wrap">
 <p><a href="{WA}" target="_blank" rel="noopener">{PHONE}</a><br><a href="mailto:{EMAIL}">{EMAIL}</a><br>Bridgetown, Saint Michael, Barbados</p></div>
 <div class="foot-col"><h3>Study in Barbados</h3><ul>
 <li><a href="study-in-barbados.html#why">Why Barbados?</a></li><li><a href="study-in-barbados.html#uwi">UWI Cave Hill</a></li>
-<li><a href="course-finder.html">Program Finder</a></li><li><a href="blog.html">Student Blog</a></li>
 </ul></div>
 <div class="foot-col"><h3>Programs</h3><ul>
 <li><a href="programs.html#full-degrees">Full Degrees</a></li><li><a href="programs.html#summer-camps">Summer/Winter Programs</a></li><li><a href="programs.html#gap-year">Gap Year</a></li>
@@ -164,13 +163,11 @@ ORG_LD = {
 }
 SITEMAP = []
 
-def page(fname, title, desc, active, body, cta=True, cta_kwargs=None, ld=None, og_type="website", og_image=None, head_extra=""):
+def page(fname, title, desc, active, body, cta=True, cta_kwargs=None, ld=None):
     env = envelope(**(cta_kwargs or {})) if cta else ""
     url = SITE + "/" + ("" if fname == "index.html" else fname)
     SITEMAP.append(url)
     graph = [ORG_LD] + (ld or [])
-    og_img_tags = (f'<meta property="og:image" content="{og_image}">' if og_image else
-        f'<meta property="og:image" content="{OG_IMAGE}">\n<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">')
     ld_json = json.dumps({"@context": "https://schema.org", "@graph": graph}, ensure_ascii=False).replace("</", "<\\/")
     html = f'''<!doctype html>
 <html lang="en">
@@ -181,14 +178,16 @@ def page(fname, title, desc, active, body, cta=True, cta_kwargs=None, ld=None, o
 <meta name="description" content="{desc}">
 <meta name="theme-color" content="#0b1220">
 <link rel="canonical" href="{url}">
-<meta property="og:type" content="{og_type}">
+<meta property="og:type" content="website">
 <meta property="og:site_name" content="{ORG_NAME}">
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{desc}">
 <meta property="og:url" content="{url}">
-{og_img_tags}
+<meta property="og:image" content="{OG_IMAGE}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:locale" content="en_GB">
-<meta name="twitter:card" content="summary_large_image">{head_extra}
+<meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">{ld_json}</script>
 <link rel="icon" href="assets/ciea-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -675,85 +674,6 @@ page("course-finder.html", "Program Finder: Study Programs in Barbados | CIEA",
      "Search undergraduate, postgraduate, technical and vocational programs at UWI Cave Hill, BCC, Codrington College and SJPI in Barbados.",
      "course-finder.html", finder,
      cta_kwargs={"h": "Found a Program You Like?", "p": "Book a free consultation and we'll guide you through applying."})
-
-# ------------------------------------------------------------------ BLOG (articles live in blog_posts.py)
-import datetime as _dt
-from blog_posts import POSTS, PUBLISHED
-AUTHOR = {"@type": "Person", "@id": SITE + "/team.html#patricia", "name": "Patricia Atherley",
-          "jobTitle": "Founder and Director", "url": SITE + "/team.html#patricia",
-          "image": SITE + "/assets/photos/patricia-atherley.jpg", "worksFor": {"@id": SITE + "/#org"}}
-
-def nice_date(d):
-    d = _dt.date.fromisoformat(d)
-    return f"{d.day} {d:%B %Y}"
-
-def crumbs(items):
-    return {"@type": "BreadcrumbList", "itemListElement": [
-        {"@type": "ListItem", "position": i + 1, "name": n, "item": SITE + "/" + u} for i, (n, u) in enumerate(items)]}
-
-for p in POSTS:
-    p.setdefault("published", PUBLISHED)
-    p.setdefault("updated", p["published"])
-
-def byline(p):
-    return f'''<div class="byline"><img src="assets/photos/patricia-atherley.jpg" alt="" width="48" height="48">
-<p class="byline-name"><a href="team.html#patricia" rel="author">Patricia Atherley</a><span>Founder &amp; Director, CIEA</span></p>
-<p class="byline-meta"><time datetime="{p["updated"]}">{nice_date(p["updated"])}</time><span aria-hidden="true">&middot;</span>{p["read"]} min read</p></div>'''
-
-for p in POSTS:
-    url = SITE + "/" + p["slug"]
-    img_f, img_alt = p["photo"]
-    img = f"{SITE}/assets/photos/{img_f}.jpg"
-    srcs = "".join(f'<li><a href="{u}" target="_blank" rel="noopener">{t}</a></li>' for u, t in p["sources"])
-    more = "".join(f'<li><a href="{q["slug"]}"><span>{q["title"]}</span>{ic("arrow")}</a></li>' for q in POSTS if q is not p)
-    body = f'''<article class="post">
-<header class="post-hero"><div class="wrap post-hero-inner">
-<nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span aria-hidden="true">/</span><a href="blog.html">Blog</a></nav>
-<h1>{p["title"]}</h1><p class="lede">{p["lede"]}</p>{byline(p)}
-</div></header>
-<div class="wrap post-wrap">
-<figure class="post-photo"><img src="assets/photos/{img_f}.jpg" alt="{img_alt}" loading="eager" decoding="async"></figure>
-<div class="post-body prose">{p["body"]}</div>
-<aside class="post-sources" aria-labelledby="src-h"><h2 id="src-h">Sources</h2>
-<p>Every figure in this article comes from the sources below, checked in {nice_date(p["updated"]).split(" ", 1)[1]}. Fees and rules change, so please confirm with the school or government office before you make plans.</p>
-<ol>{srcs}</ol></aside>
-<aside class="post-author" aria-labelledby="author-h"><img src="assets/photos/patricia-atherley.jpg" alt="Patricia Atherley" width="96" height="96" loading="lazy">
-<div><h2 id="author-h">About the author</h2><p><a href="team.html#patricia">Patricia Atherley</a> is the Founder and Director of the Caribbean International Education Agency. She has many years of experience working with students, families and institutions in higher education, and is a co-creator of Barbados Study Tours.</p></div></aside>
-<nav class="post-more" aria-labelledby="more-h"><h2 id="more-h">Keep reading</h2><ul>{more}</ul></nav>
-</div></article>'''
-    ld = [{"@type": "BlogPosting", "@id": url + "#article", "headline": p["title"], "description": p["desc"],
-           "image": img, "datePublished": p["published"], "dateModified": p["updated"],
-           "author": AUTHOR, "publisher": {"@id": SITE + "/#org"}, "mainEntityOfPage": url, "inLanguage": "en",
-           "isPartOf": {"@id": SITE + "/blog.html#blog"}},
-          crumbs([("Home", ""), ("Blog", "blog.html"), (p["title"], p["slug"])])]
-    extra = (f'\n<meta property="article:published_time" content="{p["published"]}">'
-             f'\n<meta property="article:modified_time" content="{p["updated"]}">'
-             f'\n<meta property="article:author" content="{SITE}/team.html#patricia">'
-             f'\n<meta name="author" content="Patricia Atherley">')
-    page(p["slug"], p["seo_title"], p["desc"], "blog.html", body, ld=ld, og_type="article", og_image=img, head_extra=extra,
-         cta_kwargs={"h": "Planning Your Studies in Barbados?", "p": "Book a free consultation and we'll help you plan every step, from choosing a program to settling in."})
-
-cards = "".join(f'''<li class="post-card"><a href="{p["slug"]}">
-<figure><img src="assets/photos/{p["photo"][0]}.jpg" alt="" loading="{"eager" if i == 0 else "lazy"}" decoding="async"></figure>
-<div class="post-card-text"><h2>{p["title"]}</h2><p>{p["lede"]}</p>
-<p class="post-card-meta">Patricia Atherley <span aria-hidden="true">&middot;</span> {p["read"]} min read</p>
-<span class="post-card-go">Read article {ic("arrow")}</span></div></a></li>''' for i, p in enumerate(POSTS))
-blog = f'''<section class="page-hero"><div class="wrap"><div class="page-hero-copy blog-hero">
-<h1>Studying in Barbados: Student Guides</h1>
-<p class="lede">Practical advice for students and parents, from costs and visas to everyday island life. Every fact is linked to its official source.</p>
-</div></div></section>
-<section class="section" aria-labelledby="posts-h"><div class="wrap">
-<h2 id="posts-h" class="visually-hidden">Articles</h2>
-<ul class="post-list">{cards}</ul>
-<p class="blog-links">Ready to look at schools? Read <a href="study-in-barbados.html">why students choose Barbados</a> or search courses in our <a href="course-finder.html">Program Finder</a>.</p>
-</div></section>'''
-blog_ld = [{"@type": "Blog", "@id": SITE + "/blog.html#blog", "name": "CIEA Student Blog", "url": SITE + "/blog.html",
-            "publisher": {"@id": SITE + "/#org"}, "inLanguage": "en",
-            "blogPost": [{"@id": SITE + "/" + p["slug"] + "#article"} for p in POSTS]},
-           crumbs([("Home", ""), ("Blog", "blog.html")])]
-page("blog.html", "Study in Barbados Blog: Costs, Student Life and Work Rules | CIEA",
-     "Practical, sourced guides for international students in Barbados: cost of living, shopping and daily life, and the rules on working while you study.",
-     "blog.html", blog, ld=blog_ld)
 
 with open(os.path.join(OUT, "sitemap.xml"), "w") as f:
     f.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
