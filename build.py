@@ -53,6 +53,7 @@ PHOTOS = {
     "UWI Cave Hill campus": ("uwi-cave-hill", "Aerial view of the UWI Cave Hill campus above the west coast"),
     "Barbados Community College campus": ("bcc", "Barbados Community College building with palm trees"),
     "An advisor reviewing an application with a student": ("advisor-meeting", "An advisor talking with a student at a table by a sunny window"),
+    "Grantley Adams International Airport": ("airport", "Grantley Adams International Airport in Barbados"),
     "A Barbados beach under a blue umbrella": ("beach-umbrella", "A blue umbrella on a white sand Barbados beach"),
 }
 EAGER = {"students-laughing", "chattel-house", "beach-umbrella", "bridgetown-careenage", "bridgetown-parliament", "student-laptop"}
@@ -190,7 +191,7 @@ def page(fname, title, desc, active, body, cta=True, cta_kwargs=None, ld=None):
 <link rel="icon" href="assets/ciea-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..800&family=Geist+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300..800&family=Geist+Mono:wght@500&display=swap">
 <link rel="stylesheet" href="assets/styles.css?v={ASSET_V}">
 </head>
 <body>
@@ -249,7 +250,7 @@ programs_cards = [
      "services.html#arrival"),
 ]
 card_photos = ["Young people hiking or exploring the Barbados east coast", "An advisor reviewing an application with a student", "UWI Cave Hill campus",
-               "A university group on a heritage tour with a local guide", "Students volunteering at a beach clean-up or community project", "The CIEA team in Bridgetown"]
+               "A university group on a heritage tour with a local guide", "Students volunteering at a beach clean-up or community project", "Grantley Adams International Airport"]
 sheet = "".join(
     f'''<article class="prog {c}">{ph(card_photos[n])}<div class="prog-body"><h3><a href="{h}">{t}</a></h3><p>{p}</p><span class="more" aria-hidden="true">Learn more {ic("arrow")}</span></div></article>'''
     for n, (c, t, p, h) in enumerate(programs_cards))
