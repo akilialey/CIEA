@@ -266,7 +266,18 @@ reasons6 = [
 ]
 
 why_icons = ["globe", "shield", "sun", "steth", "tag", "cap"]
-why_cards = "".join(f'<li class="why-card"><span class="why-ic">{ic(i)}</span><span class="why-n">{n+1:02d}</span><h3>{a}</h3><p>{b}</p></li>' for n, ((a, b), i) in enumerate(zip(reasons6, why_icons)))
+why_photos = [
+    ("why-student", "A smiling student with a backpack and notebook outside a campus building", "50% 30%"),
+    ("why-bridgetown", "The Careenage and Parliament Buildings in Bridgetown under a blue sky", "50% 50%"),
+    ("why-beach", "A palm tree leaning over a white sand beach and turquoise sea", "50% 50%"),
+    ("why-healthcare", "A nurse checking a patient's blood pressure", "50% 30%"),
+    ("why-bathsheba", "Palm trees framing the rock formations at Bathsheba on the east coast", "50% 65%"),
+    ("why-lecture", "Students in a modern university lecture hall", "50% 50%"),
+]
+why_cards = "".join(
+    f'<li class="why-card"><div class="why-img"><img src="assets/photos/{f}.jpg" alt="{alt}" loading="lazy" decoding="async" style="object-position:{pos}"></div>'
+    f'<div class="why-body"><span class="why-ic">{ic(i)}</span><span class="why-n">{n+1:02d}</span><h3>{a}</h3><p>{b}</p></div></li>'
+    for n, ((a, b), i, (f, alt, pos)) in enumerate(zip(reasons6, why_icons, why_photos)))
 
 faqs = [
     ("Do international students need a visa to study in Barbados?", "Most international students require a Student Visa to study in Barbados. Citizens of several countries may enter visa-free initially. We advise on the full visa process."),
