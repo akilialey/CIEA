@@ -50,8 +50,6 @@ PHOTOS = {
     "Portrait of Patricia Atherley": ("patricia-atherley", "Patricia Atherley, Founder and Director of CIEA"),
     "UWI Cave Hill campus": ("uwi-cave-hill", "Aerial view of the UWI Cave Hill campus above the west coast"),
     "Barbados Community College campus": ("bcc", "Barbados Community College building with palm trees"),
-    "Ross University Barbados campus": ("ross-university", "Ross University School of Medicine building in Barbados"),
-    "Medical students in a lab or lecture": ("aub", "Aerial view of the American University of Barbados campus"),
     "An advisor reviewing an application with a student": ("advisor-meeting", "An advisor talking with a student at a table by a sunny window"),
     "A Barbados beach under a blue umbrella": ("beach-umbrella", "A blue umbrella on a white sand Barbados beach"),
 }
@@ -148,7 +146,7 @@ FOOTER = f'''<footer class="site-footer"><div class="wrap">
 <li><a href="programs.html#summer-camps">Summer/Winter Programs</a></li><li><a href="programs.html#gap-year">Gap Year</a></li>
 <li><a href="programs.html#study-tours">Study Tours</a></li></ul></div>
 <div class="foot-col"><h3>Services</h3><ul>
-<li><a href="study-in-barbados.html#aub">Medical School Admission</a></li><li><a href="services.html#placement">University Placement</a></li>
+<li><a href="study-in-barbados.html#institutions">Medical School Admission</a></li><li><a href="services.html#placement">University Placement</a></li>
 <li><a href="services.html#family">Parent/Family Support</a></li></ul></div>
 <div class="foot-col"><h3>Company</h3><ul>
 <li><a href="about.html">About Us</a></li><li><a href="about.html#families">For Parents</a></li>
@@ -247,7 +245,7 @@ programs_cards = [
      "services.html#placement"),
     ("c-hib", "Medical School Advising",
      "Specialized pathway guidance for admission to medical schools in Barbados.",
-     "study-in-barbados.html#aub"),
+     "study-in-barbados.html#institutions"),
     ("c-palm", "Barbados Study Tours",
      "Full-service logistics, program design, and in-country support for institutions organizing study tours to Barbados and select other Caribbean countries.",
      "programs.html#study-tours"),
@@ -411,21 +409,16 @@ insts = [
      "Offers degree, diploma, certificate, and transfer pathways across multiple disciplines. An excellent gateway for students looking to earn credentials in Barbados that transfer to a four-year university abroad.",
      ["Hospitality &amp; Tourism", "Technology &amp; Computing", "Health Sciences", "Business Studies", "Fine Arts", "Liberal Arts"],
      ["Transfer Pathways", "Diploma Programs", "Certificate Courses"], "Barbados Community College campus"),
-    ("aub", "c-sun", "Medical University", "American University of Barbados", "AUB",
-     "Attracts students from many countries with a recognized Doctor of Medicine program structured around the USMLE pathway for those seeking US residency. An internationally oriented medical education environment.",
-     ["Doctor of Medicine (MD)", "Pre-Medical Sciences", "Allied Health"],
-     ["USMLE Pathway", "International Students", "American Curriculum"], "Medical students in a lab or lecture"),
-    ("ross", "c-hib", "Medical School", "Ross University School of Medicine", "Ross University",
-     "One of the largest Caribbean medical schools, with its main campus in Barbados. A major pathway for North American students seeking a Caribbean medical education with a focus on US licensing and residency matching.",
-     ["Doctor of Medicine (MD)", "Basic Sciences", "Clinical Sciences"],
-     ["US Residency Pathway", "Caribbean Medical School", "Barbados Campus"], "Ross University Barbados campus"),
+    ("codrington", "c-sun", "Theological College", "Codrington Theological College", "",
+     "One of the oldest institutions in the Caribbean, offering programs in theology and humanities, in association with The UWI.",
+     [], [], "A university group on a heritage tour with a local guide"),
 ]
 inst_html = "".join(f'''<article class="inst {c}" id="{i}">
 {stamp(ph(phs), c, cls="no-disc")}
 <div class="inst-main"><div><span class="inst-type">{ty}</span></div>
-<h3>{n}<small>{sn}</small></h3><p class="desc">{d}</p>
-<div class="inst-meta"><h4>Programs</h4><ul class="inst-progs">{"".join(f"<li>{x}</li>" for x in pr)}</ul></div>
-<ul class="tags small" aria-label="Highlights">{"".join(f'<li class="tag">{x}</li>' for x in tg)}</ul>
+<h3>{n}{f"<small>{sn}</small>" if sn else ""}</h3><p class="desc">{d}</p>
+{f'<div class="inst-meta"><h4>Programs</h4><ul class="inst-progs">{"".join(f"<li>{x}</li>" for x in pr)}</ul></div>' if pr else ""}
+{f'<ul class="tags small" aria-label="Highlights">{"".join(f"<li class=tag>{x}</li>" for x in tg)}</ul>' if tg else ""}
 </div></article>''' for i, c, ty, n, sn, d, pr, tg, phs in insts)
 
 study = page_hero("The Caribbean's Premier Education Destination",
@@ -440,8 +433,6 @@ study = page_hero("The Caribbean's Premier Education Destination",
 <div class="head"><h2 id="inst-h">Featured Institutions</h2><p>Barbados is home to a remarkable range of accredited higher education institutions, from a flagship regional university to internationally recognized off-shore medical schools.</p></div>
 <div class="inst-list">{inst_html}</div>
 <ul class="more-inst" style="margin-top:clamp(3.5rem,6vw,5rem)" aria-label="Additional institutions">
-<li><b>UWI Open Campus (Global Campus)</b><span>Distance and blended learning across the Caribbean</span></li>
-<li><b>Codrington Theological College</b><span>One of the oldest institutions in the Caribbean, offering programs in theology and humanities, in association with The UWI</span></li>
 <li><b>Samuel Jackman Prescod Institute of Technology</b><span>Offering technical and vocational training</span></li>
 </ul>
 </div></section>
