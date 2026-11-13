@@ -138,3 +138,35 @@
   });
 
 })();
+
+/* Carousel: arrows, progress bar, end states */
+document.querySelectorAll('[data-carousel]').forEach(function (root) {
+  var track = root.querySelector('.why-track');
+  var bar = root.querySelector('.carousel-bar span');
+  var btns = root.querySelectorAll('.carousel-btn');
+  if (!track) return;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function update() {
+    var max = track.scrollWidth - track.clientWidth;
+    var vis = track.scrollWidth ? track.clientWidth / track.scrollWidth : 1;
+    var pos = max > 0 ? track.scrollLeft / max : 0;
+    if (bar) { bar.style.width = (vis * 100) + '%'; bar.style.marginLeft = (pos * (1 - vis) * 100) + '%'; }
+    btns.forEach(function (b) {
+      var d = +b.getAttribute('data-dir');
+      b.disabled = d < 0 ? track.scrollLeft <= 2 : track.scrollLeft >= max - 2;
+    });
+  }
+  btns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var card = track.querySelector('.why-card');
+      var step = card ? card.getBoundingClientRect().width + 20 : track.clientWidth * .8;
+      track.scrollBy({ left: step * +b.getAttribute('data-dir'), behavior: reduce ? 'auto' : 'smooth' });
+    });
+  });
+  track.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); btns[e.key === 'ArrowRight' ? 1 : 0].click(); }
+  });
+  track.addEventListener('scroll', function () { window.requestAnimationFrame(update); }, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+});
