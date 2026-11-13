@@ -174,7 +174,7 @@ def page(fname, title, desc, active, body, cta=True, cta_kwargs=None, ld=None):
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{title}</title>
 <meta name="description" content="{desc}">
-<meta name="theme-color" content="#0b4a66">
+<meta name="theme-color" content="#0b1220">
 <link rel="canonical" href="{url}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="{ORG_NAME}">
