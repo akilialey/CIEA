@@ -464,3 +464,14 @@ p { margin: 0; text-wrap: pretty; }
   .tag { font-size: .95rem; }
 }
 .page-hero .btn, .envelope .btn, .band-deep .btn { box-shadow: none; }
+
+/* Team */
+.team-list { display: grid; gap: clamp(3rem, 2rem + 4vw, 6rem); }
+.member { display: grid; grid-template-columns: minmax(0, .42fr) minmax(0, .58fr); gap: clamp(2rem, 1rem + 4vw, 5rem); align-items: start; }
+.member:nth-child(even) .member-photo { order: 2; }
+.member-photo .ph { aspect-ratio: 4 / 5; }
+.member-copy > * + * { margin-top: 1rem; }
+.member-copy h2 { font-size: clamp(1.9rem, 1.4rem + 1.6vw, 2.75rem); }
+.member-role { margin-top: .4rem !important; color: var(--sea-ink); font-weight: 500; font-size: 1.1rem; }
+.member-copy p:not(.member-role) { color: var(--ink-2); }
+@media (max-width: 960px) { .member { grid-template-columns: 1fr; } .member:nth-child(even) .member-photo { order: 0; } .member-photo { max-width: 420px; } }
