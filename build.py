@@ -212,7 +212,7 @@ def page(fname, title, desc, active, body, cta=True, cta_kwargs=None, ld=None):
     print("wrote", fname, len(html))
 
 def label(t, cls=""):
-    return f'<p class="label {cls}">{t}</p>'
+    return ""  # owner asked for no eyebrows above headings
 
 def page_hero(h1, sub, ph_text, color="", cta=True):
     btn = f'<div class="btn-row"><a class="btn btn-primary" href="contact.html">Book Free Consultation {ic("arrow")}</a></div>' if cta else ""
@@ -291,7 +291,6 @@ route_tiles = [("study-in-barbados.html", "cap", "c-sea", "Study in Barbados", "
 home = f'''
 <section class="hero"><div class="wrap hero-grid">
 <div class="hero-copy">
-<p class="hero-badge">{ic("pin")}Based in Barbados &middot; Serving the World</p>
 <h1>Your Caribbean Education Experience <em>Starts Here</em></h1>
 <p class="lede">Caribbean International Education Agency (CIEA) is your one-stop shop for information and service to make your dream of studying in the Caribbean a reality.</p>
 <p class="hero-small">We connect students and institutions across the globe with educational opportunities in the Caribbean, with a focus on Barbados, and Barbadian students with opportunities abroad, from short-term immersions and cultural experiences to full degree programs.</p>
