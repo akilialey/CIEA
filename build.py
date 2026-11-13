@@ -478,7 +478,7 @@ degrees_html = f'''<article class="program" id="full-degrees">
 {stamp(ph("UWI Cave Hill campus"), cls="program-photo")}
 <div class="copy"><h2>Full Degrees in Barbados</h2><p>Earn a full, internationally recognized degree in Barbados. We help you choose the right institution and program, guide you through the application and student visa, and support you as you settle in.</p>
 <h3>Where you can study</h3>{checks(["Undergraduate and postgraduate degrees at The University of the West Indies, Cave Hill Campus", "Degree, diploma, certificate and transfer pathways at Barbados Community College", "Theology and humanities at Codrington Theological College", "Accredited off-shore medical schools"])}
-<div class="btn-row" style="margin-top:1.75rem"><a class="btn btn-ink" href="study-in-barbados.html#institutions">Explore Barbados Institutions {ic("arrow")}</a><!-- PROGRAM FINDER: add the course finder button here, e.g. <a class="btn btn-line" href="course-finder.html">Find a Program</a> --></div></div>
+<div class="btn-row" style="margin-top:1.75rem"><a class="btn btn-ink" href="study-in-barbados.html#institutions">Explore Barbados Institutions {ic("arrow")}</a><a class="btn btn-line" href="course-finder.html">Find a Program</a></div></div>
 </article>'''
 
 programs = page_hero("Education Beyond the Classroom",
