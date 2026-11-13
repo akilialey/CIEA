@@ -497,10 +497,10 @@ team_members = [
     ("patricia", "Portrait of Patricia Atherley", "Patricia Atherley", "Founder &amp; Director",
      ["Patricia founded CIEA after many years working with students, families, and institutions in higher education. Her experience spans both higher education and Caribbean tourism, and she is a co-creator of Barbados Study Tours.",
       "Patricia leads CIEA's work with students, families, and partner institutions, from college and university placement to the design of study tours and immersion programs. Her goal is simple: to open the eyes of the world to Barbados as a world-class study location."]),
-    ("vicky", None, "Vicky Chandler", "Head of Tourism &amp; Marketing",
+    ("vicky", None, "Vicky Chandler", "Director, Study Tours &amp; Educational Travel",
      ["Vicky is a tourism marketing professional with twenty five years of experience in sales and marketing. She has served as Barbados Destination Marketing Manager and works as a marketing and special projects management consultant.",
       "Her career has been spent promoting Barbados to the world: building partnerships across the travel industry, planning campaigns and special events, and creating experiences that showcase the best of the island.",
-      "At CIEA, Vicky leads everything tourism related, including Barbados Study Tours, short-term immersions, and the cultural, heritage, and educational experiences that make time in Barbados unforgettable. Her deep knowledge of the island and its tourism partners means every group and student is in good hands."]),
+      "At CIEA, Vicky leads Study Tours and Educational Travel: Barbados Study Tours for visiting institutions, short-term immersions, and the cultural, heritage, and educational experiences that make time in Barbados unforgettable. Her deep knowledge of the island and its tourism partners means every group and student is in good hands."]),
 ]
 team_html = "".join(f'''<article class="member" id="{i}">
 {stamp(ph(phs, "Portrait"), cls="member-photo") if phs else f'<figure class="photo member-photo"><div class="ph avatar" role="img" aria-label="{n}"><span aria-hidden="true">{"".join(w[0] for w in n.split())}</span></div></figure>'}
