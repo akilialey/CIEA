@@ -50,8 +50,6 @@ PHOTOS = {
     "Portrait of Patricia Atherley": ("patricia-atherley", "Patricia Atherley, Founder and Director of CIEA"),
     "UWI Cave Hill campus": ("uwi-cave-hill", "Aerial view of the UWI Cave Hill campus above the west coast"),
     "Barbados Community College campus": ("bcc", "Barbados Community College building with palm trees"),
-    "Ross University Barbados campus": ("ross-university", "Ross University School of Medicine building in Barbados"),
-    "Medical students in a lab or lecture": ("aub", "Aerial view of the American University of Barbados campus"),
     "An advisor reviewing an application with a student": ("advisor-meeting", "An advisor talking with a student at a table by a sunny window"),
     "A Barbados beach under a blue umbrella": ("beach-umbrella", "A blue umbrella on a white sand Barbados beach"),
 }
@@ -124,7 +122,7 @@ def header(active):
 <nav class="nav" id="site-nav" aria-label="Main">{links}<a class="btn btn-primary" href="contact.html">Book Free Consultation</a></nav>
 </div></header>'''
 
-def envelope(h="Ready to Start Your Education Journey?", p="Book a free consultation with our expert team today.", trust=False):
+def envelope(h="Ready to Start Your International Education Journey?", p="Book a free consultation with our expert team today.", trust=False):
     t = ""
     if trust:
         t = f'''<ul class="trust"><li>{ic("check")}Free consultation, no obligation</li><li>{ic("check")}Response within 24 hours</li><li>{ic("check")}Family-centred approach</li></ul>'''
@@ -143,13 +141,12 @@ FOOTER = f'''<footer class="site-footer"><div class="wrap">
 <p><a href="{WA}" target="_blank" rel="noopener">{PHONE}</a><br><a href="mailto:{EMAIL}">{EMAIL}</a><br>Bridgetown, Saint Michael, Barbados</p></div>
 <div class="foot-col"><h3>Study in Barbados</h3><ul>
 <li><a href="study-in-barbados.html#why">Why Barbados?</a></li><li><a href="study-in-barbados.html#uwi">UWI Cave Hill</a></li>
-<li><a href="study-in-barbados.html#ross">Ross University</a></li><li><a href="study-in-barbados.html#aub">American Univ. of Barbados</a></li>
-<li><a href="study-in-barbados.html#bcc">BCC</a></li><li><a href="services.html#visa">Visa Process</a></li></ul></div>
+</ul></div>
 <div class="foot-col"><h3>Programs</h3><ul>
-<li><a href="programs.html#summer-camps">Summer Programs</a></li><li><a href="programs.html#gap-year">Gap Year</a></li>
-<li><a href="programs.html#faculty-led">Study Tours/Immersions</a></li></ul></div>
+<li><a href="programs.html#summer-camps">Summer/Winter Programs</a></li><li><a href="programs.html#gap-year">Gap Year</a></li>
+<li><a href="programs.html#study-tours">Study Tours</a></li></ul></div>
 <div class="foot-col"><h3>Services</h3><ul>
-<li><a href="study-in-barbados.html#aub">Medical School Advising</a></li><li><a href="services.html#placement">University Placement</a></li>
+<li><a href="services.html#placement">University Placement</a></li>
 <li><a href="services.html#family">Parent/Family Support</a></li></ul></div>
 <div class="foot-col"><h3>Company</h3><ul>
 <li><a href="about.html">About Us</a></li><li><a href="about.html#families">For Parents</a></li>
@@ -240,23 +237,23 @@ def reasons(lst, cls=""):
 
 # ------------------------------------------------------------------ HOME (copy verbatim from the content doc; em dashes replaced)
 programs_cards = [
-    ("c-sun", "Summer &amp; Gap Year Programs",
-     "We can design and organize gap year and summer programmes that meet students' unique interests and needs. Whether you want to explore the Caribbean, develop a skill, or prepare for university, we create an experience tailored to you.",
+    ("c-sun", "Summer, Winter &amp; Gap Year Experiences",
+     "We can design and organize short-term programs that meet students' unique interests and needs. Whether you want to explore the Caribbean, develop a skill, or prepare for university, we create an experience tailored to you.",
      "programs.html#gap-year"),
     ("c-sea", "College and University Admission",
-     "Expert guidance for Barbadians pursuing degrees in Canada, UK, Australia and Africa and for international students to study in the Caribbean, from application to arrival day and beyond.",
+     "Expert guidance for Barbadians looking to pursue degrees in Canada, UK, or Australia, and for international students wanting to study in the Caribbean. Identifying best-fit institutions, the application and visa process, personal statement support, securing scholarships and more.",
      "services.html#placement"),
     ("c-hib", "Medical School Advising",
-     "Specialized pathway guidance for medical school in Barbados and the Caribbean",
-     "study-in-barbados.html#aub"),
-    ("c-palm", "Faculty-Led Immersion Programs",
-     "Full-service logistics and in-country support for institutions organizing education abroad programs to Barbados and select other Caribbean countries.",
-     "programs.html#faculty-led"),
+     "Specialized pathway guidance for admission to medical schools in Barbados.",
+     "study-in-barbados.html#institutions"),
+    ("c-palm", "Barbados Study Tours",
+     "Full-service logistics, program design, and in-country support for institutions organizing study tours to Barbados and select other Caribbean countries.",
+     "programs.html#study-tours"),
     ("c-flame", "Volunteer &amp; Service Learning",
-     "Connect with meaningful volunteer opportunities in Barbados aligned with your areas of interest and passion.",
+     "We can connect you with meaningful volunteer opportunities in Barbados aligned with your areas of interest and passion.",
      "programs.html#volunteer"),
     ("c-sun", "Student Relocation &amp; Support",
-     "Airport pickup, accommodation assistance, banking assistance, SIM cards, and full settlement support for international students coming to Barbados.",
+     "Airport pickup, accommodation assistance, banking assistance, SIM cards, and full settlement support for international students coming to Barbados, and their families.",
      "services.html#arrival"),
 ]
 sheet = "".join(
@@ -264,39 +261,38 @@ sheet = "".join(
     for c, t, p, h in programs_cards)
 
 reasons6 = [
-    ("Fully English-Speaking", "No language barrier. Barbados has a highly educated, English-speaking population with deep ties to the UK and the Americas."),
+    ("Fully English-Speaking", "No language barrier. Barbados has a highly educated, English-speaking population with deep ties to the UK and North America."),
     ("Safe &amp; Politically Stable", "Ranked as one of the most stable democracies in the world and consistently among the safest countries in the Caribbean."),
-    ("Year-round Sunshine", 'Average <span class="fig">28&deg;C</span> year-round. Stunning beaches, a vibrant social scene, and an outdoor lifestyle that supports student wellbeing.'),
-    ("Excellent Healthcare", "The Queen Elizabeth Hospital provides public healthcare and several private clinics ensure students have access to quality medical care."),
-    ("Affordable Tuition", "Tuition and living costs are significantly lower than equivalent programs in North America or the UK, without sacrificing quality."),
-    ("World-Class Institutions", "Home to The University of the West Indies, Ross University School of Medicine, and the American University of Barbados School of Medicine, all internationally accredited."),
+    ("Year-round Sunshine", 'Averaging <span class="fig">28&deg;C</span> year-round. Stunning beaches, a vibrant social scene, and an outdoor lifestyle that supports student wellbeing and unique experiences.'),
+    ("Excellent Healthcare", "The Queen Elizabeth Hospital provides public health care and several state of the art private clinics ensure students have access to quality medical care."),
+    ("Affordable Tuition", "Tuition costs are significantly lower than equivalent programs in North America or the UK, without sacrificing quality."),
+    ("World-Class Institutions", "Home to The Cave Hill Campus of The University of the West Indies, an internationally accredited, highly ranked institution, offering undergraduate and postgraduate degrees across seven faculties. Also home to several accredited off-shore medical schools."),
 ]
 
 faqs = [
     ("Do international students need a visa to study in Barbados?", "Most international students require a Student Visa to study in Barbados. Citizens of several countries may enter visa-free initially. We advise on the full visa process."),
-    ("Can CIEA help me get a scholarship?", "Yes. We offer dedicated scholarship search support and advice based on our institutional connections. Our team knows what opportunities exist and how to make your application competitive."),
-    ("How long does the university application process take?", "Application timelines vary by institution and program. Generally, plan for 3 to 6 months from initial consultation to receiving an offer letter. We recommend starting as early as possible. Contact us to map out your timeline."),
+    ("Can CIEA help me get a scholarship?", "We offer dedicated scholarship search support and advice based on our institutional connections. Our team knows what opportunities exist and how to make your application competitive."),
+    ("How long does the college and university application process take?", "Application timelines vary by institution and program. Generally, plan for 3 to 6 months from initial consultation to receiving an offer letter. We recommend starting as early as possible. Contact us to map out your timeline."),
     ("Is Barbados safe for international students?", "Barbados is consistently ranked as one of the safest destinations in the Caribbean. It has stable governance, low violent crime, excellent healthcare, and a culture that is welcoming toward international visitors and students."),
-    ("What is included in the Barbados Study Tours support?", "We provide end-to-end support: program content aligned with learning outcomes, accommodation, airport pickup, on-ground transportation, cultural and heritage tours, glass-bottom boat tours, nature hikes, activity bookings, and facilitated meetings with local officials, academics, and practitioners."),
-    ("Can students work while studying in Barbados?", "International students on a Student Visa in Barbados may apply for work authorization under specific conditions. We advise on legal work opportunities."),
+    ("What is included in the Barbados Study Tours support?", "We provide end-to-end support: program content aligned with learning outcomes, accommodation, airport pickup, on-ground transportation, cultural and heritage tours, glass-bottom boat tours and snorkeling, nature hikes, activity bookings, and facilitated meetings with or presentations by local officials, academics, and practitioners."),
     ("Can you help Barbadian students apply to universities in Canada or the UK?", "Yes, this is one of our core services. We guide Barbadian students through the full process: choosing the right school and program, preparing a strong application, understanding visa and study permit requirements, applying for scholarships, and preparing for departure."),
-    ("Do you help with accommodation in Barbados?", "Absolutely. We arrange on-campus housing subject to availability and connect students with vetted off-campus options that are safe, affordable, and well-located."),
-    ("What makes CIEA different from other education consultants?", "We are based in Barbados. We know the island, its institutions, and its people intimately. Our advisors also have intimate, first-hand knowledge of study in Canada, the UK and Australia. We are co-creators with you of Barbados Study Tours, with a deep network across education and tourism. We offer genuine end-to-end support: not just advice, but on-the-ground logistics, in-country relationships, and ongoing student care."),
+    ("Do you help with accommodation in Barbados for visiting students?", "Absolutely. We can arrange housing on the local university campus, subject to availability, and connect students with vetted off-campus options that are safe, affordable, and well-located."),
+    ("What makes CIEA different from other education consultants?", "We are based in Barbados. We know the island, its institutions, and its people intimately. We have advisors based in Canada and the UK who have intimate, first-hand knowledge of study in those countries, as well as Australia. We will co-create your Barbados Study Tour with you, providing genuine end-to-end support, not just advice, but on-the-ground logistics, in-country relationships, and ongoing student care."),
 ]
 faq_html = "".join(
     f'<details><summary>{q}<span class="pm">{ic("plus")}</span></summary><div class="answer"><p>{a}</p></div></details>' for q, a in faqs)
 
-services_tags = ["Accommodation sourcing and review", "On-island Transportation", "Boat Tours and Snorkeling", "Nature Hikes",
-                 "Cultural Tours", "Activity Bookings", "Expert/Speaker Connections"]
+services_tags = ["Accommodation sourcing and inspection", "On-ground Transportation", "Boat Tours, Swimming With Turtles &amp; Snorkeling", "Nature Hikes",
+                 "Cultural Tours", "Activity Bookings", "Expert/Speaker Bookings"]
 ticker_items = [t for _, t, _, _ in programs_cards]
 ticker = "".join(f'<span>{t}</span><i aria-hidden="true"></i>' for t in ticker_items)
 
 home = f'''
 <section class="hero hero-water"><canvas class="water" aria-hidden="true"></canvas><div class="wrap hero-grid">
 <div class="hero-copy">
-<h1><span>Your Caribbean</span> <span>Education Journey</span> <em>Starts Here</em></h1>
-<p class="lede">Caribbean International Education Agency is your one-stop shop for information and support to make your dream of studying in the Caribbean a reality.</p>
-<p class="hero-small">We connect students and institutions across the globe with educational opportunities in the Caribbean, with a focus on Barbados; and Barbadian students with opportunities abroad, from summer immersions and cultural experiences to full degree programs.</p>
+<h1><span>Your Caribbean</span> <span>Education Experience</span> <em>Starts Here</em></h1>
+<p class="lede">Caribbean International Education Agency (CIEA) is your one-stop shop for information and service to make your dream of studying in the Caribbean a reality.</p>
+<p class="hero-small">We connect students and institutions across the globe with educational opportunities in the Caribbean, with a focus on Barbados, and Barbadian students with opportunities abroad, from short-term immersions and cultural experiences to full degree programs.</p>
 <div class="btn-row"><a class="btn btn-primary" href="contact.html">Book Free Consultation {ic("arrow")}</a><a class="btn btn-ghost" href="programs.html">Explore Programs</a></div>
 </div>
 <div class="float-stack">
@@ -305,21 +301,21 @@ home = f'''
 {stamp(ph("Bridgetown street or a colourful chattel house"), "c-hib", cls="float f3 no-disc")}
 </div>
 </div></section>
-<div class="wrap trust-wrap"><ul class="trust-strip" aria-label="Why families trust CIEA">{"".join(f'<li class="{c}"><span class="ts-ic">{ic(i)}</span>{txt}</li>' for i, c, txt in [("pin", "c-sea", "Barbados-based &amp; on-the-ground"), ("award", "c-flame", "Years of experience facilitating international education"), ("chat", "c-palm", "Free consultation, no obligation"), ("clock", "c-hib", "Response within 24 hours")])}</ul></div>
+<div class="wrap trust-wrap"><ul class="trust-strip" aria-label="Why families trust CIEA">{"".join(f'<li class="{c}"><span class="ts-ic">{ic(i)}</span>{txt}</li>' for i, c, txt in [("pin", "c-sea", "Barbados-based &amp; on-the-ground"), ("award", "c-flame", "Years of experience in international education and tourism"), ("chat", "c-palm", "Free consultation, no obligation"), ("clock", "c-hib", "Response within 24 hours")])}</ul></div>
 <div class="ticker" aria-hidden="true"><div class="ticker-band"><div class="ticker-track">{ticker}{ticker}</div></div></div>
 
 <section class="section" aria-labelledby="who-h"><div class="wrap split">
 <div class="figure-stamp">{stamp(ph("An advisor meeting a student and parent, warm and natural"), "c-palm")}{seal()}</div>
 <div class="stack">
 {label("About CIEA")}
-<h2 id="who-h">A One-Stop Shop for Caribbean International Education</h2>
-<p>We are based on the beautiful, safe, and sophisticated island of Barbados, where most of our programs and services are anchored. Our many years of combined experience in international education and tourism, and our extensive network of connections across the Caribbean, position us to offer truly multi-country experiences.</p>
-<p>Whether you're an international student coming to Barbados for a summer immersion or a full degree, a Barbadian family navigating the path to a Canadian, UK or Australian university, or an international institution looking to bring a group to the Caribbean, CIEA is your trusted partner.</p>
-<div class="mt-2">{checks(["Barbados-based &amp; on-the-ground", "Institutional &amp; individual clients", "Multi-country Caribbean coverage", "Years of experience facilitating international education"], "two")}</div>
+<h2 id="who-h">A One-Stop Shop for International Education Services</h2>
+<p>We are based on the beautiful, safe, and sophisticated island of Barbados, where most of our programs and services are anchored. Our many years of combined experience in international education and tourism, and our extensive network of connections across the Caribbean, position us to offer multi-country experiences.</p>
+<p>Whether you're an international student coming to Barbados for a summer/winter immersion or a full degree, a Barbadian family navigating the path to a Canadian, UK or Australian university, or an international institution looking to organise a study tour to the Caribbean, CIEA is your trusted partner.</p>
+<div class="mt-2">{checks(["Barbados-based &amp; on-the-ground", "Institutional &amp; individual clients", "Multi-country Caribbean coverage", "Years of experience in international education and tourism"], "two")}</div>
 </div></div></section>
 
 <section class="section bg-tissue" id="programs" aria-labelledby="prog-h"><div class="wrap">
-<div class="head">{label("What We Offer")}<h2 id="prog-h">Programs &amp; Services</h2><p>From one-week cultural immersions to full medical school placement. Expert guidance and on-the-ground support at every stage.</p></div>
+<div class="head">{label("What We Offer")}<h2 id="prog-h">Programs &amp; Services</h2><p>From short-term immersions to full medical school placement. Expert guidance and on-the-ground support at every stage.</p></div>
 <div class="sheet">{sheet}</div>
 </div></section>
 
@@ -327,7 +323,7 @@ home = f'''
 <div class="reasons-aside">
 {label("Why Choose Barbados?")}
 <h2 id="why-h">A Caribbean Island Unlike Any Other</h2>
-<p>Barbados offers world-class education in one of the most beautiful, safe, and sophisticated environments on the planet.</p>
+<p>Barbados offers world-class education in one of the most beautiful, safe, and sophisticated environments in the world.</p>
 <div><a class="btn btn-ink" href="study-in-barbados.html#institutions">Explore Barbados Institutions {ic("arrow")}</a></div>
 <div class="postcard">{stamp(ph("Wide shot of the Barbados west coast or Carlisle Bay"), "c-sea", cls="no-disc")}</div>
 </div>
@@ -335,7 +331,7 @@ home = f'''
 </div></section>
 
 <section class="section" id="one-service" aria-labelledby="one-h"><div class="wrap one-service">
-<div class="stack">{label("Miscellaneous Stand-Alone Services")}<h2 id="one-h">Perhaps You Only Need <em>ONE</em> Service.</h2>
+<div class="stack">{label("Miscellaneous Stand-Alone Services")}<h2 id="one-h">What Do You Need?</h2>
 <p class="lede">We offer individual services for institutions and individuals who need specific support without a full package commitment.</p></div>
 <ul class="tags">{"".join(f'<li class="tag {["c-sun","c-palm","c-flame","c-sea"][n % 4]}"><span class="dot">{ic("check")}</span>{t}</li>' for n, t in enumerate(services_tags))}</ul>
 </div></section>
@@ -349,39 +345,40 @@ page("index.html", "Caribbean International Education Agency | Study in Barbados
      "Barbados-based education agency connecting students and institutions with study, summer and degree opportunities in the Caribbean and abroad.",
      "index.html", home,
      ld=[{"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faqs]}],
-     cta_kwargs=dict(h="Ready to Make Your Move?", p="Whether you're exploring, planning, or ready to apply, a free consultation with our team is the best first step.", trust=True))
+     cta_kwargs=dict(h="Ready to Chat With Us?", p="Whether you're exploring, planning, or ready to apply, a free consultation with our team is the best first step.", trust=True))
 
 # ------------------------------------------------------------------ ABOUT
 values = [
     ("c-flame", "Student-First", "Every decision we make is filtered through one question: what is genuinely best for this student?"),
-    ("c-sea", "Integrity", "We give honest advice, even when it's not what a family wants to hear. Your trust is our most valuable asset."),
+    ("c-sea", "Integrity", "We give honest advice, even when it's not what a family wants to hear. Your trust is important to us."),
     ("c-palm", "Global Perspective", "We think internationally while acting locally. Our Barbados roots give us an advantage no overseas consultant can replicate."),
-    ("c-sun", "Family-Centred", "Parents are partners in the process. We keep families informed, involved, and at ease throughout every stage."),
+    ("c-sun", "Family-Centred", "We see parents as partners in the process. We keep families informed, involved, and at ease throughout every stage."),
     ("c-hib", "Education First", "We believe access to quality education is transformative, for individuals, families, and communities."),
     ("c-sea", "Excellence", "We hold ourselves to the highest professional standards in every consultation, application, and program we deliver."),
 ]
 about = page_hero("Rooted in Barbados. Reaching the World.",
-    "We are the Caribbean International Education Agency, a Barbados-based team passionate about connecting students and institutions to world-class education opportunities on both sides of the ocean.",
+    "We are the Caribbean International Education Agency (CIEA), a Barbados-based team passionate about connecting students and institutions on both sides of the ocean to world-class education opportunities.",
     "The CIEA team in Bridgetown", "c-palm") + f'''
 <section class="section" aria-labelledby="story-h"><div class="wrap story">
 <div class="prose">
 {label("Our Story")}
 <h2 id="story-h">Why We Started CIEA</h2>
-<p>Caribbean International Education Agency was founded by professionals with extensive experience in both higher education and Caribbean tourism, two worlds that, when combined, create something unique and powerful.</p>
-<p>Over many years working with students, families, and institutions, our founder knows the challenges: talented students from across Africa and North America and Europe who wanted to experience education in Barbados but didn't know where to begin. Barbadian families seeking to send their children to university abroad with little guidance on the process. International universities wanting to bring students to the Caribbean for unique educational experiences but lacking the on-the-ground connections to make it work.</p>
-<p>CIEA was established to close that gap. We are co-creators of Barbados Study Tours, a program that brings students from around the world to experience the Caribbean, and that experience forms the backbone of everything we do.</p>
-<p>What makes CIEA different is simple: We are here, not a consultant in an overseas office advising on Barbados from afar. We live here, work here, and have deep relationships with the institutions, officials, academics, and communities that make Barbados and the wider Caribbean such extraordinary places to study and grow. We offer everything from a single activity booking to full end-to-end education migration and placement services.</p>
+<p>Caribbean International Education Agency (CIEA) was founded by professionals with extensive experience in both higher education and Caribbean tourism, two worlds that, when combined, create something unique and powerful.</p>
+<p>With many years working with students, families, and institutions in higher education, our founder knows the challenges: international students who want to experience education in the Caribbean but don't know where to begin; Barbadian families seeking to send their children to university abroad with little guidance on the process; international institutions wanting to bring students to the Caribbean for immersive educational experiences but lacking the on-the-ground connections to facilitate it.</p>
+<p>CIEA was established to close that gap. We are co-creators of Barbados Study Tours, a program that works with institutions to design programs and bring students from around the world to experience the Caribbean.</p>
+<p>What makes CIEA different is simple: We are not a consultant in an overseas office advising on Barbados and the Caribbean from afar. We live here, work here, and have deep relationships with the institutions, officials, academics, and communities that make Barbados and the wider Caribbean such extraordinary places to study and grow.</p>
+<p>We offer everything from a single activity booking to full end-to-end education migration and placement services.</p>
 </div>
 <aside>
 {stamp(ph("Portrait of Patricia Atherley"), "c-sun", cls="portrait")}
-<blockquote class="quote"><p>My goal is simple: to help students enrich their learning and achieve their goals through international education.</p>
+<blockquote class="quote"><p>My goal is simple, to open the eyes of the world to Barbados as a world-class study location, and to work with partners and institutions to help students enrich their lives through international education experiences.</p>
 <footer><b>Patricia Atherley</b>Founder &amp; Director, CIEA</footer></blockquote>
 </aside>
 </div></section>
 
 <section class="section bg-mist" id="families" aria-labelledby="fam-h"><div class="wrap split">
-<div class="stack"><h2 id="fam-h">What Families Trust Us With</h2></div>
-{checks(["Guiding their children through the most important decision of their lives", "Managing every detail of a complex international education process", "Being available on-the-ground when it matters most", "Providing honest advice without hidden agendas or commission pressure", "Ensuring safe, supported transitions to a new country and culture"])}
+<div class="stack"><h2 id="fam-h">What Families Can Trust Us With</h2></div>
+{checks(["Guiding their children through the most important decision of their lives", "Managing the details of complex international education processes", "Being available on-the-ground when it matters most", "Providing honest advice without hidden agendas", "Supporting transition to a new country and culture"])}
 </div></section>
 
 <section class="section" aria-labelledby="val-h"><div class="wrap">
@@ -393,44 +390,39 @@ page("about.html", "About CIEA | Barbados-Based Education Agency", "Meet the Bar
 
 # ------------------------------------------------------------------ STUDY IN BARBADOS
 reasons9 = [
-    ("Fully English-Speaking", "No language barrier. Barbados has a highly educated, English-speaking population and a culture deeply connected to the UK and the Americas."),
+    ("Fully English-Speaking", "No language barrier. Barbados has a highly educated, English-speaking population and a culture deeply connected to the UK and North America."),
     ("Safe &amp; Politically Stable", "Barbados ranks as one of the most stable democracies in the world and consistently among the safest countries in the Caribbean. Parents feel comfortable. Students feel at home."),
-    ("Year-Round Sunshine", 'Average temperature of <span class="fig">28&deg;C</span> year-round. Stunning beaches, a vibrant social scene, and an outdoor lifestyle that supports student wellbeing.'),
-    ("Excellent Healthcare", "The Queen Elizabeth Hospital provides public healthcare, and there are several private clinics. International students have access to quality medical care."),
+    ("Year-Round Sunshine", 'Average temperature of <span class="fig">28&deg;C</span> year-round. Stunning beaches, a vibrant social scene, and an outdoor lifestyle that supports student wellbeing and memory making.'),
+    ("Excellent Healthcare", "The Queen Elizabeth Hospital provides public healthcare, and there are several state-of-the-art private clinics. International students have access to quality medical care."),
     ("More Affordable Than You Think", "Tuition costs in Barbados are significantly lower than equivalent programs in North America or the United Kingdom, without sacrificing quality."),
     ("Globally Connected", "Direct flights to and from London, Miami, New York, Toronto, Montreal, Lagos, Accra, and across the Caribbean. Barbados is geographically and logistically accessible from almost anywhere."),
-    ("Internationally Accredited Institutions", "The University of the West Indies, Ross University, and the American University of Barbados all carry international accreditation and globally recognized qualifications."),
-    ("Rich Culture &amp; Heritage", "A vibrant arts scene, UNESCO-listed capital city, annual festivals, and a warm, welcoming Bajan culture that makes students feel part of a community."),
-    ("Extraordinary Lifestyle", "Glass-bottom boat tours, surfing and snorkeling, year-round nature hikes, cricket, rum distillery tours. Barbados offers an experience no campus in a cold climate can match."),
+    ("Internationally Accredited Institutions", "The University of the West Indies (Cave Hill Campus) and a number of international medical schools on the island carry international accreditation and globally recognized qualifications."),
+    ("Rich Culture &amp; Heritage", "A vibrant arts scene, UNESCO-listed capital city, major annual festivals, and a warm, welcoming Bajan culture that makes students feel part of a community."),
+    ("Extraordinary Lifestyle", "Boat tours, sailing, surfing and snorkeling, year-round nature hikes, year-round outdoor sports, creative arts clubs and academies. Barbados offers an experience no campus in a cold climate can match."),
 ]
 insts = [
-    ("uwi", "c-sea", "Flagship University", "University of the West Indies, Cave Hill Campus", "UWI Cave Hill",
-     "International reputation across law, medicine, business, computer science, and the social sciences. Hundreds of undergraduate and graduate programs attracting students from across the globe. Exchange programs with universities worldwide.",
+    ("uwi", "c-sea", "Flagship University", "The University of the West Indies, Cave Hill Campus", "UWI Cave Hill",
+     "International reputation across law, medicine, business, computer science, culture and the creative arts, and the social sciences. Hundreds of undergraduate and graduate programs attracting students from across the globe. Exchange programs with universities worldwide.",
      ["Law", "Medicine", "Business Administration", "Computer Science", "International Relations", "Natural Sciences", "Cultural Studies"],
      ["Study Abroad Programs", "Exchange Programs", "Hundreds of Degree Programs"], "UWI Cave Hill campus"),
     ("bcc", "c-palm", "Community College", "Barbados Community College", "BCC",
-     "Offers degree, diploma, certificate, and transfer pathways across multiple disciplines. An excellent gateway for students looking to earn credentials in Barbados or transfer to a four-year university abroad.",
+     "Offers degree, diploma, certificate, and transfer pathways across multiple disciplines. An excellent gateway for students looking to earn credentials in Barbados that transfer to a four-year university abroad.",
      ["Hospitality &amp; Tourism", "Technology &amp; Computing", "Health Sciences", "Business Studies", "Fine Arts", "Liberal Arts"],
      ["Transfer Pathways", "Diploma Programs", "Certificate Courses"], "Barbados Community College campus"),
-    ("aub", "c-sun", "Medical University", "American University of Barbados", "AUB",
-     "Attracts students from many countries with a recognized Doctor of Medicine program structured around the USMLE pathway for those seeking US residency. An internationally oriented medical education environment.",
-     ["Doctor of Medicine (MD)", "Pre-Medical Sciences", "Allied Health"],
-     ["USMLE Pathway", "International Students", "American Curriculum"], "Medical students in a lab or lecture"),
-    ("ross", "c-hib", "Medical School", "Ross University School of Medicine", "Ross University",
-     "One of the largest Caribbean medical schools, with its main campus in Barbados. A major pathway for North American students seeking a Caribbean medical education with a focus on US licensing and residency matching.",
-     ["Doctor of Medicine (MD)", "Basic Sciences", "Clinical Sciences"],
-     ["US Residency Pathway", "Caribbean Medical School", "Barbados Campus"], "Ross University Barbados campus"),
+    ("codrington", "c-sun", "Theological College", "Codrington Theological College", "",
+     "One of the oldest institutions in the Caribbean, offering programs in theology and humanities, in association with The UWI.",
+     [], [], "A university group on a heritage tour with a local guide"),
 ]
 inst_html = "".join(f'''<article class="inst {c}" id="{i}">
 {stamp(ph(phs), c, cls="no-disc")}
 <div class="inst-main"><div><span class="inst-type">{ty}</span></div>
-<h3>{n}<small>{sn}</small></h3><p class="desc">{d}</p>
-<div class="inst-meta"><h4>Programs</h4><ul class="inst-progs">{"".join(f"<li>{x}</li>" for x in pr)}</ul></div>
-<ul class="tags small" aria-label="Highlights">{"".join(f'<li class="tag">{x}</li>' for x in tg)}</ul>
+<h3>{n}{f"<small>{sn}</small>" if sn else ""}</h3><p class="desc">{d}</p>
+{f'<div class="inst-meta"><h4>Programs</h4><ul class="inst-progs">{"".join(f"<li>{x}</li>" for x in pr)}</ul></div>' if pr else ""}
+{f'<ul class="tags small" aria-label="Highlights">{"".join(f"<li class=tag>{x}</li>" for x in tg)}</ul>' if tg else ""}
 </div></article>''' for i, c, ty, n, sn, d, pr, tg, phs in insts)
 
 study = page_hero("The Caribbean's Premier Education Destination",
-    "World-class universities. A safe and sophisticated island environment. English-speaking. Affordable. Barbados ticks every box.",
+    "World-class Institutions. A safe and sophisticated island environment. English-speaking. Affordable Tuition. Barbados ticks every box.",
     "Aerial view of Bridgetown and the Careenage", "c-sun") + f'''
 <section class="section bg-sand" id="why" aria-labelledby="why9-h"><div class="wrap">
 <div class="head"><h2 id="why9-h" class="visually-hidden">Why Barbados</h2></div>
@@ -438,12 +430,10 @@ study = page_hero("The Caribbean's Premier Education Destination",
 </div></section>
 
 <section class="section bg-tissue" id="institutions" aria-labelledby="inst-h"><div class="wrap">
-<div class="head"><h2 id="inst-h">Featured Institutions</h2><p>Barbados is home to a remarkable range of accredited higher education institutions, from a flagship regional university to internationally recognized medical schools.</p></div>
+<div class="head"><h2 id="inst-h">Featured Institutions</h2><p>Barbados is home to a remarkable range of accredited higher education institutions, from a flagship regional university to internationally recognized off-shore medical schools.</p></div>
 <div class="inst-list">{inst_html}</div>
 <ul class="more-inst" style="margin-top:clamp(3.5rem,6vw,5rem)" aria-label="Additional institutions">
-<li><b>UWI Open Campus (Global Campus)</b><span>Distance and blended learning across the Caribbean</span></li>
-<li><b>Codrington Theological College</b><span>One of the oldest institutions in the Caribbean, offering theology and arts</span></li>
-<li><b>Samuel Jackman Prescod Institute of Technology</b><span>Technical and vocational training</span></li>
+<li><b>Samuel Jackman Prescod Institute of Technology</b><span>Offering technical and vocational training</span></li>
 </ul>
 </div></section>
 '''
@@ -452,20 +442,20 @@ page("study-in-barbados.html", "Study in Barbados: Universities and Medical Scho
 # ------------------------------------------------------------------ PROGRAMS
 progs = [
     ("gap-year", "c-sun", "Gap Year &amp; Summer/Winter Abroad",
-     "We design and organize gap year and summer programmes that meet students' unique interests and needs. Whether you want to explore the Caribbean, develop a skill, volunteer, or prepare for university, we create an experience tailored to you.",
-     ["Fully customized itinerary based on your interests", "Dance, theatre, music, environment, sports &amp; more", "Accommodation arrangements in Barbados", "Airport pickup and on-island transportation", "Cultural and heritage tours", "Multi-week or semester-length options"],
+     "We design and organize short-term programs that meet students' unique interests and needs. Whether you want to explore the Caribbean, develop a skill, volunteer, or prepare for university, we can create an experience tailored to you.",
+     ["Fully customized itinerary based on your interests", "Dance, theatre, music, environment, sports &amp; more", "Accommodation arrangements in Barbados", "Airport pickup and on-island transportation", "Cultural and heritage tours"],
      "Young people hiking or exploring the Barbados east coast"),
     ("summer-camps", "c-flame", "Summer Camps",
-     "We facilitate enrolment in local summer camps in collaboration with partners, in areas that students are passionate about. From the performing arts to environmental conservation, our camps combine learning with an unforgettable Caribbean experience.",
-     ["Partner camps in dance, theatre, and music", "Environmental and conservation programs", "Sports camps including cricket, swimming, and more", "Ages 8 to 18", "Host accommodation", "Caribbean cultural integration"],
+     "We facilitate enrolment in local summer camps in collaboration with our partners, in areas that students are passionate about. From the performing arts to environmental conservation, our camps combine learning with an unforgettable Caribbean experience.",
+     ["Partner camps in dance, theatre, and music", "Environmental and conservation programs", "Sports camps including cricket, swimming, and more", "Ages 8 to 18", "Host family accommodation"],
      "Children at a cricket, dance or swimming camp"),
-    ("faculty-led", "c-sea", "Faculty-Led Education Abroad Programs",
-     "We provide comprehensive information, program design and planning support, logistical services, and in-country support for international institutions seeking to organize study abroad programmes to Barbados.",
+    ("study-tours", "c-sea", "Barbados Study Tours",
+     "We provide comprehensive information, program design and planning support, logistical services, and in-country support for international institutions seeking to organize study tours to Barbados.",
      ["Program content design aligned with learning outcomes", "Accommodation arrangements for groups", "Airport pickup and on-ground transportation", "Cultural, heritage, and educational tours", "Meetings with local officials, academics &amp; experts", "Glass-bottom boat tours, nature hikes &amp; activities", "Ongoing in-country support during the program"],
      "A university group on a heritage tour with a local guide"),
     ("volunteer", "c-palm", "Volunteer &amp; Service Learning",
-     "We connect students with meaningful volunteer opportunities and service learning experiences in Barbados. Choose from education, environment, community development, healthcare, and more.",
-     ["Volunteer placement matched to your interests", "Education, environment, community development", "Healthcare and social service opportunities", "Accommodation and logistics support", "Certificate of service completion", "Cultural immersion alongside your placement"],
+     "We connect students with meaningful volunteer opportunities and service learning experiences in Barbados.",
+     ["Volunteer placement matched to your interests", "Accommodation and logistics support", "Certificate of service completion", "Cultural immersion alongside your placement"],
      "Students volunteering at a beach clean-up or community project"),
 ]
 prog_html = "".join(f'''<article class="program" id="{i}">
@@ -474,7 +464,7 @@ prog_html = "".join(f'''<article class="program" id="{i}">
 </article>''' for i, c, t, d, inc, phs in progs)
 
 programs = page_hero("Education Beyond the Classroom",
-    "From a week-long cultural immersion to a full semester at The UWI, we facilitate education experiences in Barbados that change perspectives and open doors.",
+    "From short-term immersions to a semester or year abroad at The UWI, we facilitate education experiences in Barbados that change perspectives and open doors.",
     "Students snorkeling or on a glass-bottom boat", "c-flame") + f'''
 <section class="section"><div class="wrap">{prog_html}</div></section>
 <section class="section bg-sand" aria-labelledby="custom-h"><div class="wrap custom-band">
@@ -483,14 +473,14 @@ programs = page_hero("Education Beyond the Classroom",
 <div><a class="btn btn-ink" href="contact.html">Request a Custom Program {ic("arrow")}</a></div>
 </div></section>
 '''
-page("programs.html", "Gap Year, Summer Camps and Study Abroad in Barbados | CIEA", "Gap year, summer camps, faculty-led study abroad and volunteer programs in Barbados.", "programs.html", programs)
+page("programs.html", "Gap Year, Summer Camps and Study Abroad in Barbados | CIEA", "Gap year, summer camps, Barbados study tours and volunteer programs in Barbados.", "programs.html", programs)
 
 # ------------------------------------------------------------------ SERVICES
 core = [
-    ("placement", "c-sun", "cap", "University Placement", "End-to-end guidance from school selection to offer acceptance. We know which programs fit your profile and how to make your application stand out."),
+    ("placement", "c-sun", "cap", "College or University Placement", "End-to-end guidance from school selection to offer acceptance. We know which programs fit your profile and how to make your application stand out."),
     ("review", "c-palm", "file", "Application Review", "Expert review of every component of your application (personal statements, CVs, reference letters) before submission."),
-    ("visa", "c-flame", "passport", "Student Visa Assistance", "Full documentation support and application management for student visas and study permits across major destinations."),
-    ("accommodation", "c-sea", "home", "Accommodation Support", "We help identify, vet, and arrange safe, suitable student housing where needed."),
+    ("visa", "c-flame", "passport", "Student Visa Assistance", "Documentation support and application management for student visas and study permits for major destinations (Canada, UK, Australia)."),
+    ("accommodation", "c-sea", "home", "Accommodation Support", "We help identify, vet, and arrange safe, suitable student housing in Barbados where needed."),
     ("arrival", "c-hib", "plane", "Student Arrival Support", "Airport pickup and on-the-ground help during your first critical days."),
     ("family", "c-sun", "users", "Parent/Family Support Service", "We remain a point of contact and support for parents and families"),
 ]
@@ -511,8 +501,8 @@ page("services.html", "University Placement, Visa and Student Support | CIEA", "
 
 # ------------------------------------------------------------------ CONTACT
 interests = ["Study in Barbados: College or University Placement", "Study Abroad (Barbadian students) (Study in Canada / UK / Australia)",
-             "Medical School Advising", "Summer or Gap Year Program", "Faculty-Led Program Support", "Parent/Family Support Service", "General Inquiry"]
-contact = page_hero("Let's Talk About Your Future",
+             "Medical School Admission", "Short-term Immersion Program", "Barbados Study Tour Support", "Parent/Family Support Service", "General Inquiry"]
+contact = page_hero("Let's Talk",
     "Book your free 30-minute consultation. No pressure, no obligation. Just expert advice tailored to your situation.",
     "A friendly advisor on a video call", "c-palm") + f'''
 <section class="section"><div class="wrap contact-grid">
@@ -538,12 +528,12 @@ contact = page_hero("Let's Talk About Your Future",
 </div>
 <div class="field"><label for="f-interest">I'm interested in... <span class="req" aria-hidden="true">*</span></label>
 <select id="f-interest" name="interest" required><option value="">Choose one</option>{"".join(f"<option>{o}</option>" for o in interests)}</select><span class="err">Please choose what you're interested in.</span></div>
-<div class="field"><label for="f-msg">Tell us about your situation <span class="req" aria-hidden="true">*</span></label><textarea id="f-msg" name="message" required></textarea><span class="err">Please tell us a little about your situation.</span></div>
+<div class="field"><label for="f-msg">Tell us about your interest <span class="req" aria-hidden="true">*</span></label><textarea id="f-msg" name="message" required></textarea><span class="err">Please tell us a little about your interest.</span></div>
 <div class="form-foot"><button class="btn btn-primary" type="submit">Send My Inquiry</button><span class="note">Free consultation. No obligation. Response within 24 hours.</span></div>
 </form>
 <div class="success" id="form-success" hidden tabindex="-1">
 <h2>Message Received!</h2>
-<p>Thank you. We'll be in touch within 24 hours. For faster response, WhatsApp us directly.</p>
+<p>Thank you. We'll be in touch within 24 hours. For faster response where necessary, WhatsApp us directly.</p>
 <a class="btn btn-primary" href="{WA}" target="_blank" rel="noopener">{ic("chat")}WhatsApp Us</a>
 </div>
 </div>
