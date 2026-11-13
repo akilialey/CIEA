@@ -99,7 +99,7 @@ def routes(legend=True):
 </svg></div>'''
 
 NAV = [("study-in-barbados.html", "Study in Barbados"), ("programs.html", "Programs"), ("services.html", "Services"),
-       ("about.html#families", "For Parents"), ("about.html", "About")]
+       ("about.html#families", "For Parents"), ("about.html", "About"), ("team.html", "Team")]
 
 def header(active):
     links = "".join(
@@ -135,15 +135,16 @@ FOOTER = f'''<footer class="site-footer"><div class="wrap">
 <li><a href="study-in-barbados.html#why">Why Barbados?</a></li><li><a href="study-in-barbados.html#uwi">UWI Cave Hill</a></li>
 </ul></div>
 <div class="foot-col"><h3>Programs</h3><ul>
-<li><a href="programs.html#summer-camps">Summer/Winter Programs</a></li><li><a href="programs.html#gap-year">Gap Year</a></li>
+<li><a href="programs.html#full-degrees">Full Degrees</a></li><li><a href="programs.html#summer-camps">Summer/Winter Programs</a></li><li><a href="programs.html#gap-year">Gap Year</a></li>
 <li><a href="programs.html#study-tours">Study Tours</a></li></ul></div>
 <div class="foot-col"><h3>Services</h3><ul>
 <li><a href="services.html#placement">University Placement</a></li>
 <li><a href="services.html#family">Parent/Family Support</a></li></ul></div>
 <div class="foot-col"><h3>Company</h3><ul>
-<li><a href="about.html">About Us</a></li><li><a href="about.html#families">For Parents</a></li>
+<li><a href="about.html">About Us</a></li><li><a href="team.html">Our Team</a></li><li><a href="about.html#families">For Parents</a></li>
 <li><a href="index.html#faq">FAQ</a></li><li><a href="contact.html">Contact</a></li></ul></div>
 </div>
+<aside class="foot-notice" aria-labelledby="scam-h">{ic("shield")}<div><h3 id="scam-h">Beware of scams</h3><p>CIEA will only contact you from an @studyinthecaribbean.com email address. We will never ask you to send payment to a personal bank account or through WhatsApp. If you are unsure whether a message is from us, email <a href="mailto:info@studyinthecaribbean.com">info@studyinthecaribbean.com</a> before you reply or pay.</p></div></aside>
 <div class="foot-base"><span>&copy; 2026 Caribbean International Education Agency. All rights reserved.</span></div>
 </div></footer>'''
 
@@ -473,10 +474,17 @@ prog_html = "".join(f'''<article class="program" id="{i}">
 <div class="copy"><h2>{t}</h2><p>{d}</p><h3>What's included</h3>{checks(inc)}</div>
 </article>''' for i, c, t, d, inc, phs in progs)
 
+degrees_html = f'''<article class="program" id="full-degrees">
+{stamp(ph("UWI Cave Hill campus"), cls="program-photo")}
+<div class="copy"><h2>Full Degrees in Barbados</h2><p>Earn a full, internationally recognized degree in Barbados. We help you choose the right institution and program, guide you through the application and student visa, and support you as you settle in.</p>
+<h3>Where you can study</h3>{checks(["Undergraduate and postgraduate degrees at The University of the West Indies, Cave Hill Campus", "Degree, diploma, certificate and transfer pathways at Barbados Community College", "Theology and humanities at Codrington Theological College", "Accredited off-shore medical schools"])}
+<div class="btn-row" style="margin-top:1.75rem"><a class="btn btn-ink" href="study-in-barbados.html#institutions">Explore Barbados Institutions {ic("arrow")}</a><!-- PROGRAM FINDER: add the course finder button here, e.g. <a class="btn btn-line" href="course-finder.html">Find a Program</a> --></div></div>
+</article>'''
+
 programs = page_hero("Education Beyond the Classroom",
     "From short-term immersions to a semester or year abroad at The UWI, we facilitate education experiences in Barbados that change perspectives and open doors.",
     "Students snorkeling or on a glass-bottom boat", "c-flame") + f'''
-<section class="section"><div class="wrap">{prog_html}</div></section>
+<section class="section"><div class="wrap">{degrees_html}{prog_html}</div></section>
 <section class="section bg-sand" aria-labelledby="custom-h"><div class="wrap custom-band">
 <div><h2 id="custom-h">Don't See Exactly What You're Looking For?</h2>
 <p>We specialize in custom program design. Tell us your goals, interests, and timeline, and we'll create something tailored just for you.</p></div>
@@ -485,6 +493,26 @@ programs = page_hero("Education Beyond the Classroom",
 '''
 page("programs.html", "Gap Year, Summer Camps and Study Abroad in Barbados | CIEA", "Gap year, summer camps, Barbados study tours and volunteer programs in Barbados.", "programs.html", programs)
 
+# ------------------------------------------------------------------ TEAM
+team_members = [
+    ("patricia", "Portrait of Patricia Atherley", "Patricia Atherley", "Founder &amp; Director",
+     ["Patricia founded CIEA after many years working with students, families, and institutions in higher education. Her experience spans both higher education and Caribbean tourism, and she is a co-creator of Barbados Study Tours.",
+      "Patricia leads CIEA's work with students, families, and partner institutions, from college and university placement to the design of study tours and immersion programs. Her goal is simple: to open the eyes of the world to Barbados as a world-class study location."]),
+    ("vicky", None, "Vicky Chandler", "Director, Study Tours &amp; Educational Travel",
+     ["Vicky is a tourism marketing professional with twenty five years of experience in sales and marketing. She has served as Barbados Destination Marketing Manager and works as a marketing and special projects management consultant.",
+      "Her career has been spent promoting Barbados to the world: building partnerships across the travel industry, planning campaigns and special events, and creating experiences that showcase the best of the island.",
+      "At CIEA, Vicky leads Study Tours and Educational Travel: Barbados Study Tours for visiting institutions, short-term immersions, and the cultural, heritage, and educational experiences that make time in Barbados unforgettable. Her deep knowledge of the island and its tourism partners means every group and student is in good hands."]),
+]
+team_html = "".join(f'''<article class="member" id="{i}">
+{stamp(ph(phs, "Portrait"), cls="member-photo") if phs else f'<figure class="photo member-photo"><div class="ph avatar" role="img" aria-label="{n}"><span aria-hidden="true">{"".join(w[0] for w in n.split())}</span></div></figure>'}
+<div class="member-copy"><h2>{n}</h2><p class="member-role">{r}</p>{"".join(f"<p>{x}</p>" for x in bio)}</div>
+</article>''' for i, phs, n, r, bio in team_members)
+team = page_hero("Meet Our Team",
+    "A Barbados-based team bringing together many years of experience in higher education and Caribbean tourism.",
+    "The CIEA team in Bridgetown") + f'''
+<section class="section"><div class="wrap team-list">{team_html}</div></section>
+'''
+page("team.html", "Our Team | CIEA", "Meet the team behind the Caribbean International Education Agency: Patricia Atherley and Vicky Chandler.", "team.html", team)
 
 # ------------------------------------------------------------------ SERVICES
 core = [
