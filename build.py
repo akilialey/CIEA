@@ -296,7 +296,7 @@ services_tags = ["Accommodation sourcing and inspection", "On-ground Transportat
                  "Cultural Tours", "Activity Bookings", "Expert/Speaker Bookings"]
 
 route_tiles = [("study-in-barbados.html", "cap", "c-sea", "Study in Barbados", "College or University Placement"),
-               ("services.html#placement", "globe", "c-sun", "Study Abroad", "Canada / UK / Australia"),
+               ("services.html#placement", "globe", "c-sun", "Study Abroad (Barbadian Students)", "Canada / UK / Australia"),
                ("programs.html#study-tours", "users", "c-palm", "Barbados Study Tours", "For institutions"),
                ("programs.html#gap-year", "sun", "c-flame", "Short-term Immersions", "Summer, Winter &amp; Gap Year")]
 
@@ -492,8 +492,8 @@ degrees_html = f'''<article class="program" id="full-degrees">
 <div class="btn-row" style="margin-top:1.75rem"><a class="btn btn-ink" href="study-in-barbados.html#institutions">Explore Barbados Institutions {ic("arrow")}</a><a class="btn btn-line" href="course-finder.html">Find a Program</a></div></div>
 </article>'''
 
-programs = page_hero("Education Beyond the Classroom",
-    "From short-term immersions to a semester or year abroad at The UWI, we facilitate education experiences in Barbados that change perspectives and open doors.",
+programs = page_hero("Education Beyond Borders",
+    "From full degrees to short-term immersions, we facilitate education experiences in Barbados that change perspectives and open doors.",
     "Students snorkeling or on a glass-bottom boat", "c-flame") + f'''
 <section class="section"><div class="wrap">{degrees_html}{prog_html}</div></section>
 <section class="section bg-sand" aria-labelledby="custom-h"><div class="wrap custom-band">
